@@ -21,6 +21,7 @@ Ses principales fonctionnalités incluent :
 ```bash
 git clone [https://github.com/B07mid/CivicPlus.git](https://github.com/B07mid/CivicPlus.git)
 cd CivicPlus
+```
 
 2. Si vous utilisez WAMP ou XAMPP :
 
@@ -40,21 +41,22 @@ Pour utiliser ce projet, vous devez installer PHP. Voici les étapes :
 
 2. Installez PHP en suivant les instructions spécifiques à votre système d'exploitation :
 
-    - Pour Windows**, vous pouvez utiliser [XAMPP] (https://www.apachefriends.org/fr/index.html) ou [WampServer] (http://www.
+    - Pour **Windows**, vous pouvez utiliser [XAMPP](https://www.apachefriends.org/fr/index.html) ou [WampServer](http://www.
     wampserver.com/).
 
     - Pour **macOS**, vous pouvez utiliser [Homebrew] (https://brew.sh/), puis exécuter la commande suivante dans le terminal :
-    '''Bash
+    ```Bash
     brew install php
-    '''
-    - Pour Linux, vous pouvez installer PHP via le gestionnaire de paquets. Par exemple, sur Ubuntu :
-    '''bash
+    ```
+    - Pour **Linux**, vous pouvez installer PHP via le gestionnaire de paquets. Par exemple, sur Ubuntu :
+    ```bash
     sudo apt update
     sudo apt install php
-    '''
+    ```
 3. Vérifiez l'installation de PHP en exécutant la commande suivante dans votre terminal :
-'''Bash
+```Bash
 php -v
+```
 
 
 ##Contributions
@@ -85,6 +87,7 @@ Si vous souhaitez contribuer, suivez les étapes ci-dessous pour faire un **fork
     '''Bash
     git clone https://github.com/B07mid/Esprit-PW-2A20-2526-CivicPlus
     cd CivicPlus
+    ```
 
 
 ## Licence
@@ -94,7 +97,9 @@ Si vous souhaitez contribuer, suivez les étapes ci-dessous pour faire un **fork
 '''markdown
 ##Liscence
 
+
 Ce projet est sous la licence **NOVA**. Pour plus de détails, consultez le fichier [LICENSE](./LICENSE).
 
 Détails sur la licence NOVA
 La licence MIT est une licence de logiciel libre permissive qui permet de réutiliser le code avec très peu de restrictions.
+```
