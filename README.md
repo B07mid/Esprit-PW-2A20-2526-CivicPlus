@@ -30,9 +30,9 @@ Ses principales fonctionnalités incluent :
 
 * Accédez au projet via 
 
-##Utilisation
+## Utilisation
 
-###Installation de PHP
+### Installation de PHP
 
 Pour utiliser ce projet, vous devez installer PHP. Voici les étapes :
 
@@ -44,24 +44,24 @@ Pour utiliser ce projet, vous devez installer PHP. Voici les étapes :
     wampserver.com/).
 
     - Pour **macOS**, vous pouvez utiliser [Homebrew] (https://brew.sh/), puis exécuter la commande suivante dans le terminal :
-    ```Bash
-    brew install php
+        ```Bash
+        brew install php
     
     - Pour **Linux**, vous pouvez installer PHP via le gestionnaire de paquets. Par exemple, sur Ubuntu :
-    ```bash
-    sudo apt update
-    sudo apt install php
+        ```bash
+        sudo apt update
+        sudo apt install php
     
 3. Vérifiez l'installation de PHP en exécutant la commande suivante dans votre terminal :
-```Bash
-php -v
+    ```Bash
+    php -v
 
 
 
-##Contributions
+## Contributions
 Nous remercions tous ceux qui ont contribué à ce projet !
 
-###Contributeurs
+### Contributeurs
 Les personnes suivantes ont contribué à ce projet en ajoutant des fonctionnalités, en corrigeant des bugs ou en améliorant la documentation :
 
 [Maram Jaouadi](https://github.com/maramjaouadi416) - Module E-Administration
@@ -94,11 +94,10 @@ Si vous souhaitez contribuer, suivez les étapes ci-dessous pour faire un **fork
 
 ### Example pour **Licence** :
 '''markdown
-##Liscence
+## Liscence
 
 
 Ce projet est sous la licence **NOVA**. Pour plus de détails, consultez le fichier [LICENSE](./LICENSE).
 
 Détails sur la licence NOVA
 La licence MIT est une licence de logiciel libre permissive qui permet de réutiliser le code avec très peu de restrictions.
-```
