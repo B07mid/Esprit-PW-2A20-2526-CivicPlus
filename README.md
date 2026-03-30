@@ -41,9 +41,9 @@ Pour utiliser ce projet, vous devez installer PHP. Voici les étapes :
 2. Installez PHP en suivant les instructions spécifiques à votre système d'exploitation :
 
     - Pour **Windows**, vous pouvez utiliser [XAMPP](https://www.apachefriends.org/fr/index.html) ou [WampServer](http://www.
-    wampserver.com/).
+    wampserver.com).
 
-    - Pour **macOS**, vous pouvez utiliser [Homebrew] (https://brew.sh/), puis exécuter la commande suivante dans le terminal :
+    - Pour **macOS**, vous pouvez utiliser [Homebrew] (https://brew.sh), puis exécuter la commande suivante dans le terminal :
         ```Bash
         brew install php
     
@@ -55,7 +55,6 @@ Pour utiliser ce projet, vous devez installer PHP. Voici les étapes :
 3. Vérifiez l'installation de PHP en exécutant la commande suivante dans votre terminal :
     ```Bash
     php -v
-
 
 
 ## Contributions
@@ -78,23 +77,22 @@ Les personnes suivantes ont contribué à ce projet en ajoutant des fonctionnali
 
 Si vous souhaitez contribuer, suivez les étapes ci-dessous pour faire un **fork**, créer une nouvelle branche et soumettre une **pull request**.
 
-###Comment contribuer ?
+### Comment contribuer ?
 
 1. **Fork le projet** : Allez sur la page GitHub du projet et cliquez sur le bouton **Fork** dans le coin supérieur droit pour créer une copie du projet dans votre propre compte GitHub.
 
 2. **Clonez votre fork** : Clonez le fork sur votre machine locale :
-    '''Bash
+    ```Bash
     git clone https://github.com/B07mid/Esprit-PW-2A20-2526-CivicPlus
     cd CivicPlus
-    ```
 
 
 ## Licence
 
 
 ### Example pour **Licence** :
-'''markdown
-## Liscence
+```markdown
+## Licence
 
 
 Ce projet est sous la licence **NOVA**. Pour plus de détails, consultez le fichier [LICENSE](./LICENSE).
