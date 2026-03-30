@@ -19,7 +19,7 @@ Ses principales fonctionnalités incluent :
 ## Installation
 1. Clonez le repository :
 ```bash
-git clone [https://github.com/votre-equipe/CivicPlus.git](https://github.com/B07mid/CivicPlus.git)
+git clone [https://github.com/B07mid/CivicPlus.git](https://github.com/B07mid/CivicPlus.git)
 cd CivicPlus
 
 2. Si vous utilisez WAMP ou XAMPP :
