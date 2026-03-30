@@ -56,7 +56,6 @@ Pour utiliser ce projet, vous devez installer PHP. Voici les étapes :
     ```Bash
     php -v
 
-
 ## Contributions
 Nous remercions tous ceux qui ont contribué à ce projet !
 
@@ -86,7 +85,6 @@ Si vous souhaitez contribuer, suivez les étapes ci-dessous pour faire un **fork
     git clone https://github.com/B07mid/Esprit-PW-2A20-2526-CivicPlus
     cd CivicPlus
 
-
 ## Licence
 
 
@@ -97,5 +95,5 @@ Si vous souhaitez contribuer, suivez les étapes ci-dessous pour faire un **fork
 
 Ce projet est sous la licence **NOVA**. Pour plus de détails, consultez le fichier [LICENSE](./LICENSE).
 
-Détails sur la licence NOVA
+### Détails sur la licence NOVA
 La licence MIT est une licence de logiciel libre permissive qui permet de réutiliser le code avec très peu de restrictions.
