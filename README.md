@@ -40,10 +40,9 @@ Pour utiliser ce projet, vous devez installer PHP. Voici les étapes :
 
 2. Installez PHP en suivant les instructions spécifiques à votre système d'exploitation :
 
-    - Pour **Windows**, vous pouvez utiliser [XAMPP](https://www.apachefriends.org/fr/index.html) ou [WampServer](http://www.
-    wampserver.com).
+    - Pour **Windows**, vous pouvez utiliser [XAMPP](https://www.apachefriends.org/fr/index.html) ou [WampServer](http://www.wampserver.com).
 
-    - Pour **macOS**, vous pouvez utiliser [Homebrew] (https://brew.sh), puis exécuter la commande suivante dans le terminal :
+    - Pour **macOS**, vous pouvez utiliser [Homebrew](https://brew.sh), puis exécuter la commande suivante dans le terminal :
         ```Bash
         brew install php
     
