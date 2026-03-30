@@ -24,11 +24,11 @@ Ses principales fonctionnalités incluent :
 
 2. Si vous utilisez WAMP ou XAMPP :
 
-*Placez le projet dans le dossier www (WAMP) ou htdocs (XAMPP).
+* Placez le projet dans le dossier www (WAMP) ou htdocs (XAMPP).
 
-*Démarrez Apache et MySQL depuis l'interface de WAMP/XAMPP.
+* Démarrez Apache et MySQL depuis l'interface de WAMP/XAMPP.
 
-*Accédez au projet via 
+* Accédez au projet via 
 
 ##Utilisation
 
