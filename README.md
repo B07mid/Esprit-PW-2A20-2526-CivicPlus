@@ -21,7 +21,6 @@ Ses principales fonctionnalités incluent :
 ```bash
 git clone [https://github.com/B07mid/CivicPlus.git](https://github.com/B07mid/CivicPlus.git)
 cd CivicPlus
-```
 
 2. Si vous utilisez WAMP ou XAMPP :
 
@@ -47,16 +46,16 @@ Pour utiliser ce projet, vous devez installer PHP. Voici les étapes :
     - Pour **macOS**, vous pouvez utiliser [Homebrew] (https://brew.sh/), puis exécuter la commande suivante dans le terminal :
     ```Bash
     brew install php
-    ```
+    
     - Pour **Linux**, vous pouvez installer PHP via le gestionnaire de paquets. Par exemple, sur Ubuntu :
     ```bash
     sudo apt update
     sudo apt install php
-    ```
+    
 3. Vérifiez l'installation de PHP en exécutant la commande suivante dans votre terminal :
 ```Bash
 php -v
-```
+
 
 
 ##Contributions
