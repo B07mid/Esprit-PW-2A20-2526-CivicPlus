@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ajouter un point d'Interrêt</title>
+</head>
+<body>
+<h1>Ajouter un nouveau Smart POI</h1>
+    <form action="/controllers/PoiController.php?action=ajouter" method="POST">
+        
+        <label for="nom_poi">Nom du lieu :</label><br>
+        <input type="text" id="nom_poi" name="nom_poi" required><br><br>
+
+        <label for="place_id_google">ID Google Places (Liaison API) :</label><br>
+        <input type="text" id="place_id_google" name="place_id_google" required><br><br>
+
+        <label for="categorie_service">Catégorie :</label><br>
+        <select id="categorie_service" name="categorie_service">
+            <option value="Administration">Administration</option>
+            <option value="Santé">Santé</option>
+            <option value="Transport">Transport</option>
+            <option value="Parc">Parc et Loisirs</option>
+        </select><br><br>
+
+        <label for="latitude">Latitude :</label><br>
+        <input type="number" step="any" id="latitude" name="latitude" required><br><br>
+
+        <label for="longitude">Longitude :</label><br>
+        <input type="number" step="any" id="longitude" name="longitude" required><br><br>
+
+        <label for="horaires_ouverture">Horaires d'ouverture :</label><br>
+        <textarea id="horaires_ouverture" name="horaires_ouverture"></textarea><br><br>
+
+        <label for="accessible_pmr">Accessible PMR (Fauteuil roulant) :</label><br>
+        <input type="checkbox" id="accessible_pmr" name="accessible_pmr" value="1"><br><br>
+
+        <button type="submit">Enregistrer le lieu</button>
+
+    </form>
+</body>
+</html>
