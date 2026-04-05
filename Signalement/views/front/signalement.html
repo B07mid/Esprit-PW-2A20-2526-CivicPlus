@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Signaler un incident - CivicPlus</title>
+</head>
+<body>
+
+    <h1>Signaler un incident urbain</h1>
+
+    <!-- Début du formulaire -->
+    <form action="traiter_signalement.php" method="POST" enctype="multipart/form-data">
+        <fieldset>
+            <legend>Nouveau Signalement</legend>
+
+            <!-- Champ: id_signalement (PK AUTO INCREMENT) -->
+            <label for="id_signalement">ID Signalement (Auto) :</label><br>
+            <input type="number" id="id_signalement" name="id_signalement" readonly value="Auto"><br><br>
+
+            <!-- Champ: titre -->
+            <label for="titre">Titre de l'incident :</label><br>
+            <input type="text" id="titre" name="titre" required placeholder="Ex: Fuite d'eau, Panne éclairage..."><br><br>
+
+            <!-- Champ: description -->
+            <label for="description">Description :</label><br>
+            <textarea id="description" name="description" rows="5" cols="40" required></textarea><br><br>
+
+            <!-- Champ: photo_url (Innovation IA) -->
+            <label for="photo_url">Photo du problème (Analyse IA) :</label><br>
+            <input type="file" id="photo_url" name="photo_url" accept="image/*"><br><br>
+
+            <!-- Champ: date_signalement -->
+            <label for="date_signalement">Date du signalement :</label><br>
+            <input type="date" id="date_signalement" name="date_signalement"><br><br>
+
+            <!-- Champ: statut -->
+            <label for="statut">Statut :</label><br>
+            <select id="statut" name="statut">
+                <option value="Nouveau">Nouveau</option>
+                <option value="En cours">En cours</option>
+                <option value="Traite">Traité</option>
+            </select><br><br>
+
+            <!-- Champ: niveau_priorite -->
+            <label for="niveau_priorite">Niveau de priorité :</label><br>
+            <select id="niveau_priorite" name="niveau_priorite">
+                <option value="Basse">Basse</option>
+                <option value="Moyenne">Moyenne</option>
+                <option value="Haute">Haute</option>
+            </select><br><br>
+
+            <!-- J'ai supprimé le champ ID Citoyen ici comme demandé -->
+
+            <br>
+            <input type="submit" value="Envoyer le signalement">
+        </fieldset>
+    </form>
+
+</body>
+</html>

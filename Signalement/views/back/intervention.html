@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Gestion Maintenance - Admin</title>
+</head>
+<body>
+
+    <h1>Gestion des Interventions</h1>
+
+    <form action="traiter_intervention.php" method="POST">
+        <fieldset>
+            <legend>Classifier une Intervention</legend>
+
+            <!-- Champ: id_intervention (PK AUTO INCREMENT) -->
+            <label for="id_intervention">ID Intervention (Auto) :</label><br>
+            <input type="number" id="id_intervention" name="id_intervention" readonly value="Auto"><br><br>
+
+            <!-- Champ: type_intervention -->
+            <label for="type_intervention">Type d'intervention :</label><br>
+            <select id="type_intervention" name="type_intervention" required>
+                <option value="Voirie">Réparation Voirie</option>
+                <option value="Eclairage">Éclairage Public</option>
+                <option value="Proprete">Propreté</option>
+                <option value="Equipements">Équipements</option>
+            </select><br><br>
+
+            <!-- Champ: equipe_responsable -->
+            <label for="equipe_responsable">Équipe responsable :</label><br>
+            <input type="text" id="equipe_responsable" name="equipe_responsable" required placeholder="Ex: Équipe Technique A"><br><br>
+
+            <!-- Champ: date_planification -->
+            <label for="date_planification">Date de planification :</label><br>
+            <input type="date" id="date_planification" name="date_planification" required><br><br>
+
+            <!-- Champ: date_resolution -->
+            <label for="date_resolution">Date de résolution :</label><br>
+            <input type="date" id="date_resolution" name="date_resolution"><br><br>
+
+            <!-- Champ: statut_intervention -->
+            <label for="statut_intervention">Statut :</label><br>
+            <select id="statut_intervention" name="statut_intervention">
+                <option value="En attente">En attente</option>
+                <option value="En cours">En cours</option>
+                <option value="Terminee">Terminée</option>
+            </select><br><br>
+
+            <!-- Champ: commentaire_technicien -->
+            <label for="commentaire_technicien">Commentaire technicien :</label><br>
+            <textarea id="commentaire_technicien" name="commentaire_technicien" rows="4" cols="50"></textarea><br><br>
+
+            <input type="submit" value="Valider l'intervention">
+        </fieldset>
+    </form>
+
+    <hr>
+
+    <h2>Liste des Interventions en cours</h2>
+    <table border="1" cellpadding="10">
+        <tr>
+            <th>ID Intervention</th>
+            <th>Type</th>
+            <th>Équipe</th>
+            <th>Date Planification</th>
+            <th>Statut</th>
+        </tr>
+        <tr>
+            <td>1 (Auto)</td>
+            <td>Éclairage</td>
+            <td>Équipe Nord</td>
+            <td>2026-04-08</td>
+            <td>En cours</td>
+        </tr>
+    </table>
+
+</body>
+</html>
