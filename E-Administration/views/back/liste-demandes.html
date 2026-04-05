@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <title>Liste des Demandes - CivicPlus</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="container mt-4">
+  <h2 class="mb-4">📋 Liste des Demandes de Documents</h2>
+
+  
+  <div class="row g-3 mb-4">
+    <div class="col-md-3">
+      <select class="form-select" id="filterStatut">
+        <option value="">Tous les statuts</option>
+        <option value="en_attente">En attente</option>
+        <option value="acceptee">Acceptée</option>
+        <option value="rejetee">Rejetée</option>
+        <option value="traitee">Traitée</option>
+      </select>
+    </div>
+    
+    <div class="col-md-3">
+      <select class="form-select" id="filterType">
+        <option value="">Tous les types</option>
+        <?php foreach($types as $t): ?>
+          <option value="<?= $t['ID_type'] ?>"><?= htmlspecialchars($t['Libelle']) ?></option>
+        <?php endforeach; ?>
+      </select>
+    </div>
+    <div class="col-md-2">
+      <input type="date" class="form-control" id="filterDate">
+    </div>
+    <div class="col-md-2">
+      <button class="btn btn-primary w-100">Filtrer</button>
+    </div>
+  </div>
+
+  <div class="table-responsive">
+    <table class="table table-hover align-middle">
+      <thead class="table-dark">
+        <tr>
+          <th>ID</th>
+          <th>CIN</th>
+          <th>Type Document</th>
+          <th>Date Demande</th>
+          <th>Statut</th>
+          <th>Fichier</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <?php foreach($demandes as $d): ?>
+        <tr>
+          <td>#<?= $d['ID_demande'] ?></td>
+          <td><?= htmlspecialchars($d['num_cin']) ?></td>
+          <td><?= htmlspecialchars($d['libelle_type']) ?></td>
+          <td><?= date('d/m/Y', strtotime($d['date_demande'])) ?></td>
+          <td>
+            <span class="badge bg-<?= $d['statut']=='acceptee'?'success':($d['statut']=='rejetee'?'danger':'warning') ?>">
+              <?= ucfirst(str_replace('_',' ',$d['statut'])) ?>
+            </span>
+          </td>
+          <td>
+            <?php if($d['fichier_joint']): ?>
+              <a href="../uploads/<?= $d['fichier_joint'] ?>" target="_blank" class="btn btn-sm btn-outline-primary">📎</a>
+            <?php else: ?>
+              <span class="text-muted">-</span>
+            <?php endif; ?>
+          </td>
+          <td>
+            <a href="traiter-demande.php?id=<?= $d['ID_demande'] ?>" class="btn btn-primary btn-sm">Traiter</a>
+            <a href="historique-demande.php?id=<?= $d['ID_demande'] ?>" class="btn btn-secondary btn-sm">📜</a>
+          </td>
+        </tr>
+        <?php endforeach; ?>
+      </tbody>
+    </table>
+  </div>
+
+  
+  <nav>
+    <ul class="pagination justify-content-center">
+      <li class="page-item disabled"><a class="page-link" href="#">Précédent</a></li>
+      <li class="page-item active"><a class="page-link" href="#">1</a></li>
+      <li class="page-item"><a class="page-link" href="#">2</a></li>
+      <li class="page-item"><a class="page-link" href="#">Suivant</a></li>
+    </ul>
+  </nav>
+</div>
+</body>
+</html>
