@@ -71,7 +71,7 @@ Les personnes suivantes ont contribué à ce projet en ajoutant des fonctionnali
 
 [Ahmed Marzougui](https://github.com/B07mid) - Module Geo-Services.
 
-[Malek Nahal](https://github.com/maleknahal) - Module Support & Assistance.
+[Malek Nahal](https://github.com/maleknahal) - Module Support & Authentification.
 
 Si vous souhaitez contribuer, suivez les étapes ci-dessous pour faire un **fork**, créer une nouvelle branche et soumettre une **pull request**.
 
