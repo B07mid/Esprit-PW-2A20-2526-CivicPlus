@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Demander un trajet Smart City</title>
+</head>
+<body>
+
+    <h1>Rechercher un itinéraire (Mode Brut)</h1>
+
+    <form action="/controllers/ItineraireController.php?action=calculer" method="POST">
+        
+        <label for="lat_depart_pointeur">Latitude de départ (Pin) :</label><br>
+        <input type="text" id="lat_depart_pointeur" name="lat_depart_pointeur" readonly required><br><br>
+
+        <label for="lng_depart_pointeur">Longitude de départ (Pin) :</label><br>
+        <input type="text" id="lng_depart_pointeur" name="lng_depart_pointeur" readonly required><br><br>
+
+        <label for="place_id_destination">Destination (ID Google) :</label><br>
+        <input type="text" id="place_id_destination" name="place_id_destination" required><br><br>
+
+        <label for="critere_ia">Critère de routage (Choix IA) :</label><br>
+        <select id="critere_ia" name="critere_ia">
+            <option value="Plus Rapide">Chemin le plus rapide</option>
+            <option value="Sécurisé">Trajet sécurisé (Bien éclairé)</option>
+            <option value="Accessible PMR">Accessible PMR (Sans obstacles)</option>
+        </select><br><br>
+
+        <label for="moyen_transport">Moyen de transport :</label><br>
+        <select id="moyen_transport" name="moyen_transport">
+            <option value="Voiture">Voiture</option>
+            <option value="Transport_Commun">Transport en commun</option>
+            <option value="Marche">Marche à pied</option>
+        </select><br><br>
+
+        <button type="submit">Demander le trajet IA</button>
+
+    </form>
+
+</body>
+</html>

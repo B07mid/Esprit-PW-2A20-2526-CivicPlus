@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Saisir un relevé d'affluence</title>
+</head>
+<body>
+
+    <h1>Enregistrer un historique d'affluence</h1>
+
+    <form action="/controllers/AffluenceController.php?action=ajouter" method="POST">
+        
+        <label for="id_poi">Sélectionner le Point d'Intérêt :</label><br>
+        <select id="id_poi" name="id_poi" required>
+            <option value="1">Mairie Centrale</option>
+            <option value="2">Hôpital Régional</option>
+        </select><br><br>
+
+        <label for="jour_semaine">Jour de la semaine :</label><br>
+        <select id="jour_semaine" name="jour_semaine">
+            <option value="1">Lundi</option>
+            <option value="2">Mardi</option>
+            <option value="3">Mercredi</option>
+            <option value="4">Jeudi</option>
+            <option value="5">Vendredi</option>
+            <option value="6">Samedi</option>
+            <option value="7">Dimanche</option>
+        </select><br><br>
+
+        <label for="heure_mesure">Heure de la mesure :</label><br>
+        <input type="time" id="heure_mesure" name="heure_mesure" required><br><br>
+
+        <label for="niveau_foule_observe">Niveau de foule observé (Score de 1 à 100) :</label><br>
+        <input type="number" id="niveau_foule_observe" name="niveau_foule_observe" min="1" max="100" required><br><br>
+
+        <button type="submit">Sauvegarder le relevé</button>
+
+    </form>
+</html>
