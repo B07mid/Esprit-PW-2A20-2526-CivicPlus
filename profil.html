@@ -1,0 +1,501 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mon Profil - Civic Plus</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    .chat-bubble {
+  position: fixed;
+  bottom: 24px;
+  right: 24px;
+  width: 64px;
+  height: 64px;
+  background: linear-gradient(135deg, #F08A4B, #f5a06c);
+  color: white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 26px;
+  cursor: pointer;
+  box-shadow: 0 12px 28px rgba(240, 138, 75, 0.35);
+  z-index: 9999;
+  transition: 0.3s;
+}
+
+.chat-bubble:hover {
+  transform: scale(1.08);
+}
+
+.chatbot-container {
+  position: fixed;
+  bottom: 100px;
+  right: 24px;
+  width: 340px;
+  max-width: calc(100% - 30px);
+  background: #ffffff;
+  border-radius: 22px;
+  box-shadow: 0 18px 45px rgba(22, 40, 102, 0.18);
+  overflow: hidden;
+  display: none;
+  flex-direction: column;
+  z-index: 9999;
+  animation: fadeUp 0.3s ease;
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px) scale(0.96);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.chatbot-header {
+  background: linear-gradient(135deg, #162866, #243B8F);
+  color: white;
+  padding: 14px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.chatbot-title {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.chatbot-title h5 {
+  margin: 0;
+  font-size: 16px;
+  font-weight: 700;
+}
+
+.chatbot-title small {
+  opacity: 0.85;
+  font-size: 12px;
+}
+
+.chatbot-avatar {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  background: rgba(255,255,255,0.18);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+}
+
+.chat-close {
+  background: transparent;
+  border: none;
+  color: white;
+  font-size: 18px;
+  cursor: pointer;
+}
+
+.chatbot-body {
+  height: 300px;
+  overflow-y: auto;
+  padding: 14px;
+  background: #f8faff;
+}
+
+.message {
+  max-width: 80%;
+  padding: 10px 14px;
+  border-radius: 16px;
+  margin-bottom: 10px;
+  line-height: 1.5;
+  font-size: 14px;
+  word-wrap: break-word;
+}
+
+.message.bot {
+  background: #e9eefb;
+  color: #1E2A4A;
+  border-bottom-left-radius: 4px;
+}
+
+.message.user {
+  background: #F08A4B;
+  color: white;
+  margin-left: auto;
+  border-bottom-right-radius: 4px;
+}
+
+.chatbot-footer {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 12px;
+  background: white;
+  border-top: 1px solid #edf1f7;
+}
+
+.chatbot-footer input {
+  flex: 1;
+  border: 1px solid #dbe3f2;
+  border-radius: 12px;
+  padding: 11px 12px;
+  font-size: 14px;
+  outline: none;
+}
+
+.chatbot-footer input:focus {
+  border-color: #243B8F;
+  box-shadow: 0 0 0 3px rgba(36, 59, 143, 0.08);
+}
+
+.chatbot-footer button {
+  background: #F08A4B;
+  color: white;
+  border: none;
+  border-radius: 12px;
+  padding: 11px 14px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.chatbot-footer button:hover {
+  background: #e57b39;
+}
+    :root {
+      --fondation: #162866;
+      --confiance: #243B8F;
+      --confort: #A9B5D1;
+      --action: #F08A4B;
+      --clarte: #E7DFD8;
+      --bg-light: #F4F6FB;
+      --text-dark: #1E2A4A;
+      --white: #ffffff;
+    }
+
+    body {
+      margin: 0;
+      font-family: 'Poppins', sans-serif;
+      background: linear-gradient(135deg, var(--bg-light), #eef2fb);
+      color: var(--text-dark);
+    }
+
+    .navbar-custom {
+      background: var(--white);
+      box-shadow: 0 4px 18px rgba(0, 0, 0, 0.06);
+      padding: 14px 0;
+    }
+
+    .navbar-brand {
+      font-weight: 700;
+      font-size: 28px;
+      color: var(--fondation) !important;
+    }
+
+    .nav-link {
+      color: var(--fondation) !important;
+      font-weight: 500;
+      margin-left: 12px;
+    }
+
+    .nav-link:hover {
+      color: var(--action) !important;
+    }
+
+    .page-section {
+      min-height: 100vh;
+      padding: 120px 0 50px;
+    }
+
+    .profile-card {
+      border: none;
+      border-radius: 26px;
+      overflow: hidden;
+      box-shadow: 0 15px 40px rgba(22, 40, 102, 0.12);
+      background: var(--white);
+    }
+
+    .profile-header {
+      background: linear-gradient(160deg, var(--fondation), var(--confiance));
+      color: var(--white);
+      padding: 40px 30px;
+      text-align: center;
+    }
+
+    .profile-header h2,
+    .profile-header p {
+      color: var(--white);
+      margin: 0;
+    }
+
+    .profile-header h2 {
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+
+    .profile-header p {
+      opacity: 0.95;
+    }
+
+    .profile-body {
+      padding: 40px 35px;
+    }
+
+    .form-label {
+      font-weight: 600;
+      color: var(--fondation);
+      margin-bottom: 8px;
+    }
+
+    .form-control {
+      border-radius: 14px;
+      border: 1px solid #d9dfef;
+      padding: 12px 14px;
+      box-shadow: none;
+    }
+
+    .form-control:focus {
+      border-color: var(--confiance);
+      box-shadow: 0 0 0 0.2rem rgba(36, 59, 143, 0.12);
+    }
+
+    .btn-main {
+      background: var(--action);
+      border: none;
+      color: var(--white);
+      border-radius: 14px;
+      padding: 13px;
+      font-weight: 600;
+      transition: 0.3s;
+    }
+
+    .btn-main:hover {
+      background: #e57b39;
+      color: var(--white);
+      transform: translateY(-1px);
+    }
+
+    .info-box {
+      background: #f8faff;
+      border: 1px solid #e2e8f5;
+      border-radius: 18px;
+      padding: 18px;
+      margin-bottom: 25px;
+    }
+
+    .info-box h5 {
+      color: var(--fondation);
+      font-weight: 700;
+      margin-bottom: 6px;
+    }
+
+    .info-box p {
+      margin: 0;
+      color: #65708d;
+      font-size: 14px;
+    }
+
+    .chat-bubble {
+      position: fixed;
+      bottom: 24px;
+      right: 24px;
+      width: 62px;
+      height: 62px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--action), #f39a62);
+      color: var(--white);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 26px;
+      box-shadow: 0 10px 24px rgba(240, 138, 75, 0.35);
+      cursor: pointer;
+    }
+
+    @media (max-width: 768px) {
+      .profile-body {
+        padding: 28px 22px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="navbar navbar-expand-lg navbar-custom fixed-top">
+    <div class="container">
+      <a class="navbar-brand d-flex align-items-center" href="index.html">
+  <img src="../../assets/images/logo.png" alt="Civic Plus" style="height:40px; margin-right:10px;">
+  <span style="font-weight:700; color:#162866;">Civic<span style="color:#F08A4B;">Plus</span></span>
+</a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navMenu">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navMenu">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item"><a class="nav-link" href="index.html">Accueil</a></li>
+          <li class="nav-item"><a class="nav-link" href="inscription.html">Inscription</a></li>
+          <li class="nav-item"><a class="nav-link" href="connexion.html">Connexion</a></li>
+          <li class="nav-item"><a class="nav-link" href="profil.html">Profil</a></li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+
+  <section class="page-section">
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-lg-10 col-xl-8">
+          <div class="card profile-card">
+            
+            <div class="profile-header">
+              <h2>Mon Profil</h2>
+              <p>Gérez vos informations personnelles en toute simplicité</p>
+            </div>
+
+            <div class="profile-body">
+              <div class="info-box">
+                <h5>Espace citoyen</h5>
+                <p>Vous pouvez modifier votre nom, votre ville, votre quartier et mettre à jour votre mot de passe.</p>
+              </div>
+
+              <form>
+                <div class="mb-3">
+                  <label class="form-label">Numéro CIN</label>
+                  <input type="text" class="form-control" value="12345678" readonly>
+                </div>
+
+                <div class="mb-3">
+                  <label class="form-label">Nom complet</label>
+                  <input type="text" class="form-control" value="Ali Ben Salah">
+                </div>
+
+                <div class="row">
+                  <div class="col-md-6 mb-3">
+                    <label class="form-label">Ville</label>
+                    <input type="text" class="form-control" value="Tunis">
+                  </div>
+
+                  <div class="col-md-6 mb-3">
+                    <label class="form-label">Quartier</label>
+                    <input type="text" class="form-control" value="El Menzah">
+                  </div>
+                </div>
+
+                <div class="mb-3">
+                  <label class="form-label">Adresse email</label>
+                  <input type="email" class="form-control" value="ali@email.com">
+                </div>
+
+                <div class="mb-4">
+                  <label class="form-label">Mot de passe</label>
+                  <input type="password" class="form-control" value="123456">
+                </div>
+
+                <button type="submit" class="btn btn-main w-100">Mettre à jour le profil</button>
+              </form>
+            </div>
+
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <div class="chat-bubble" onclick="toggleChat()">
+  💬
+</div>
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+  <!-- CHATBOT PRO -->
+<div id="chatbot-container" class="chatbot-container">
+  <div class="chatbot-header">
+    <div class="chatbot-title">
+      <div class="chatbot-avatar">🤖</div>
+      <div>
+        <h5>CivicBot</h5>
+        <small>Assistant intelligent</small>
+      </div>
+    </div>
+    <button class="chat-close" onclick="toggleChat()">✕</button>
+  </div>
+
+  <div class="chatbot-body" id="chatbot-body">
+    <div class="message bot">
+      Bonjour 👋<br>
+      Je suis CivicBot. Comment puis-je vous aider ?
+    </div>
+  </div>
+
+  <div class="chatbot-footer">
+    <input type="text" id="chat-input" placeholder="Écrivez votre message..." onkeypress="handleKey(event)">
+    <button onclick="sendMessage()">Envoyer</button>
+  </div>
+</div>
+<script>
+function toggleChat() {
+  const chat = document.getElementById("chatbot-container");
+  if (chat.style.display === "flex") {
+    chat.style.display = "none";
+  } else {
+    chat.style.display = "flex";
+  }
+}
+
+function handleKey(event) {
+  if (event.key === "Enter") {
+    sendMessage();
+  }
+}
+
+function addMessage(text, sender) {
+  const chatBody = document.getElementById("chatbot-body");
+  const msg = document.createElement("div");
+  msg.className = "message " + sender;
+  msg.innerHTML = text;
+  chatBody.appendChild(msg);
+  chatBody.scrollTop = chatBody.scrollHeight;
+}
+
+function sendMessage() {
+  const input = document.getElementById("chat-input");
+  const text = input.value.trim();
+
+  if (text === "") return;
+
+  addMessage(text, "user");
+  input.value = "";
+
+  const lower = text.toLowerCase();
+  let response = "Je comprends votre demande. Pouvez-vous préciser un peu plus ?";
+
+  if (lower.includes("inscription") || lower.includes("inscrire")) {
+    response = "Pour créer un compte, cliquez sur la page <b>Inscription</b> dans le menu en haut.";
+  } else if (lower.includes("connexion") || lower.includes("connecter")) {
+    response = "Pour accéder à votre espace, cliquez sur <b>Connexion</b> et entrez votre email et votre mot de passe.";
+  } else if (lower.includes("profil")) {
+    response = "La page <b>Profil</b> vous permet de modifier vos informations personnelles.";
+  } else if (lower.includes("mot de passe")) {
+    response = "Vous pouvez mettre à jour votre mot de passe depuis votre page <b>Profil</b>.";
+  } else if (lower.includes("bonjour") || lower.includes("salut")) {
+    response = "Bonjour 😊 Je suis là pour vous aider sur Civic Plus.";
+  } else if (lower.includes("service") || lower.includes("module")) {
+    response = "Notre plateforme propose plusieurs modules : e-administration, smart transport, crowdfunding et support IA.";
+  } else if (lower.includes("aide") || lower.includes("help")) {
+    response = "Je peux vous aider pour l’inscription, la connexion, le profil et l’orientation dans les services.";
+  }
+
+  setTimeout(() => {
+    addMessage(response, "bot");
+  }, 500);
+}
+</script>
+</body>
+</html>
