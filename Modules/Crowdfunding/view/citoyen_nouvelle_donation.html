@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Faire une Donation – CivicPlus</title>
+  <link rel="icon" type="image/png" href="../../../assets/img/RawShape.png" />
+
+  <link href="https://fonts.googleapis.com" rel="preconnect" />
+  <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900&family=Raleway:ital,wght@0,100;0,300;0,400;0,500;0,600;0,700;0,800;0,900&family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700&display=swap" rel="stylesheet" />
+
+  <link href="../../../assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="../../../assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet" />
+  <link href="../../../assets/vendor/aos/aos.css" rel="stylesheet" />
+  <link href="../../../assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet" />
+  <link href="../../../assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet" />
+  <link href="../../../assets/css/main.css" rel="stylesheet" />
+</head>
+
+<body class="index-page">
+
+  <header id="header" class="header d-flex align-items-center sticky-top">
+    <div class="container-fluid container-xl position-relative d-flex align-items-center">
+      <a href="../../../index.html" class="logo d-flex align-items-center me-auto">
+        <img src="../../../assets/img/logo.png" alt="CivicPlus Logo" />
+        <h1 class="sitename">CivicPlus</h1>
+      </a>
+      <nav id="navmenu" class="navmenu">
+        <ul>
+          <li><a href="../../../index.html#hero">Home</a></li>
+          <li><a href="../../../index.html#about">Concept</a></li>
+          <li><a href="../../../index.html#services" class="active">Services</a></li>
+          <li><a href="../../../index.html#team">Team</a></li>
+          <li><a href="../../../index.html#contact">Contact</a></li>
+        </ul>
+        <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
+      </nav>
+      <a class="btn-getstarted" href="../../../crowdfunding.php">Crowdfunding</a>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="section contact">
+      <div class="container">
+        <div class="section-title">
+          <span>Crowdfunding</span>
+          <h2>Faire une donation</h2>
+          <p>Soutenez un projet communautaire dans votre quartier en effectuant une donation sécurisée.</p>
+        </div>
+
+        <div class="row justify-content-center">
+          <div class="col-12 col-xl-7">
+            <div class="card rounded-4 shadow-lg border-0 overflow-hidden">
+              <div class="card-body p-4 p-lg-5">
+                <div class="mb-4">
+                  <h2 class="h4 mb-1">Formulaire de Donation</h2>
+                  <p class="text-muted mb-0">Renseignez les détails de votre donation ci-dessous.</p>
+                </div>
+
+                <div id="alertBox"></div>
+
+                <form action="../controller/DonationController.php" method="POST"
+                      id="formDonation" class="php-email-form"
+                      style="background-color:#f8f9fa; border-radius:10px; padding:1.5rem;">
+                  <div class="row gy-3">
+
+                    <div class="col-md-12">
+                      <label for="num_cin" class="form-label fw-bold">Numéro CIN <span class="text-danger">*</span></label>
+                      <input type="number" class="form-control" name="num_cin" id="num_cin"
+                             placeholder="Ex: 12345678" required
+                             style="color:#112f8d; background-color:#ffffff; font-weight:500;">
+                    </div>
+
+                    <div class="col-md-12">
+                      <label for="id_projet" class="form-label fw-bold">ID du Projet <span class="text-danger">*</span></label>
+                      <input type="number" class="form-control" name="id_projet" id="id_projet"
+                             min="1" placeholder="Ex: 7" required
+                             style="color:#112f8d; background-color:#ffffff; font-weight:500;">
+                      <div class="form-text">Consultez la <a href="liste_projets.html">liste des projets</a> pour trouver l'ID.</div>
+                    </div>
+
+                    <div class="col-md-6">
+                      <label for="montant" class="form-label fw-bold">Montant ($) <span class="text-danger">*</span></label>
+                      <input type="number" class="form-control" name="montant" id="montant"
+                             min="0.01" step="any" placeholder="Ex: 100.00" required
+                             style="color:#112f8d; background-color:#ffffff; font-weight:500;">
+                    </div>
+
+                    <div class="col-md-6">
+                      <label for="statut_paiement" class="form-label fw-bold">Statut de paiement <span class="text-danger">*</span></label>
+                      <select class="form-select" name="statut_paiement" id="statut_paiement" required
+                              style="color:#112f8d; background-color:#ffffff; font-weight:500;">
+                        <option value="" disabled selected>— Choisir un statut —</option>
+                        <option value="en_attente">En attente</option>
+                        <option value="confirmé">Confirmé</option>
+                        <option value="annulé">Annulé</option>
+                      </select>
+                    </div>
+
+                    <div class="col-md-12">
+                      <label for="reference_transaction" class="form-label fw-bold">Référence de transaction</label>
+                      <input type="text" class="form-control" name="reference_transaction" id="reference_transaction"
+                             maxlength="100" placeholder="Ex: TXN-20260412-001"
+                             style="color:#112f8d; background-color:#ffffff; font-weight:500;">
+                    </div>
+
+                  </div>
+
+                  <div class="text-end mt-4">
+                    <button type="button" class="btn btn-secondary rounded-pill px-4 me-2"
+                            onclick="history.back()">Annuler</button>
+                    <button type="submit" class="btn-getstarted rounded-pill px-4">Confirmer la donation</button>
+                  </div>
+                </form>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script src="../../../assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="../../../assets/vendor/aos/aos.js"></script>
+  <script src="../../../assets/vendor/glightbox/js/glightbox.min.js"></script>
+  <script src="../../../assets/vendor/swiper/swiper-bundle.min.js"></script>
+  <script src="../../../assets/js/main.js"></script>
+  <script src="js/citoyen_donation.js"></script>
+
+</body>
+</html>
