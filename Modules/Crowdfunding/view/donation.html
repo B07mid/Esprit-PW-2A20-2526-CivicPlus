@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <title>Donations - CivicPlus</title>
+</head>
+
+<body>
+
+  <main>
+
+    <!-- Page Title -->
+    <div>
+      <h1>Donations</h1>
+      <nav>
+        <ol>
+          <li><a href="index.php">Home</a></li>
+          <li>Donations</li>
+        </ol>
+      </nav>
+    </div>
+
+    <!-- Navigation links -->
+    <p><a href="index.php?entity=donation&amp;action=add">+ Add a new donation</a></p>
+    <p><a href="index.php?entity=donation&amp;action=list">View all donations</a></p>
+
+    <!-- ADD A DONATION FORM -->
+    <section id="add-donation">
+      <h2>Add a Donation</h2>
+      <p>Fill in the details below to register a new donation.</p>
+
+      <form method="post" action="index.php?entity=donation&amp;action=add" id="donationForm" novalidate>
+
+        <label for="num_cin">CIN Number *</label><br>
+        <input type="number" id="num_cin" name="num_cin" min="1" placeholder="e.g. 12345678"><br><br>
+
+        <label for="id_projet">Project ID *</label><br>
+        <input type="number" id="id_projet" name="id_projet" min="1" placeholder="e.g. 1"><br><br>
+
+        <label for="montant">Amount ($) *</label><br>
+        <input type="number" id="montant" name="montant" min="0.01" step="any"
+               placeholder="e.g. 100.00"><br><br>
+
+        <label for="reference_transaction">Transaction Reference</label><br>
+        <input type="text" id="reference_transaction" name="reference_transaction" maxlength="100"
+               placeholder="e.g. TXN-20260412-001"><br><br>
+
+        <label for="statut_paiement">Payment Status *</label><br>
+        <select id="statut_paiement" name="statut_paiement">
+          <option value="" disabled selected>— Select a status —</option>
+          <option value="en_attente">Pending</option>
+          <option value="confirmé">Confirmed</option>
+          <option value="annulé">Cancelled</option>
+        </select><br><br>
+
+        <button type="reset">Clear</button>
+        <button type="submit">Add Donation</button>
+
+      </form>
+    </section>
+
+    <!-- DONATIONS TABLE (static preview) -->
+    <section id="donations-list">
+      <h2>All Donations</h2>
+      <p>The live list is rendered by the PHP controller at
+         <a href="index.php?entity=donation&amp;action=list">index.php?entity=donation&amp;action=list</a>.</p>
+
+      <table border="1" cellpadding="8" cellspacing="0">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>CIN</th>
+            <th>Project ID</th>
+            <th>Amount ($)</th>
+            <th>Reference</th>
+            <th>Payment Status</th>
+            <th>Date</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td colspan="8" style="text-align:center;">No data — use the PHP-driven list page for live records.</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+  </main>
+
+  <footer>
+    <p>© CivicPlus. All Rights Reserved.</p>
+  </footer>
+
+</body>
+</html>
