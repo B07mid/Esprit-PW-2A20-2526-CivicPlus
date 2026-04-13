@@ -1,0 +1,836 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <title>Itinéraire Transport - Smart Transport | CivicPlus</title>
+  <meta name="description" content="Planifiez votre itinéraire Smart Transport avec CivicPlus.">
+  <meta name="keywords" content="itinéraire, métro, civicplus, smart transport, tunis">
+
+  <link href="../../../../assets/img/RawShape.png" rel="icon">
+  <link href="../../../../assets/img/RawShape.png" rel="apple-touch-icon">
+
+  <link href="https://fonts.googleapis.com" rel="preconnect">
+  <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Raleway:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap" rel="stylesheet">
+
+  <link href="../../../../assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="../../../../assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="../../../../assets/vendor/aos/aos.css" rel="stylesheet">
+  <link href="../../../../assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+  <link href="../../../../assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+  <link href="../../../../assets/css/main.css" rel="stylesheet">
+
+  <style>
+    .itinerary-hero {
+      padding: 85px 0 35px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .itinerary-hero::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(circle at top left, color-mix(in srgb, var(--accent-color), white 88%) 0%, transparent 28%),
+        radial-gradient(circle at bottom right, color-mix(in srgb, var(--accent-color), white 93%) 0%, transparent 24%);
+      pointer-events: none;
+    }
+
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 15px;
+      border-radius: 999px;
+      background: color-mix(in srgb, var(--accent-color), white 90%);
+      color: var(--accent-color);
+      font-weight: 700;
+      margin-bottom: 16px;
+    }
+
+    .itinerary-hero h1 {
+      font-size: 46px;
+      line-height: 1.14;
+      margin-bottom: 16px;
+    }
+
+    .itinerary-hero p.lead {
+      color: color-mix(in srgb, var(--default-color), transparent 18%);
+      font-size: 18px;
+      max-width: 760px;
+      margin-bottom: 0;
+    }
+
+    .planner-section {
+      padding-top: 20px;
+      padding-bottom: 70px;
+    }
+
+    .planner-card,
+    .planner-side-card,
+    .result-card {
+      background: var(--surface-color);
+      border-radius: 28px;
+      border: 1px solid color-mix(in srgb, var(--default-color), transparent 92%);
+      box-shadow: 0 18px 50px rgba(0, 0, 0, 0.08);
+    }
+
+    .planner-card,
+    .planner-side-card,
+    .result-card {
+      padding: 32px;
+    }
+
+    .planner-title {
+      font-size: 30px;
+      margin-bottom: 10px;
+    }
+
+    .planner-subtitle {
+      color: color-mix(in srgb, var(--default-color), transparent 20%);
+      margin-bottom: 26px;
+    }
+
+    .planner-intro {
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      gap: 14px;
+      margin-bottom: 24px;
+    }
+
+    .mini-stop {
+      border-radius: 20px;
+      background: color-mix(in srgb, var(--accent-color), white 95%);
+      border: 1px solid color-mix(in srgb, var(--accent-color), transparent 82%);
+      padding: 18px;
+    }
+
+    .mini-stop strong {
+      display: block;
+      color: var(--heading-color);
+      margin-bottom: 6px;
+      font-size: 16px;
+    }
+
+    .mini-stop span {
+      color: color-mix(in srgb, var(--default-color), transparent 20%);
+      font-size: 14px;
+    }
+
+    .swap-icon-box {
+      width: 54px;
+      height: 54px;
+      border-radius: 18px;
+      background: var(--accent-color);
+      color: #fff;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+      align-self: center;
+      box-shadow: 0 12px 24px rgba(16, 188, 105, 0.22);
+    }
+
+    .form-label {
+      font-weight: 700;
+      color: var(--heading-color);
+      margin-bottom: 8px;
+    }
+
+    .form-select,
+    .form-control {
+      border-radius: 16px;
+      min-height: 54px;
+      padding: 12px 16px;
+      border-color: color-mix(in srgb, var(--default-color), transparent 82%);
+      box-shadow: none;
+    }
+
+    .form-select:focus,
+    .form-control:focus {
+      border-color: var(--accent-color);
+      box-shadow: 0 0 0 0.18rem color-mix(in srgb, var(--accent-color), transparent 82%);
+    }
+
+    .city-pill-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 10px;
+    }
+
+    .city-pill {
+      padding: 8px 14px;
+      border-radius: 999px;
+      background: #fff;
+      border: 1px solid color-mix(in srgb, var(--default-color), transparent 88%);
+      color: var(--heading-color);
+      font-size: 14px;
+      font-weight: 500;
+    }
+
+    .planner-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 24px;
+    }
+
+    .btn-pill {
+      border-radius: 999px;
+      padding: 12px 22px;
+      font-weight: 600;
+    }
+
+    .btn-main {
+      background: var(--accent-color);
+      border: 0;
+      color: var(--contrast-color);
+      box-shadow: 0 12px 28px rgba(16, 188, 105, 0.24);
+    }
+
+    .btn-main:hover {
+      background: color-mix(in srgb, var(--accent-color), black 8%);
+      color: var(--contrast-color);
+    }
+
+    .btn-soft {
+      background: color-mix(in srgb, var(--accent-color), white 92%);
+      color: var(--accent-color);
+      border: 1px solid color-mix(in srgb, var(--accent-color), transparent 70%);
+    }
+
+    .btn-soft:hover {
+      color: var(--accent-color);
+      background: color-mix(in srgb, var(--accent-color), white 86%);
+    }
+
+    .map-preview {
+      overflow: hidden;
+      border-radius: 22px;
+      border: 1px solid color-mix(in srgb, var(--default-color), transparent 90%);
+      background: #f8fbff;
+      margin-bottom: 22px;
+    }
+
+    .map-preview img {
+      width: 100%;
+      display: block;
+    }
+
+    .side-icon {
+      width: 58px;
+      height: 58px;
+      border-radius: 18px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: color-mix(in srgb, var(--accent-color), white 88%);
+      color: var(--accent-color);
+      font-size: 26px;
+      margin-bottom: 18px;
+    }
+
+    .info-list {
+      list-style: none;
+      padding: 0;
+      margin: 22px 0 0;
+      display: grid;
+      gap: 14px;
+    }
+
+    .info-list li {
+      display: flex;
+      gap: 12px;
+      align-items: flex-start;
+      padding: 14px 0;
+      border-bottom: 1px dashed color-mix(in srgb, var(--default-color), transparent 88%);
+    }
+
+    .info-list li:last-child {
+      border-bottom: 0;
+      padding-bottom: 0;
+    }
+
+    .info-list i {
+      color: var(--accent-color);
+      font-size: 18px;
+      margin-top: 2px;
+    }
+
+    .result-card {
+      margin-top: 24px;
+      display: none;
+    }
+
+    .result-card.show {
+      display: block;
+    }
+
+    .result-header {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 12px;
+      align-items: center;
+      margin-bottom: 22px;
+    }
+
+    .result-route-tag {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 14px;
+      border-radius: 999px;
+      background: color-mix(in srgb, var(--accent-color), white 90%);
+      color: var(--accent-color);
+      font-weight: 700;
+    }
+
+    .result-grid {
+      display: grid;
+      gap: 16px;
+    }
+
+    .result-item {
+      display: flex;
+      gap: 16px;
+      align-items: flex-start;
+      padding: 18px;
+      border-radius: 20px;
+      background: color-mix(in srgb, var(--accent-color), white 96%);
+      border: 1px solid color-mix(in srgb, var(--accent-color), transparent 82%);
+    }
+
+    .result-icon {
+      width: 54px;
+      height: 54px;
+      border-radius: 18px;
+      background: #fff;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--accent-color);
+      font-size: 24px;
+      flex-shrink: 0;
+      box-shadow: 0 8px 18px rgba(0, 0, 0, 0.05);
+    }
+
+    .result-item h4 {
+      margin-bottom: 6px;
+      font-size: 19px;
+    }
+
+    .result-item p {
+      margin-bottom: 0;
+      color: color-mix(in srgb, var(--default-color), transparent 20%);
+    }
+
+    .stats-row {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+      margin-top: 24px;
+    }
+
+    .mini-stat {
+      border-radius: 18px;
+      background: #fff;
+      border: 1px solid color-mix(in srgb, var(--default-color), transparent 90%);
+      padding: 18px 16px;
+      text-align: center;
+    }
+
+    .mini-stat strong {
+      display: block;
+      font-size: 24px;
+      color: var(--accent-color);
+      margin-bottom: 4px;
+    }
+
+    .mini-stat span {
+      font-size: 14px;
+      color: var(--heading-color);
+      font-weight: 600;
+    }
+
+    .quick-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 22px;
+    }
+
+    .quick-links a {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 10px 14px;
+      border-radius: 999px;
+      background: #fff;
+      border: 1px solid color-mix(in srgb, var(--default-color), transparent 88%);
+      color: var(--heading-color);
+      font-weight: 500;
+    }
+
+    .quick-links a:hover {
+      color: var(--accent-color);
+      border-color: color-mix(in srgb, var(--accent-color), transparent 65%);
+    }
+
+    .helper-note {
+      margin-top: 22px;
+      padding: 18px;
+      border-radius: 18px;
+      background: color-mix(in srgb, var(--accent-color), white 94%);
+      color: var(--heading-color);
+    }
+
+    .empty-state {
+      color: color-mix(in srgb, var(--default-color), transparent 18%);
+      font-size: 15px;
+      margin-top: 18px;
+    }
+
+    @media (max-width: 991px) {
+      .itinerary-hero h1 {
+        font-size: 34px;
+      }
+
+      .planner-card,
+      .planner-side-card,
+      .result-card {
+        padding: 24px;
+      }
+
+      .stats-row,
+      .planner-intro {
+        grid-template-columns: 1fr;
+      }
+
+      .swap-icon-box {
+        justify-self: start;
+      }
+    }
+
+    @media (max-width: 575px) {
+      .itinerary-hero {
+        padding-top: 60px;
+      }
+
+      .itinerary-hero h1 {
+        font-size: 28px;
+      }
+
+      .planner-actions .btn {
+        width: 100%;
+      }
+    }
+  </style>
+</head>
+
+<body class="index-page">
+
+  <header id="header" class="header d-flex align-items-center sticky-top">
+    <div class="container-fluid container-xl position-relative d-flex align-items-center">
+      <a href="../../../../index.html" class="logo d-flex align-items-center me-auto">
+        <img src="../../../../assets/img/logo.png" alt="CivicPlus Logo">
+        <h1 class="sitename">CivicPlus</h1>
+      </a>
+
+      <nav id="navmenu" class="navmenu">
+        <ul>
+          <li><a href="../../../../index.html#hero">Home</a></li>
+          <li><a href="../../../../index.html#about">Concept</a></li>
+          <li><a href="../../../../index.html#services" class="active">Services</a></li>
+          <li><a href="../../../../index.html#team">Team</a></li>
+          <li id="admin-link" style="display:none;"><a href="../../../../admin.html">Admin Panel</a></li>
+          <li><a href="../../../../index.html#contact">Contact</a></li>
+        </ul>
+        <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
+      </nav>
+
+      <a class="btn-getstarted" href="transport.html">Retour Transport</a>
+    </div>
+  </header>
+
+  <main class="main">
+
+    <section class="itinerary-hero section">
+      <div class="container position-relative">
+        <div class="row gy-4 align-items-center">
+          <div class="col-lg-9" data-aos="fade-up">
+            <div class="hero-badge">
+              <i class="bi bi-signpost-split"></i>
+              Planificateur d’itinéraire
+            </div>
+            <h1>Construisez votre trajet entre les principales stations du réseau métro.</h1>
+            <p class="lead">
+              Choisissez votre point de départ et votre destination, puis laissez Smart Transport
+              afficher une estimation rapide du meilleur trajet disponible. Pour l’instant,
+              les résultats sont simulés afin de préparer l’intégration de l’algorithme réel plus tard.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="planner-section section">
+      <div class="container">
+        <div class="row gy-4 align-items-start">
+
+          <div class="col-lg-7" data-aos="fade-up" data-aos-delay="100">
+
+            <div class="planner-card">
+              <h2 class="planner-title">Planifier un trajet</h2>
+              <p class="planner-subtitle">
+                Sélectionnez simplement d’où vous partez et où vous souhaitez aller.
+              </p>
+
+              <div class="planner-intro">
+                <div class="mini-stop">
+                  <strong>Départ</strong>
+                  <span>Choisissez votre station ou zone de départ.</span>
+                </div>
+                <div class="swap-icon-box">
+                  <i class="bi bi-arrow-left-right"></i>
+                </div>
+                <div class="mini-stop">
+                  <strong>Destination</strong>
+                  <span>Choisissez votre point d’arrivée souhaité.</span>
+                </div>
+              </div>
+
+              <form id="itineraryForm" action="#" method="post">
+                <div class="row gy-4">
+                  <div class="col-md-6">
+                    <label for="fromCity" class="form-label">De</label>
+                    <select id="fromCity" class="form-select" required>
+                      <option value="" selected disabled>-- Sélectionner le départ --</option>
+                      <option value="Ariana">Ariana</option>
+                      <option value="Ben Arous">Ben Arous</option>
+                      <option value="Barcelone">Barcelone</option>
+                      <option value="Ibn Khaldoun">Ibn Khaldoun</option>
+                      <option value="Manouba">Manouba</option>
+                    </select>
+                  </div>
+
+                  <div class="col-md-6">
+                    <label for="toCity" class="form-label">Vers</label>
+                    <select id="toCity" class="form-select" required>
+                      <option value="" selected disabled>-- Sélectionner la destination --</option>
+                      <option value="Ariana">Ariana</option>
+                      <option value="Ben Arous">Ben Arous</option>
+                      <option value="Barcelone">Barcelone</option>
+                      <option value="Ibn Khaldoun">Ibn Khaldoun</option>
+                      <option value="Manouba">Manouba</option>
+                    </select>
+                  </div>
+
+                  <div class="col-12">
+                    <label class="form-label">Stations disponibles</label>
+                    <div class="city-pill-row">
+                      <span class="city-pill">Ariana</span>
+                      <span class="city-pill">Ben Arous</span>
+                      <span class="city-pill">Barcelone</span>
+                      <span class="city-pill">Ibn Khaldoun</span>
+                      <span class="city-pill">Manouba</span>
+                    </div>
+                  </div>
+
+                  <div class="col-12">
+                    <div class="planner-actions">
+                      <button type="submit" class="btn btn-main btn-pill">
+                        <i class="bi bi-search me-2"></i>Calculer l’itinéraire
+                      </button>
+
+                      <button type="button" id="swapCitiesBtn" class="btn btn-soft btn-pill">
+                        <i class="bi bi-arrow-left-right me-2"></i>Inverser
+                      </button>
+
+                      <button type="reset" id="resetRouteBtn" class="btn btn-outline-secondary btn-pill">
+                        <i class="bi bi-arrow-counterclockwise me-2"></i>Réinitialiser
+                      </button>
+                    </div>
+                  </div>
+                </div>
+              </form>
+
+              <p class="empty-state" id="emptyState">
+                Aucun calcul lancé pour le moment. Choisissez un départ et une destination pour générer un résultat.
+              </p>
+            </div>
+
+            <div class="result-card" id="resultCard">
+              <div class="result-header">
+                <div>
+                  <h3 class="mb-1">Résultat de l’itinéraire</h3>
+                  <p class="text-muted mb-0" id="routeSummary">Trajet calculé entre deux points du réseau métro.</p>
+                </div>
+                <div class="result-route-tag">
+                  <i class="bi bi-train-front"></i>
+                  Métro
+                </div>
+              </div>
+
+              <div class="result-grid">
+                <div class="result-item">
+                  <div class="result-icon"><i class="bi bi-clock-history"></i></div>
+                  <div>
+                    <h4 id="estimatedTime">Temps estimé : 25 minutes</h4>
+                    <p>Trajet conseillé via Barcelone avec correspondance optimisée et temps d’attente réduit.</p>
+                  </div>
+                </div>
+
+                <div class="result-item">
+                  <div class="result-icon"><i class="bi bi-geo-alt"></i></div>
+                  <div>
+                    <h4 id="arrivalTime">Arrivée estimée : 14:30</h4>
+                    <p>Heure d’arrivée calculée selon les conditions actuelles du réseau et la ligne sélectionnée.</p>
+                  </div>
+                </div>
+
+                <div class="result-item">
+                  <div class="result-icon"><i class="bi bi-graph-up"></i></div>
+                  <div>
+                    <h4 id="trafficState">État du trafic : Fluide</h4>
+                    <p>Les perturbations sur le trajet choisi restent faibles à modérées pour le moment.</p>
+                  </div>
+                </div>
+              </div>
+
+              <div class="stats-row">
+                <div class="mini-stat">
+                  <strong>4</strong>
+                  <span>Lignes actives</span>
+                </div>
+                <div class="mini-stat">
+                  <strong>1</strong>
+                  <span>Hub central Barcelone</span>
+                </div>
+                <div class="mini-stat">
+                  <strong>+89%</strong>
+                  <span>Précision estimée</span>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+          <div class="col-lg-5" data-aos="fade-up" data-aos-delay="200">
+            <div class="planner-side-card">
+              <div class="side-icon">
+                <i class="bi bi-map"></i>
+              </div>
+
+              <h3 class="mb-2">Plan du réseau</h3>
+              <p class="text-muted mb-0">
+                Voici l’aperçu du réseau utilisé comme référence visuelle pour le planificateur actuel.
+              </p>
+
+              <div class="map-preview">
+                <img src="pics/map1.jpg" alt="Plan du réseau Smart Transport">
+              </div>
+
+              <ul class="info-list">
+                <li>
+                  <i class="bi bi-check2-circle"></i>
+                  <div>
+                    <strong>Trajets entre stations majeures</strong><br>
+                    Le planificateur actuel se concentre sur les principales zones déjà visibles sur votre carte.
+                  </div>
+                </li>
+                <li>
+                  <i class="bi bi-check2-circle"></i>
+                  <div>
+                    <strong>Barcelone comme cœur du réseau</strong><br>
+                    La station Barcelone reste le point central utilisé dans la logique de simulation actuelle.
+                  </div>
+                </li>
+                <li>
+                  <i class="bi bi-check2-circle"></i>
+                  <div>
+                    <strong>Simulation provisoire</strong><br>
+                    Les résultats affichés sont aléatoires pour le moment, en attendant l’algorithme réel.
+                  </div>
+                </li>
+              </ul>
+
+              <div class="helper-note">
+                <strong>Conseil :</strong> évitez de choisir deux fois la même station pour obtenir un résultat cohérent.
+              </div>
+
+              <div class="quick-links">
+                <a href="transport.html"><i class="bi bi-bus-front"></i>Accueil transport</a>
+                <a href="signaler-transport.html"><i class="bi bi-exclamation-circle"></i>Signaler un problème</a>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer id="footer" class="footer">
+    <div class="container footer-top">
+      <div class="row gy-4">
+        <div class="col-lg-4 col-md-6 footer-about">
+          <a href="../../../../index.html" class="d-flex align-items-center">
+            <span class="sitename">CivicPlus</span>
+          </a>
+          <div class="footer-contact pt-3">
+            <p>Bloc H - ESPRIT</p>
+            <p>Ariana Petite</p>
+            <p class="mt-3"><strong>Phone:</strong> <span>22 504 470</span></p>
+            <p><strong>Email:</strong> <span>civicplus00@gmail.com</span></p>
+          </div>
+        </div>
+
+        <div class="col-lg-2 col-md-3 footer-links">
+          <h4>Useful Links</h4>
+          <ul>
+            <li><i class="bi bi-chevron-right"></i> <a href="../../../../index.html">Accueil</a></li>
+            <li><i class="bi bi-chevron-right"></i> <a href="../../../../index.html#about">Concept</a></li>
+            <li><i class="bi bi-chevron-right"></i> <a href="../../../../index.html#services">Services</a></li>
+            <li><i class="bi bi-chevron-right"></i> <a href="../../../../index.html#team">Notre équipe</a></li>
+          </ul>
+        </div>
+
+        <div class="col-lg-2 col-md-3 footer-links">
+          <h4>Nos Services</h4>
+          <ul>
+            <li><i class="bi bi-chevron-right"></i> <a href="../../../../index.html#services">E-Administration</a></li>
+            <li><i class="bi bi-chevron-right"></i> <a href="../../../../index.html#services">Signalement</a></li>
+            <li><i class="bi bi-chevron-right"></i> <a href="../../../../index.html#services">Transport</a></li>
+            <li><i class="bi bi-chevron-right"></i> <a href="../../../../index.html#services">Crowdfunding</a></li>
+          </ul>
+        </div>
+
+        <div class="col-lg-4 col-md-12">
+          <h4>Follow Us</h4>
+          <p>Suivez CivicPlus pour rester connecté aux nouveautés et projets de la ville.</p>
+          <div class="social-links d-flex">
+            <a href="#"><i class="bi bi-twitter-x"></i></a>
+            <a href="#"><i class="bi bi-facebook"></i></a>
+            <a href="#"><i class="bi bi-instagram"></i></a>
+            <a href="#"><i class="bi bi-linkedin"></i></a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="container copyright text-center mt-4">
+      <p>© <span>Copyright</span> <strong class="px-1 sitename">CivicPlus</strong> <span>All Rights Reserved</span></p>
+      <div class="credits">Designed by <strong>NOVA</strong> Distributed by <strong>ESPRIT</strong></div>
+    </div>
+  </footer>
+
+  <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center">
+    <i class="bi bi-arrow-up-short"></i>
+  </a>
+
+  <div id="preloader"></div>
+
+  <script src="../../../../assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="../../../../assets/vendor/php-email-form/validate.js"></script>
+  <script src="../../../../assets/vendor/aos/aos.js"></script>
+  <script src="../../../../assets/vendor/glightbox/js/glightbox.min.js"></script>
+  <script src="../../../../assets/vendor/purecounter/purecounter_vanilla.js"></script>
+  <script src="../../../../assets/vendor/imagesloaded/imagesloaded.pkgd.min.js"></script>
+  <script src="../../../../assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
+  <script src="../../../../assets/vendor/swiper/swiper-bundle.min.js"></script>
+  <script src="../../../../assets/js/main.js"></script>
+
+  <script>
+    fetch('../../../../check_session.php')
+      .then(response => response.json())
+      .then(data => {
+        if (data.isAdmin) {
+          document.getElementById('admin-link').style.display = 'block';
+        }
+      })
+      .catch(error => console.error('Erreur de vérification session:', error));
+
+    const itineraryForm = document.getElementById('itineraryForm');
+    const fromCity = document.getElementById('fromCity');
+    const toCity = document.getElementById('toCity');
+    const resultCard = document.getElementById('resultCard');
+    const routeSummary = document.getElementById('routeSummary');
+    const estimatedTime = document.getElementById('estimatedTime');
+    const arrivalTime = document.getElementById('arrivalTime');
+    const trafficState = document.getElementById('trafficState');
+    const emptyState = document.getElementById('emptyState');
+    const swapCitiesBtn = document.getElementById('swapCitiesBtn');
+    const resetRouteBtn = document.getElementById('resetRouteBtn');
+
+    const trafficOptions = [
+      'Fluide',
+      'Modéré',
+      'Légèrement perturbé'
+    ];
+
+    function randomInt(min, max) {
+      return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
+
+    function generateArrival(minutesToAdd) {
+      const now = new Date();
+      now.setMinutes(now.getMinutes() + minutesToAdd);
+      const hh = String(now.getHours()).padStart(2, '0');
+      const mm = String(now.getMinutes()).padStart(2, '0');
+      return `${hh}:${mm}`;
+    }
+
+    itineraryForm.addEventListener('submit', function (e) {
+      e.preventDefault();
+
+      const from = fromCity.value;
+      const to = toCity.value;
+
+      if (!from || !to) {
+        alert('Veuillez choisir un point de départ et une destination.');
+        return;
+      }
+
+      if (from === to) {
+        alert('Le départ et la destination doivent être différents.');
+        return;
+      }
+
+      const minutes = randomInt(18, 38);
+      const traffic = trafficOptions[randomInt(0, trafficOptions.length - 1)];
+      const arrival = generateArrival(minutes);
+
+      routeSummary.textContent = `Trajet simulé de ${from} vers ${to}.`;
+      estimatedTime.textContent = `Temps estimé : ${minutes} minutes`;
+      arrivalTime.textContent = `Arrivée estimée : ${arrival}`;
+      trafficState.textContent = `État du trafic : ${traffic}`;
+
+      resultCard.classList.add('show');
+      emptyState.style.display = 'none';
+    });
+
+    swapCitiesBtn.addEventListener('click', function () {
+      const fromValue = fromCity.value;
+      const toValue = toCity.value;
+
+      fromCity.value = toValue;
+      toCity.value = fromValue;
+    });
+
+    resetRouteBtn.addEventListener('click', function () {
+      setTimeout(() => {
+        resultCard.classList.remove('show');
+        emptyState.style.display = 'block';
+      }, 0);
+    });
+  </script>
+
+</body>
+
+</html>
