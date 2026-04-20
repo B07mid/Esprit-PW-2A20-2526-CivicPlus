@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Carte Interactive - Geo-Services</title>
+
+  <!-- Favicons -->
+  <link href="../../../assets/img/RawShape.png" rel="icon">
+  <link href="../../../assets/img/RawShape.png" rel="apple-touch-icon">
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com" rel="preconnect">
+  <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+
+  <!-- Vendor CSS -->
+  <link href="../../../assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="../../../assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="../../../assets/css/main.css" rel="stylesheet">
+
+  <!-- Leaflet CSS & JS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+  <style>
+    .index-page main {
+      padding: 0;
+      margin: 0;
+    }
+
+    #map-container {
+      position: relative;
+      height: calc(100vh - 90px);
+      /* Full height minus header approx */
+      width: 100vw;
+      max-width: 100%;
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+    }
+
+    #map {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      width: 100%;
+      height: 100%;
+    }
+
+    .theme-switch-wrapper {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      z-index: 10;
+      background: white;
+      padding: 10px;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+      transition: all 0.3s ease;
+    }
+
+    .theme-switch-wrapper.dark {
+      background: #2b2b2b;
+      color: #fff;
+    }
+
+    .legend {
+      position: absolute;
+      bottom: 30px;
+      left: 15px;
+      z-index: 1000;
+      background: rgba(255, 255, 255, 0.9);
+      padding: 10px 15px;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+      font-size: 14px;
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      margin-bottom: 5px;
+    }
+
+    .legend-color {
+      width: 15px;
+      height: 15px;
+      border-radius: 50%;
+      margin-right: 8px;
+    }
+
+    /* Custom Leaflet Popup Styling */
+    .leaflet-popup-content-wrapper {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      border-radius: 12px;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+      border: 1px solid rgba(255, 255, 255, 0.4);
+      font-family: 'Roboto', sans-serif;
+      color: #333;
+    }
+    .leaflet-popup-content {
+      margin: 15px;
+    }
+    .leaflet-popup-close-button {
+      color: #666 !important;
+      transition: all 0.2s;
+    }
+    .leaflet-popup-close-button:hover {
+      color: #ff4757 !important;
+      background: transparent !important;
+    }
+
+    /* Custom Markers */
+    .custom-marker {
+      width: 40px;
+      height: 40px;
+      border-radius: 50% 50% 50% 0;
+      background: var(--accent-color, #112f8d);
+      transform: rotate(-45deg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+      border: 2px solid white;
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+
+    .custom-marker:hover {
+      transform: rotate(-45deg) scale(1.1);
+    }
+
+    .custom-marker i {
+      transform: rotate(45deg);
+      color: white;
+      font-size: 18px;
+    }
+
+    /* Style du menu des couches (Style OpenStreetMap élargi) */
+    .leaflet-control-layers {
+      border: none !important;
+      border-radius: 12px !important;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15) !important;
+      padding: 12px 15px !important;
+      background: rgba(255, 255, 255, 0.95) !important;
+      backdrop-filter: blur(10px);
+      font-family: 'Roboto', sans-serif;
+    }
+    .leaflet-control-layers::before {
+      content: 'Fonds de carte';
+      display: block;
+      font-weight: 700;
+      margin-bottom: 10px;
+      color: #112f8d;
+      font-size: 15px;
+      border-bottom: 2px solid rgba(17, 47, 141, 0.1);
+      padding-bottom: 5px;
+    }
+    .leaflet-control-layers-base label {
+      display: flex;
+      align-items: center;
+      margin-bottom: 8px;
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .leaflet-control-layers-base label:hover {
+      color: #007bff;
+    }
+    .leaflet-control-layers-base input[type="radio"] {
+      margin-right: 10px;
+      cursor: pointer;
+      accent-color: #112f8d;
+      width: 16px;
+      height: 16px;
+    }
+    .leaflet-control-layers-base label span {
+      font-size: 14px;
+      font-weight: 500;
+    }
+  </style>
+</head>
+
+<body class="index-page">
+
+  <header id="header" class="header d-flex align-items-center sticky-top">
+    <div class="container-fluid container-xl position-relative d-flex align-items-center">
+      <a href="../../../index.html" class="logo d-flex align-items-center me-auto">
+        <img src="../../../assets/img/logo.png" alt="CivicPlus Logo">
+        <h1 class="sitename">CivicPlus</h1>
+      </a>
+
+      <nav id="navmenu" class="navmenu">
+        <ul>
+          <li><a href="../../../../index.html#hero">Home</a></li>
+          <li><a href="../../../../index.html#about">Concept</a></li>
+          <li><a href="../../../../index.html#services" class="active">Services</a></li>
+          <li><a href="../../../../index.html#team">Team</a></li>
+          <li id="admin-link" style="display:none;"><a href="/Esprit-PW-2A20-2526-CivicPlus/admin.html">Dashboard</a></li>
+          <li><a href="../../../../index.html#contact">Contact</a></li>
+        </ul>
+        <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
+      </nav>
+
+      <a class="btn-getstarted" href="ajouter_poi.html">Ajouter un point d'intérêt</a>
+    </div>
+  </header>
+
+  <main class="main p-0 m-0">
+    <!-- Suppression des conteneurs Bootstrap et des animations AOS qui causaient le bug de rendu -->
+    <div id="map-container">
+      <div id="map"></div>
+
+
+
+      <div class="legend">
+        <strong class="text-dark">Légende de la carte</strong>
+        <hr class="mt-1 mb-2">
+        <div class="legend-item text-dark">
+          <div class="legend-color" style="background-color: orange;"></div> Mairie
+        </div>
+        <div class="legend-item text-dark">
+          <div class="legend-color" style="background-color: red;"></div> Hôpital
+        </div>
+        <div class="legend-item text-dark">
+          <div class="legend-color" style="background-color: blue;"></div> Police
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <footer id="footer" class="footer">
+    <div class="container footer-top">
+      <div class="row gy-4">
+        <div class="col-lg-4 col-md-6 footer-about">
+          <a href="../../../../index.html" class="d-flex align-items-center">
+            <span class="sitename">CivicPlus</span>
+          </a>
+          <div class="footer-contact pt-3">
+            <p>Bloc H - ESPRIT</p>
+            <p>Ariana Petite</p>
+            <p class="mt-3"><strong>Phone:</strong> <span>22 504 470</span></p>
+            <p><strong>Email:</strong> <span>civicplus00@gmail.com</span></p>
+          </div>
+        </div>
+
+        <div class="col-lg-2 col-md-3 footer-links">
+          <h4>Useful Links</h4>
+          <ul>
+            <li><i class="bi bi-chevron-right"></i> <a href="../../../../index.html#hero">Accueil</a></li>
+            <li><i class="bi bi-chevron-right"></i> <a href="../../../../index.html#about">Concept</a></li>
+            <li><i class="bi bi-chevron-right"></i> <a href="../../../../index.html#services">Services</a></li>
+            <li><i class="bi bi-chevron-right"></i> <a href="../../../../index.html#team">Notre équipe</a></li>
+          </ul>
+        </div>
+
+        <div class="col-lg-2 col-md-3 footer-links">
+          <h4>Our Services</h4>
+          <ul>
+            <li><i class="bi bi-chevron-right"></i> <a href="../../../../index.html#services">E-Administration</a></li>
+            <li><i class="bi bi-chevron-right"></i> <a href="../../../../index.html#services">Signalement et
+                maintenance</a></li>
+            <li><i class="bi bi-chevron-right"></i> <a href="../../../../index.html#services">Smart Transport</a></li>
+            <li><i class="bi bi-chevron-right"></i> <a href="../../../../index.html#services">Crowdfunding</a></li>
+            <li><i class="bi bi-chevron-right"></i> <a href="index.html">Geo-Services</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="container copyright text-center mt-4">
+      <p>© <span>Copyright</span> <strong class="px-1 sitename">CivicPlus</strong> <span>All Rights Reserved</span></p>
+    </div>
+  </footer>
+
+  <script src="../../../assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="js/map.js?v=5"></script>
+<script src='/Esprit-PW-2A20-2526-CivicPlus/assets/js/auth.js?v=5'></script>
+</body>
+
+</html>
+
+
+

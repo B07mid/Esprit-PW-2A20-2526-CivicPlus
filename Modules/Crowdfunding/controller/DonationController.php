@@ -1,4 +1,4 @@
-ï»¿<?php
+<?php
 require_once '../model/Donation.php';
 require_once '../model/ProjetCrowdfunding.php';
 require_once '../config/config.php';
@@ -12,10 +12,10 @@ class DonationController {
         exit();
     }
 
-    // C : Ajouter une donation (form POST â†’ redirect)
+    // C : Ajouter une donation (form POST ? redirect)
     public function addAction($pdo) {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $allowed = ['en_attente', 'confirmÃ©', 'annulÃ©'];
+            $allowed = ['en_attente', 'confirmé', 'annulé'];
             $statut  = htmlspecialchars(trim($_POST['statut_paiement'] ?? ''));
             if (!in_array($statut, $allowed, true)) $statut = 'en_attente';
 
@@ -47,7 +47,7 @@ class DonationController {
     // U : Modifier le statut d'une donation (JSON)
     public function updateAction($pdo) {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $allowed = ['en_attente', 'confirmÃ©', 'annulÃ©'];
+            $allowed = ['en_attente', 'confirmé', 'annulé'];
             $statut  = htmlspecialchars(trim($_POST['statut_paiement'] ?? ''));
             if (!in_array($statut, $allowed, true)) {
                 header('Content-Type: application/json');
@@ -100,3 +100,6 @@ if (basename($_SERVER['PHP_SELF']) == 'DonationController.php') {
         }
     }
 }
+
+
+

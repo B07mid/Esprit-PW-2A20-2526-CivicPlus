@@ -9,6 +9,11 @@
   <link href="../../assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
   <link href="../../assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
   <link href="../../assets/vendor/aos/aos.css" rel="stylesheet">
+  
+  <!-- Leaflet CSS & JS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
   <link href="../../assets/css/main.css" rel="stylesheet">
 </head>
 <body class="index-page">
@@ -150,6 +155,11 @@
                 <span class="text-danger small" id="err_lng"></span>
               </div>
 
+              <div class="mb-4">
+                <div id="location-picker-map" style="height: 300px; width: 100%; border-radius: 8px; border: 1px solid #ced4da; z-index: 1;"></div>
+                <small class="text-muted"><i class="bi bi-info-circle"></i> Drag the blue marker or click on the map to auto-fill the coordinates.</small>
+              </div>
+
               <div class="d-flex gap-2">
                 <button type="reset" class="btn btn-outline-secondary" onclick="clearErrors()">
                   <i class="bi bi-x-circle"></i> Clear
@@ -178,6 +188,12 @@
   <script>AOS.init();</script>
   <script src="../../assets/js/main.js"></script>
   <script src="view/projet/projet_validation.js"></script>
+  <script src="../../assets/js/location-picker.js"></script>
 
+<script src='/Esprit-PW-2A20-2526-CivicPlus/assets/js/auth.js?v=5'></script>
 </body>
 </html>
+
+
+
+

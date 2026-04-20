@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Signalement Urbain | CivicPlus</title>
+    <meta name="description" content="Déclarez un incident et participez à l'amélioration de votre ville.">
+    <link rel="icon" type="image/png" href="../../../assets/img/RawShape.png">
+
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com" rel="preconnect">
+    <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&family=Raleway:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+
+    <!-- Vendor CSS -->
+    <link href="../../../assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../../../assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+    <link href="../../../assets/vendor/aos/aos.css" rel="stylesheet">
+    <link href="../../../assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+    <link href="../../../assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+
+    <!-- Main CSS -->
+    <link href="../../../assets/css/main.css" rel="stylesheet">
+</head>
+
+<body class="index-page">
+
+    <!-- Header -->
+    <header id="header" class="header d-flex align-items-center sticky-top">
+        <div class="container-fluid container-xl position-relative d-flex align-items-center">
+            <a href="../../../index.html" class="logo d-flex align-items-center me-auto">
+                <img src="../../../assets/img/logo.png" alt="CivicPlus Logo">
+                <h1 class="sitename">CivicPlus</h1>
+            </a>
+
+            <nav id="navmenu" class="navmenu">
+                <ul>
+                    <li><a href="../../../index.html#hero">Home</a></li>
+                    <li><a href="../../../index.html#about">Concept</a></li>
+                    <li><a href="../../../index.html#services" class="active">Services</a></li>
+                    <li><a href="../../../index.html#team">Team</a></li>
+                    <li id="admin-link" style="display:none;"><a href="/Esprit-PW-2A20-2526-CivicPlus/admin.html">Dashboard</a></li>
+                    <li><a href="../../../index.html#contact">Contact</a></li>
+                </ul>
+                <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
+            </nav>
+
+            <div id="auth-action-area">
+                <a class="btn-getstarted" href="/Esprit-PW-2A20-2526-CivicPlus/Modules/User/View/login.html">Connexion</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main">
+
+        <!-- Hero Section -->
+        <section class="hero-eadmin text-center" data-aos="fade-down">
+            <div class="container">
+                <span class="badge bg-primary px-3 py-2 rounded-pill mb-3" style="font-weight: 500; letter-spacing: 1px;">ACTION PARTICIPATIVE</span>
+                <h2 class="display-4 fw-bold mb-3" style="color: var(--heading-color);">Signalement Urbain</h2>
+                <p class="lead text-muted mx-auto" style="max-width: 700px;">
+                    Un nid-de-poule ? Une fuite d'eau ? Signalez les incidents dans votre rue en un clic. Notre IA catégorise et transmet votre alerte aux équipes municipales.
+                </p>
+            </div>
+        </section>
+
+        <!-- Services Grid -->
+        <section class="section pt-5 pb-5 bg-light">
+            <div class="container">
+                <div class="row g-4 justify-content-center">
+
+                    <!-- Nouveau Signalement -->
+                    <div class="col-lg-5 col-md-6" data-aos="fade-up" data-aos-delay="100">
+                        <div class="service-card p-4 p-md-5 text-center">
+                            <a href="citoyen_nouveau_signalement.html">
+                                <div class="service-icon-wrapper">
+                                    <i class="bi bi-camera fs-2 text-primary"></i>
+                                </div>
+                                <h3 class="service-title">Nouveau Signalement</h3>
+                                <p class="service-desc">
+                                    Prenez une photo de l'incident et renseignez les détails. L'IA s'occupera du reste pour avertir les services compétents.
+                                </p>
+                                <div class="action-arrow">
+                                    Déclarer un incident <i class="bi bi-arrow-right"></i>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+
+                    <!-- Mes signalements -->
+                    <div class="col-lg-5 col-md-6" data-aos="fade-up" data-aos-delay="200">
+                        <div class="service-card p-4 p-md-5 text-center">
+                            <a href="liste_signalements.html">
+                                <div class="service-icon-wrapper">
+                                    <i class="bi bi-card-checklist fs-2 text-primary"></i>
+                                </div>
+                                <h3 class="service-title">Mes Signalements</h3>
+                                <p class="service-desc">
+                                    Suivez l'état d'avancement de vos alertes, consultez les commentaires des équipes d'intervention et visualisez les résolutions.
+                                </p>
+                                <div class="action-arrow">
+                                    Suivre mes alertes <i class="bi bi-arrow-right"></i>
+                                </div>
+                            </a>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer id="footer" class="footer">
+        <div class="container footer-top">
+            <div class="row gy-4">
+                <div class="col-lg-4 col-md-6 footer-about">
+                    <a href="../../../index.html" class="d-flex align-items-center">
+                        <span class="sitename">CivicPlus</span>
+                    </a>
+                    <div class="footer-contact pt-3">
+                        <p>Bloc H - ESPRIT</p>
+                        <p>Ariana Petite</p>
+                        <p class="mt-3"><strong>Phone:</strong> <span>22 504 470</span></p>
+                        <p><strong>Email:</strong> <span>civicplus00@gmail.com</span></p>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="container copyright text-center mt-4">
+            <p>© <span>Copyright</span> <strong class="px-1 sitename">CivicPlus</strong> <span>All Rights Reserved</span></p>
+        </div>
+    </footer>
+
+    <!-- Scroll Top -->
+    <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+    <div id="preloader"></div>
+
+    <!-- Vendor JS Files -->
+    <script src="../../../assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="../../../assets/vendor/aos/aos.js"></script>
+    <script src="../../../assets/vendor/glightbox/js/glightbox.min.js"></script>
+    <script src="../../../assets/vendor/swiper/swiper-bundle.min.js"></script>
+
+    <!-- Main JS File -->
+    <script src="../../../assets/js/main.js"></script>
+    <script src='/Esprit-PW-2A20-2526-CivicPlus/assets/js/auth.js?v=5'></script>
+</body>
+
+</html>

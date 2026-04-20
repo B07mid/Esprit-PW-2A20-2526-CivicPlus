@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <title>Signaler un problème - Smart Transport | CivicPlus</title>
+  <meta name="description" content="Signalez un problème de transport urbain via CivicPlus.">
+  <meta name="keywords" content="transport, civicplus, signalement, métro, bus, problème">
+
+  <link href="../../../../assets/img/RawShape.png" rel="icon">
+  <link href="../../../../assets/img/RawShape.png" rel="apple-touch-icon">
+
+  <link href="https://fonts.googleapis.com" rel="preconnect">
+  <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Raleway:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap" rel="stylesheet">
+
+  <link href="../../../../assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="../../../../assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="../../../../assets/vendor/aos/aos.css" rel="stylesheet">
+  <link href="../../../../assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+  <link href="../../../../assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+  <link href="../../../../assets/css/main.css" rel="stylesheet">
+  <link rel="stylesheet" href="signaler.css">
+<script src="signaler.js"></script>
+
+</head>
+
+<body class="index-page">
+
+  <header id="header" class="header d-flex align-items-center sticky-top">
+    <div class="container-fluid container-xl position-relative d-flex align-items-center">
+      <a href="../../../../index.html" class="logo d-flex align-items-center me-auto">
+        <img src="../../../../assets/img/logo.png" alt="CivicPlus Logo">
+        <h1 class="sitename">CivicPlus</h1>
+      </a>
+
+      <nav id="navmenu" class="navmenu">
+        <ul>
+          <li><a href="../../../../index.html#hero">Home</a></li>
+          <li><a href="../../../../index.html#about">Concept</a></li>
+          <li><a href="../../../../index.html#services" class="active">Services</a></li>
+          <li><a href="../../../../index.html#team">Team</a></li>
+          <li id="admin-link" style="display:none;"><a href="/Esprit-PW-2A20-2526-CivicPlus/admin.html">Dashboard</a></li>
+          <li><a href="../../../../index.html#contact">Contact</a></li>
+        </ul>
+        <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
+      </nav>
+
+      <a class="btn-getstarted" href="transport.html">Retour Transport</a>
+    </div>
+  </header>
+
+  <main class="main">
+
+    <section class="report-hero section">
+      <div class="container position-relative">
+        <div class="row gy-4 align-items-center">
+          <div class="col-lg-8" data-aos="fade-up">
+            <div class="hero-tag">
+              <i class="bi bi-exclamation-octagon"></i>
+              Signalement Smart Transport
+            </div>
+            <h1>Signalez un problème de transport en quelques instants.</h1>
+            <p class="lead">
+              Aidez CivicPlus à améliorer la mobilité urbaine en signalant rapidement un retard important,
+              une rame bondée, une panne ou tout autre incident observé sur le réseau.
+            </p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="report-layout section">
+      <div class="container">
+        <div class="row gy-4 align-items-stretch">
+
+          <div class="col-lg-7" data-aos="fade-up" data-aos-delay="100">
+
+
+
+<div class="report-card mb-4">
+  <h2 class="report-title">Choisir le type de transport</h2>
+  <p class="report-subtitle">
+    Sélectionnez le mode de transport concerné par votre signalement.
+  </p>
+
+  <div class="row gy-3">
+    <div class="col-md-4">
+      <button type="button" class="transport-choice active" data-transport="metro">
+        <i class="bi bi-train-front"></i>
+        <span>Métro</span>
+        <small>Disponible maintenant</small>
+      </button>
+    </div>
+
+    <div class="col-md-4">
+      <button type="button" class="transport-choice" data-transport="bus">
+        <i class="bi bi-bus-front"></i>
+        <span>Bus</span>
+        <small>Bientôt disponible</small>
+      </button>
+    </div>
+
+    <div class="col-md-4">
+      <button type="button" class="transport-choice" data-transport="train">
+        <i class="bi bi-train-lightrail-front"></i>
+        <span>Train</span>
+        <small>Bientôt disponible</small>
+      </button>
+    </div>
+  </div>
+</div>
+
+
+
+<div class="report-card" id="metroFormBlock">
+                  <h2 class="report-title">Formulaire de signalement</h2>
+              <p class="report-subtitle">
+                Remplissez les informations ci-dessous pour transmettre votre signalement à l’équipe de suivi transport.
+              </p>
+            <div id="formMessage" class="alert d-none" role="alert"></div>
+
+<form id="signalForm" action="#" method="post" enctype="multipart/form-data">
+                    <div class="row gy-4">
+
+                  <div class="col-md-6">
+<label for="id_ligne" class="form-label">Ligne concernée<span class="required-star">*</span></label>
+<select class="form-select" id="id_ligne" name="id_ligne" required>
+  <option value="" selected disabled>-- Sélectionner une ligne --</option>
+  <option value="1">Ligne T1 - Ben Arous ↔ Barcelone</option>
+  <option value="2">Ligne T2 - Ariana ↔ Barcelone</option>
+  <option value="3">Ligne T3 - Ibn Khaldoun ↔ Barcelone</option>
+  <option value="4">Ligne T4 - Manouba ↔ Barcelone</option>
+</select>
+                  </div>
+
+                  <div class="col-md-6">
+<label for="type_probleme" class="form-label">Type de problème<span class="required-star">*</span></label>
+<select class="form-select" id="type_probleme" name="type_probleme" required>
+  <option value="" selected disabled>-- Choisir un type --</option>
+  <option value="retard">Retard important</option>
+  <option value="panne">Panne</option>
+  <option value="affluence">Véhicule bondé</option>
+  <option value="incident">Incident de circulation</option>
+  <option value="station">Problème en station</option>
+  <option value="autre">Autre</option>
+</select>
+                  </div>
+
+                  <div class="col-md-6">
+                   
+                  <label for="num_cin" class="form-label">CIN<span class="required-star">*</span></label>
+<input type="text" class="form-control" id="num_cin" name="num_cin" placeholder="Ex: 12345678" required>
+                  </div>
+
+                  <div class="col-md-6">
+                    <label for="moment" class="form-label">Moment de l'incident</label>
+                    <input type="datetime-local" class="form-control" id="moment" name="moment">
+                  </div>
+
+                  <div class="col-12">
+                    <label for="description" class="form-label">Description<span class="required-star">*</span></label>
+                    <textarea class="form-control" id="description" name="description" placeholder="Décrivez clairement le problème constaté..." required></textarea>
+                  </div>
+
+                  <div class="col-12">
+                    <label for="piece_jointe" class="form-label">Pièce jointe (optionnelle)</label>
+                    <div class="upload-box">
+                      <input type="file" class="form-control" id="piece_jointe" name="piece_jointe" accept=".jpg,.jpeg,.png,.pdf">
+                      <small>Formats autorisés : JPG, PNG ou PDF.</small>
+                    </div>
+                  </div>
+
+                  <div class="col-12">
+                    <div class="action-row">
+                      <div id="formMessage" class="alert d-none mt-3" role="alert"></div>
+                      <button type="submit" class="btn btn-main btn-pill">
+                        <i class="bi bi-send me-2"></i>Envoyer le signalement
+                      </button>
+                      <button type="reset" class="btn btn-soft btn-pill">
+                        <i class="bi bi-arrow-counterclockwise me-2"></i>Réinitialiser
+                      </button>
+                      <a href="transport.html" class="btn btn-outline-secondary btn-pill">
+                        <i class="bi bi-arrow-left me-2"></i>Retour transport
+                      </a>
+                    </div>
+                  </div>
+
+                </div>
+              </form>
+            </div>
+       
+       
+
+
+<div class="report-card d-none" id="comingSoonBlock">
+  <h2 class="report-title">Signalement bientôt disponible</h2>
+  <p class="report-subtitle">
+    Le signalement pour ce mode de transport sera ajouté prochainement dans CivicPlus.
+  </p>
+
+  <div class="mini-note" style="margin-top: 0;">
+    <strong>Pour le moment :</strong> seul le module <strong>Métro</strong> est actif pour les signalements.
+    Vous pouvez revenir au formulaire métro à tout moment.
+  </div>
+</div>
+
+
+
+       
+        </div>
+
+
+
+
+
+          <div class="col-lg-5" data-aos="fade-up" data-aos-delay="200">
+            <div class="report-side-card">
+              <div class="side-icon">
+                <i class="bi bi-shield-exclamation"></i>
+              </div>
+              <h3 class="mb-2">Pourquoi signaler ?</h3>
+              <p class="text-muted mb-0">
+                Vos remontées permettent d’identifier plus vite les anomalies et d’améliorer l’expérience de déplacement sur le réseau.
+              </p>
+
+              <ul class="info-list">
+                <li>
+                  <i class="bi bi-check2-circle"></i>
+                  <div>
+                    <strong>Réactivité renforcée</strong><br>
+                    Les incidents les plus fréquents deviennent plus visibles pour les équipes concernées.
+                  </div>
+                </li>
+                <li>
+                  <i class="bi bi-check2-circle"></i>
+                  <div>
+                    <strong>Suivi du trafic</strong><br>
+                    Les retards, surcharges et problèmes en station peuvent être regroupés plus facilement.
+                  </div>
+                </li>
+                <li>
+                  <i class="bi bi-check2-circle"></i>
+                  <div>
+                    <strong>Mobilité plus fluide</strong><br>
+                    Une meilleure remontée d’information aide à améliorer les déplacements au quotidien.
+                  </div>
+                </li>
+              </ul>
+
+              <div class="mini-note">
+                <strong>Conseil :</strong> indiquez la ligne, la station et l’horaire approximatif pour rendre votre signalement plus utile.
+              </div>
+
+              <div class="network-preview">
+                <img src="pics/report.png" alt="Aperçu du plan du réseau Smart Transport">
+              </div>
+              <br> <br>
+
+              <div class="quick-links">
+                <a href="transport.html"><i class="bi bi-bus-front"></i>Accueil transport</a>
+                <a href="itineraire-transport.html"><i class="bi bi-signpost-split"></i>Itinéraire</a>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer id="footer" class="footer">
+    <div class="container footer-top">
+      <div class="row gy-4">
+        <div class="col-lg-4 col-md-6 footer-about">
+          <a href="../../../../index.html" class="d-flex align-items-center">
+            <span class="sitename">CivicPlus</span>
+          </a>
+          <div class="footer-contact pt-3">
+            <p>Bloc H - ESPRIT</p>
+            <p>Ariana Petite</p>
+            <p class="mt-3"><strong>Phone:</strong> <span>22 504 470</span></p>
+            <p><strong>Email:</strong> <span>civicplus00@gmail.com</span></p>
+          </div>
+        </div>
+
+        <div class="col-lg-2 col-md-3 footer-links">
+          <h4>Useful Links</h4>
+          <ul>
+            <li><i class="bi bi-chevron-right"></i> <a href="../../../../index.html">Accueil</a></li>
+            <li><i class="bi bi-chevron-right"></i> <a href="../../../../index.html#about">Concept</a></li>
+            <li><i class="bi bi-chevron-right"></i> <a href="../../../../index.html#services">Services</a></li>
+            <li><i class="bi bi-chevron-right"></i> <a href="../../../../index.html#team">Notre équipe</a></li>
+          </ul>
+        </div>
+
+        <div class="col-lg-2 col-md-3 footer-links">
+          <h4>Nos Services</h4>
+          <ul>
+            <li><i class="bi bi-chevron-right"></i> <a href="../../../../index.html#services">E-Administration</a></li>
+            <li><i class="bi bi-chevron-right"></i> <a href="../../../../index.html#services">Signalement</a></li>
+            <li><i class="bi bi-chevron-right"></i> <a href="../../../../index.html#services">Transport</a></li>
+            <li><i class="bi bi-chevron-right"></i> <a href="../../../../index.html#services">Crowdfunding</a></li>
+          </ul>
+        </div>
+
+        <div class="col-lg-4 col-md-12">
+          <h4>Follow Us</h4>
+          <p>Suivez CivicPlus pour rester connecté aux nouveautés et projets de la ville.</p>
+          <div class="social-links d-flex">
+            <a href="#"><i class="bi bi-twitter-x"></i></a>
+            <a href="#"><i class="bi bi-facebook"></i></a>
+            <a href="#"><i class="bi bi-instagram"></i></a>
+            <a href="#"><i class="bi bi-linkedin"></i></a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="container copyright text-center mt-4">
+      <p>© <span>Copyright</span> <strong class="px-1 sitename">CivicPlus</strong> <span>All Rights Reserved</span></p>
+      <div class="credits">Designed by <strong>NOVA</strong> Distributed by <strong>ESPRIT</strong></div>
+    </div>
+  </footer>
+
+  <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center">
+    <i class="bi bi-arrow-up-short"></i>
+  </a>
+
+  <div id="preloader"></div>
+<script>
+  const transportButtons = document.querySelectorAll('.transport-choice');
+  const metroFormBlock = document.getElementById('metroFormBlock');
+  const comingSoonBlock = document.getElementById('comingSoonBlock');
+
+  transportButtons.forEach(button => {
+    button.addEventListener('click', function () {
+      transportButtons.forEach(btn => btn.classList.remove('active'));
+      this.classList.add('active');
+
+      const selectedTransport = this.getAttribute('data-transport');
+
+      if (selectedTransport === 'metro') {
+        metroFormBlock.classList.remove('d-none');
+        comingSoonBlock.classList.add('d-none');
+      } else {
+        metroFormBlock.classList.add('d-none');
+        comingSoonBlock.classList.remove('d-none');
+      }
+    });
+  });
+</script>
+  <script src="../../../../assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="../../../../assets/vendor/php-email-form/validate.js"></script>
+  <script src="../../../../assets/vendor/aos/aos.js"></script>
+  <script src="../../../../assets/vendor/glightbox/js/glightbox.min.js"></script>
+  <script src="../../../../assets/vendor/purecounter/purecounter_vanilla.js"></script>
+  <script src="../../../../assets/vendor/imagesloaded/imagesloaded.pkgd.min.js"></script>
+  <script src="../../../../assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
+  <script src="../../../../assets/vendor/swiper/swiper-bundle.min.js"></script>
+  <script src="../../../../assets/js/main.js"></script>
+
+  <script>
+    fetch('../../../../check_session.php')
+      .then(response => response.json())
+      .then(data => {
+        if (data.isAdmin) {
+          document.getElementById('admin-link').style.display = 'block';
+        }
+      })
+      .catch(error => console.error('Erreur de vérification session:', error));
+  </script>
+
+<script src='/Esprit-PW-2A20-2526-CivicPlus/assets/js/auth.js?v=5'></script>
+</body>
+
+</html>
+
+
+

@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Gestion des Types de Documents</title>
+    <link rel="icon" type="image/png" href="../../../assets/img/RawShape.png" />
+
+    <link href="https://fonts.googleapis.com" rel="preconnect" />
+    <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Raleway:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap" rel="stylesheet" />
+
+    <link href="../../../assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="../../../assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet" />
+    <link href="../../../assets/vendor/aos/aos.css" rel="stylesheet" />
+    <link href="../../../assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet" />
+    <link href="../../../assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet" />
+    <link href="../../../assets/css/main.css" rel="stylesheet" />
+    <link href="../../../assets/css/admin.css" rel="stylesheet" />
+</head>
+<body class="index-page">
+  <div class="admin-layout">
+    <aside class="admin-sidebar">
+      <div class="brand">
+        <img src="../../../assets/img/RawShape.png" alt="CivicPlus Logo" class="brand-image" width="24" height="24" />
+        <div>
+          <h1>CivicPlus</h1>
+          <small>BackOffice</small>
+        </div>
+      </div>
+
+            <ul class="menu-inner">
+        <!-- Dashboard -->
+        <li class="menu-item">
+          <a href="/Esprit-PW-2A20-2526-CivicPlus/admin.html" class="menu-link">
+            <i class="bi bi-house-door-fill"></i>
+            <div>
+              <p class="menu-text mb-0">Tableau de Bord</p>
+              <p class="menu-description mb-0">Vue d'ensemble</p>
+            </div>
+          </a>
+        </li>
+
+        <!-- Back to FrontOffice -->
+        <li class="menu-item">
+          <a href="/Esprit-PW-2A20-2526-CivicPlus/index.html" class="menu-link text-primary">
+            <i class="bi bi-arrow-left-circle"></i>
+            <div>
+              <p class="menu-text mb-0">Retour au Site</p>
+              <p class="menu-description mb-0">Quitter le BackOffice</p>
+            </div>
+          </a>
+        </li>
+
+        <!-- User -->
+        <li class="menu-item">
+          <a href="/Esprit-PW-2A20-2526-CivicPlus/Modules/User/View/user_list.html" class="menu-link">
+            <i class="bi bi-people-fill"></i>
+            <span class="menu-text">Citoyens / Utilisateurs</span>
+          </a>
+        </li>
+
+        <!-- E-Administration -->
+        <li class="menu-item">
+          <a href="#collapseEAdmin" data-bs-toggle="collapse" aria-expanded="false" class="menu-link">
+            <i class="bi bi-building"></i>
+            <span class="menu-text">E-Administration</span>
+            <i class="bi bi-chevron-right float-end mt-1"></i>
+          </a>
+          <ul class="collapse list-unstyled ps-4 mt-2" id="collapseEAdmin">
+            <li class="menu-item mb-2">
+              <a href="/Esprit-PW-2A20-2526-CivicPlus/Modules/E-Administration/view/liste_demandes.html" class="menu-link">
+                <i class="bi bi-card-list"></i> <span class="menu-text">Liste des demandes</span>
+              </a>
+            </li>
+            <li class="menu-item mb-2">
+              <a href="/Esprit-PW-2A20-2526-CivicPlus/Modules/E-Administration/view/gestion_types.html" class="menu-link">
+                <i class="bi bi-plus-circle"></i> <span class="menu-text">Types</span>
+              </a>
+            </li>
+          </ul>
+        </li>
+
+        <!-- Smart Transport -->
+        <li class="menu-item">
+          <a href="#collapseTransport" data-bs-toggle="collapse" aria-expanded="false" class="menu-link">
+            <i class="bi bi-bus-front"></i>
+            <span class="menu-text">Smart Transport</span>
+            <i class="bi bi-chevron-right float-end mt-1"></i>
+          </a>
+          <ul class="collapse list-unstyled ps-4 mt-2" id="collapseTransport">
+            <li class="menu-item mb-2">
+              <a href="/Esprit-PW-2A20-2526-CivicPlus/Modules/Transport/View/back/list_transport.html" class="menu-link">
+                <i class="bi bi-card-list"></i> <span class="menu-text">Liste des transports</span>
+              </a>
+            </li>
+            <li class="menu-item mb-2">
+              <a href="/Esprit-PW-2A20-2526-CivicPlus/Modules/Transport/View/back/ajouter_transport.html" class="menu-link">
+                <i class="bi bi-plus-circle"></i> <span class="menu-text">Ajouter un transport</span>
+              </a>
+            </li>
+          </ul>
+        </li>
+
+        <!-- Signalements Urbains -->
+        <li class="menu-item">
+          <a href="#collapseSignalement" data-bs-toggle="collapse" aria-expanded="false" class="menu-link">
+            <i class="bi bi-flag-fill"></i>
+            <span class="menu-text">Signalements Urbains</span>
+            <i class="bi bi-chevron-right float-end mt-1"></i>
+          </a>
+          <ul class="collapse list-unstyled ps-4 mt-2" id="collapseSignalement">
+            <li class="menu-item mb-2">
+              <a href="/Esprit-PW-2A20-2526-CivicPlus/Modules/Signalement/view/liste_signalements.html" class="menu-link">
+                <i class="bi bi-card-list"></i> <span class="menu-text">Liste des signalements</span>
+              </a>
+            </li>
+          </ul>
+        </li>
+
+        <!-- Crowdfunding -->
+        <li class="menu-item">
+          <a href="#collapseCrowd" data-bs-toggle="collapse" aria-expanded="false" class="menu-link">
+            <i class="bi bi-currency-dollar"></i>
+            <span class="menu-text">Crowdfunding</span>
+            <i class="bi bi-chevron-right float-end mt-1"></i>
+          </a>
+          <ul class="collapse list-unstyled ps-4 mt-2" id="collapseCrowd">
+            <li class="menu-item mb-2">
+              <a href="/Esprit-PW-2A20-2526-CivicPlus/Modules/Crowdfunding/view/liste_projets.html" class="menu-link">
+                <i class="bi bi-card-list"></i> <span class="menu-text">Liste des projets</span>
+              </a>
+            </li>
+            <li class="menu-item mb-2">
+              <a href="/Esprit-PW-2A20-2526-CivicPlus/Modules/Crowdfunding/view/liste_donations.html" class="menu-link">
+                <i class="bi bi-piggy-bank"></i> <span class="menu-text">Liste des donations</span>
+              </a>
+            </li>
+          </ul>
+        </li>
+
+        <!-- Geo-Services -->
+        <li class="menu-item">
+          <a href="#collapseGeo" data-bs-toggle="collapse" aria-expanded="false" class="menu-link">
+            <i class="bi bi-map-fill"></i>
+            <span class="menu-text">Geo-Services</span>
+            <i class="bi bi-chevron-right float-end mt-1"></i>
+          </a>
+          <ul class="collapse list-unstyled ps-4 mt-2" id="collapseGeo">
+            <li class="menu-item mb-2">
+              <a href="/Esprit-PW-2A20-2526-CivicPlus/Modules/Geo-Services/View/liste_poi.html" class="menu-link">
+                <i class="bi bi-card-list"></i> <span class="menu-text">Liste des POI</span>
+              </a>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </aside>
+
+    <main class="admin-content">
+      <div class="admin-card">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+          <div>
+            <h2 class="mb-1">Types de Documents</h2>
+            <p class="text-muted mb-0">Gestion des types de documents E-Administration</p>
+          </div>
+        </div>
+
+        <div class="row g-4">
+          <div class="col-lg-4">
+            <div class="card border-0 shadow-sm rounded-4" style="background-color: #f8f9fa;">
+              <div class="card-body p-4">
+                <h5 class="fw-bold mb-4" style="color: var(--heading-color);">Ajouter un type</h5>
+                <form id="formAjoutType">
+                  <div class="mb-3">
+                    <label for="libelle" class="form-label fw-bold text-secondary">Libellé du document <span class="text-danger">*</span></label>
+                    <input type="text" class="form-control rounded-3" id="libelle" name="libelle" placeholder="Ex: Extrait de naissance" required style="border-color: #e0e0e0;">
+                  </div>
+                  <div class="mb-4">
+                    <label for="duree_validite_mois" class="form-label fw-bold text-secondary">Durée (Mois)</label>
+                    <input type="number" class="form-control rounded-3" id="duree_validite_mois" name="duree_validite_mois" placeholder="Ex: 3" style="border-color: #e0e0e0;">
+                    <div class="form-text">Laissez vide si le document n'expire pas.</div>
+                  </div>
+                  <div class="d-grid">
+                    <button type="submit" class="btn rounded-pill fw-bold" style="background-color: var(--accent-color); color: var(--contrast-color);">Créer le type</button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-8">
+            <div class="table-responsive rounded-4 shadow-sm border-0 overflow-hidden">
+              <table class="table table-hover mb-0 admin-table align-middle border-0">
+                <thead class="admin-table-head">
+                  <tr>
+                    <th class="border-0">ID</th>
+                    <th class="border-0">Libellé</th>
+                    <th class="border-0">Validité (Mois)</th>
+                    <th class="text-end border-0">Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="typesTableBody">
+                </tbody>
+              </table>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script src="../../../assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="../../../assets/vendor/aos/aos.js"></script>
+  <script src="../../../assets/vendor/glightbox/js/glightbox.min.js"></script>
+  <script src="../../../assets/vendor/swiper/swiper-bundle.min.js"></script>
+  <script src="../../../assets/js/main.js"></script>
+  <script src="js/gestion_types.js"></script>
+<script src='/Esprit-PW-2A20-2526-CivicPlus/assets/js/auth.js?v=5'></script>
+</body>
+</html>
+
+
+
