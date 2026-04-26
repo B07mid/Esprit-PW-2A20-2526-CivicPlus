@@ -486,6 +486,7 @@ document.getElementById('modalPublishBtn').addEventListener('click', function ()
     fetch('../Controller/CommentaireController.php', { method: 'POST', body: formData })
         .then(function (r) {
             if (r.status === 401) throw new Error('non_authentifie');
+            if (r.status === 403) throw new Error('compte_bloqué');
             return r.json();
         })
         .then(function (data) {
@@ -507,6 +508,11 @@ document.getElementById('modalPublishBtn').addEventListener('click', function ()
             if (err.message === 'non_authentifie') {
                 document.getElementById('commentFormWrapper').classList.add('d-none');
                 document.getElementById('commentLoginNotice').classList.remove('d-none');
+            } else if (err.message === 'compte_bloqué') {
+                document.getElementById('commentFormWrapper').classList.add('d-none');
+                document.getElementById('commentLoginNotice').classList.remove('d-none');
+                document.getElementById('commentLoginNotice').innerHTML =
+                    '<i class="bi bi-ban me-2 text-danger"></i><span class="text-danger fw-semibold">Votre compte a été bloqué. Vous ne pouvez plus commenter.</span>';
             }
         });
 });

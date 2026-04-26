@@ -10,6 +10,8 @@ document.addEventListener('DOMContentLoaded', function () {
     chargerDonations();
 });
 
+/** Récupère toutes les donations depuis l'API et les affiche dans le tableau backoffice.
+ *  Chaque ligne permet la modification du statut via double-clic et la suppression via bouton. */
 function chargerDonations() {
     const tableBody = document.getElementById('donationsTableBody');
     if (!tableBody) return;
@@ -62,12 +64,16 @@ function chargerDonations() {
         });
 }
 
+/** Retourne la classe CSS Bootstrap pour le badge de statut de paiement d'une donation
+ *  (ex: 'confirmé' → 'bg-success', 'annulé' → 'bg-danger', défaut → 'bg-warning'). */
 function statutBadgeClass(statut) {
     if (statut === 'confirmé')  return 'bg-success';
     if (statut === 'annulé')    return 'bg-danger';
     return 'bg-warning text-dark';
 }
 
+/** Remplace le badge de statut d'une cellule par un menu déroulant pour permettre l'édition inline.
+ *  Déclenché par un double-clic sur la cellule statut d'une ligne du tableau. */
 function editerStatut(td) {
     if (td.querySelector('select')) return;
     const tr  = td.closest('tr');
@@ -81,6 +87,8 @@ function editerStatut(td) {
     `;
 }
 
+/** Envoie le nouveau statut de paiement sélectionné à l'API et recharge le tableau.
+ *  Appelé depuis le bouton 'Sauvegarder' de chaque ligne du tableau. */
 function sauvegarderDonation(id_don, id_projet, btn) {
     const tr       = btn.closest('tr');
     const formData = new FormData();
@@ -104,6 +112,8 @@ function sauvegarderDonation(id_don, id_projet, btn) {
         .catch(err => console.error(err));
 }
 
+/** Demande confirmation puis envoie une requête DELETE à l'API pour supprimer la donation.
+ *  Recharge le tableau si la suppression réussit. */
 function supprimerDonation(id) {
     if (!confirm('Voulez-vous vraiment supprimer cette donation ?')) return;
     fetch(`../controller/DonationController.php?action=delete&id=${id}`)
@@ -116,6 +126,9 @@ function supprimerDonation(id) {
         });
 }
 
+/** Affiche une alerte Bootstrap temporaire (3 secondes) dans la zone #flashBox.
+ *  @param {string} msg  - Texte du message
+ *  @param {string} type - Type Bootstrap : 'success', 'danger', 'warning', etc. */
 function showFlash(msg, type) {
     const box = document.getElementById('flashBox');
     if (box) {

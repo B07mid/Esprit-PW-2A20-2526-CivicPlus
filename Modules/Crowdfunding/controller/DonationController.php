@@ -5,17 +5,19 @@ require_once '../config/config.php';
 
 class DonationController {
 
-    // R : Toutes les donations (JSON)
+    // Retourne toutes les donations en format JSON.
+    // Appelé par la page liste_donations.html pour peupler le tableau backoffice.
     public function getAllAction($pdo) {
         header('Content-Type: application/json');
         echo json_encode(Donation::getAllDonations($pdo));
         exit();
     }
 
-    // C : Ajouter une donation (form POST ? redirect)
+    // Traite le formulaire POST de création d'une donation citoyenne.
+    // Valide le statut, insère en base, rafraîchit le montant collecté du projet, et redirige.
     public function addAction($pdo) {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $allowed = ['en_attente', 'confirm�', 'annul�'];
+            $allowed = ['en_attente', 'confirmé', 'annulé'];
             $statut  = htmlspecialchars(trim($_POST['statut_paiement'] ?? ''));
             if (!in_array($statut, $allowed, true)) $statut = 'en_attente';
 
@@ -44,10 +46,11 @@ class DonationController {
         }
     }
 
-    // U : Modifier le statut d'une donation (JSON)
+    // Modifie le statut de paiement d'une donation existante via POST.
+    // Appelé depuis le tableau backoffice après double-clic sur la cellule statut.
     public function updateAction($pdo) {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $allowed = ['en_attente', 'confirm�', 'annul�'];
+            $allowed = ['en_attente', 'confirmé', 'annulé'];
             $statut  = htmlspecialchars(trim($_POST['statut_paiement'] ?? ''));
             if (!in_array($statut, $allowed, true)) {
                 header('Content-Type: application/json');
@@ -65,7 +68,8 @@ class DonationController {
         }
     }
 
-    // D : Supprimer une donation (JSON)
+    // Supprime une donation et rafraîchit le montant collecté du projet concerné.
+    // Appelé depuis le bouton Supprimer de la liste des donations en backoffice.
     public function deleteAction($pdo) {
         if (isset($_GET['id'])) {
             $id   = intval($_GET['id']);
@@ -100,6 +104,4 @@ if (basename($_SERVER['PHP_SELF']) == 'DonationController.php') {
         }
     }
 }
-
-
-
+?>

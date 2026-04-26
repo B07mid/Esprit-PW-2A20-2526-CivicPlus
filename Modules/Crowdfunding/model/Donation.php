@@ -8,6 +8,8 @@ class Donation {
     private $reference_transaction;
     private $statut_paiement;
 
+    // Initialise une nouvelle instance Donation avec les données fournies.
+    // Tous les paramètres sont optionnels pour permettre la création partielle (ex: modification statut seul).
     public function __construct(
         $id_don = null, $num_cin = null, $id_projet = null,
         $montant = null, $reference_transaction = null, $statut_paiement = 'en_attente'
@@ -21,6 +23,8 @@ class Donation {
     }
 
     // --- C : Ajouter une donation ---
+    // Insère une nouvelle donation en base avec les données de l'objet courant.
+    // Retourne true si l'insertion réussit, arrête l'exécution en cas d'erreur PDO.
     public function ajouterDonation($pdo) {
         try {
             $sql = "INSERT INTO donation
@@ -41,6 +45,7 @@ class Donation {
     }
 
     // --- R : Toutes les donations ---
+    // Retourne toutes les donations triées par ID décroissant (les plus récentes en premier).
     public static function getAllDonations($pdo) {
         try {
             $stmt = $pdo->query("SELECT * FROM donation ORDER BY id_don DESC");
@@ -51,6 +56,7 @@ class Donation {
     }
 
     // --- R : Donations par projet ---
+    // Retourne toutes les donations liées à un projet spécifique, triées par ID décroissant.
     public static function getDonationsByProjet($pdo, $id_projet) {
         try {
             $stmt = $pdo->prepare("SELECT * FROM donation WHERE id_projet = :id ORDER BY id_don DESC");
@@ -62,6 +68,7 @@ class Donation {
     }
 
     // --- U : Modifier le statut ---
+    // Met à jour uniquement le statut de paiement d'une donation existante (par id_don).
     public function modifierDonation($pdo) {
         try {
             $stmt = $pdo->prepare("UPDATE donation SET statut_paiement = :statut WHERE id_don = :id");
@@ -73,6 +80,7 @@ class Donation {
     }
 
     // --- D : Supprimer une donation ---
+    // Supprime définitivement une donation par son ID. Retourne true si réussi, false en cas d'erreur.
     public static function supprimerDonation($pdo, $id) {
         try {
             $stmt = $pdo->prepare("DELETE FROM donation WHERE id_don = :id");
@@ -83,3 +91,4 @@ class Donation {
         }
     }
 }
+

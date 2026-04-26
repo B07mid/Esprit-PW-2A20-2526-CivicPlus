@@ -43,6 +43,9 @@ if ($action === 'allCounts') {
 }
 
 // ── POST : cast / toggle a vote ──────────────────────────────────────────────
+// Enregistre, change ou annule le vote (like/dislike) d'un citoyen sur un projet.
+// Si le même vote est soumis deux fois, il est supprimé (toggle off).
+// Nécessite une session active; retourne les nouveaux compteurs du projet concerné.
 if ($action === 'vote' && $_SERVER['REQUEST_METHOD'] === 'POST') {
     if (!isset($_SESSION['user_id'])) {
         ob_clean();

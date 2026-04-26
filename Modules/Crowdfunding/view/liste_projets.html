@@ -16,7 +16,6 @@
   <link href="../../../assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
   <link href="../../../assets/css/main.css" rel="stylesheet">
   <link href="../../../assets/css/admin.css" rel="stylesheet">
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
 </head>
 
 <body class="index-page">
@@ -31,8 +30,7 @@
           <small>BackOffice</small>
         </div>
       </div>
-            <ul class="menu-inner">
-        <!-- Dashboard -->
+      <ul class="menu-inner">
         <li class="menu-item">
           <a href="/Esprit-PW-2A20-2526-CivicPlus/admin.html" class="menu-link">
             <i class="bi bi-house-door-fill"></i>
@@ -42,8 +40,6 @@
             </div>
           </a>
         </li>
-
-        <!-- Back to FrontOffice -->
         <li class="menu-item">
           <a href="/Esprit-PW-2A20-2526-CivicPlus/index.html" class="menu-link text-primary">
             <i class="bi bi-arrow-left-circle"></i>
@@ -53,16 +49,12 @@
             </div>
           </a>
         </li>
-
-        <!-- User -->
         <li class="menu-item">
           <a href="/Esprit-PW-2A20-2526-CivicPlus/Modules/User/View/user_list.html" class="menu-link">
             <i class="bi bi-people-fill"></i>
             <span class="menu-text">Citoyens / Utilisateurs</span>
           </a>
         </li>
-
-        <!-- E-Administration -->
         <li class="menu-item">
           <a href="#collapseEAdmin" data-bs-toggle="collapse" aria-expanded="false" class="menu-link">
             <i class="bi bi-building"></i>
@@ -82,8 +74,6 @@
             </li>
           </ul>
         </li>
-
-        <!-- Smart Transport -->
         <li class="menu-item">
           <a href="#collapseTransport" data-bs-toggle="collapse" aria-expanded="false" class="menu-link">
             <i class="bi bi-bus-front"></i>
@@ -103,8 +93,6 @@
             </li>
           </ul>
         </li>
-
-        <!-- Signalements Urbains -->
         <li class="menu-item">
           <a href="#collapseSignalement" data-bs-toggle="collapse" aria-expanded="false" class="menu-link">
             <i class="bi bi-flag-fill"></i>
@@ -119,20 +107,16 @@
             </li>
           </ul>
         </li>
-
-        <!-- Crowdfunding -->
         <li class="menu-item">
-          <a href="#collapseCrowd" data-bs-toggle="collapse" aria-expanded="false" class="menu-link">
+          <a href="#collapseCrowd" data-bs-toggle="collapse" aria-expanded="true" class="menu-link">
             <i class="bi bi-currency-dollar"></i>
             <span class="menu-text">Crowdfunding</span>
-            <span id="sidebarCrowdBadge" class="badge bg-danger rounded-circle ms-1 d-none" style="font-size:0.65rem;">0</span>
             <i class="bi bi-chevron-right float-end mt-1"></i>
           </a>
-          <ul class="collapse list-unstyled ps-4 mt-2" id="collapseCrowd">
+          <ul class="collapse show list-unstyled ps-4 mt-2" id="collapseCrowd">
             <li class="menu-item mb-2">
-              <a href="/Esprit-PW-2A20-2526-CivicPlus/Modules/Crowdfunding/view/liste_projets.html" class="menu-link">
+              <a href="/Esprit-PW-2A20-2526-CivicPlus/Modules/Crowdfunding/view/liste_projets.html" class="menu-link active">
                 <i class="bi bi-card-list"></i> <span class="menu-text">Liste des projets</span>
-                <span id="sidebarProjetsBadge" class="badge bg-danger rounded-circle ms-1 d-none" style="font-size:0.65rem;">0</span>
               </a>
             </li>
             <li class="menu-item mb-2">
@@ -147,8 +131,6 @@
             </li>
           </ul>
         </li>
-
-        <!-- Geo-Services -->
         <li class="menu-item">
           <a href="#collapseGeo" data-bs-toggle="collapse" aria-expanded="false" class="menu-link">
             <i class="bi bi-map-fill"></i>
@@ -171,69 +153,36 @@
       <div class="admin-card">
         <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
           <h2 class="mb-0">Projets Crowdfunding</h2>
-          <a href="citoyen_nouveau_projet.html?direct=1" class="btn btn-primary">
+          <a href="citoyen_nouveau_projet.html" class="btn btn-primary">
             <i class="bi bi-plus-circle"></i> Nouveau projet
           </a>
         </div>
 
         <div id="flashBox"></div>
 
-        <!-- Projects table -->
-        <div class="table-responsive" id="projetsWrapper">
-          <table class="table table-hover align-middle" id="projetsContainer">
+        <div class="table-responsive">
+          <table class="table table-hover table-striped align-middle">
             <thead class="table-light">
               <tr>
-                <th>#</th>
+                <th>ID</th>
                 <th>Titre</th>
-                <th>Localisation</th>
-                <th>Collecté</th>
-                <th>Objectif</th>
+                <th>Ville / Quartier</th>
+                <th>Objectif ($)</th>
+                <th>Collecté ($)</th>
+                <th>Progression</th>
                 <th>Statut</th>
-                <th class="text-center">Actions</th>
+                <th>Actions</th>
               </tr>
             </thead>
-            <tbody id="projetsBody">
+            <tbody id="projetsContainer">
               <!-- Rempli dynamiquement par liste_projets.js -->
             </tbody>
           </table>
         </div>
 
         <div id="emptyMsg" class="alert alert-info d-none">Aucun projet trouvé.</div>
-
-        <!-- Demandes button -->
-        <div class="mt-4 pt-3 border-top">
-          <button class="btn btn-warning position-relative" onclick="ouvrirDemandes()">
-            <i class="bi bi-inbox-fill me-1"></i> Demandes de projets
-            <span id="demandesCount" class="position-absolute top-0 start-100 translate-middle badge rounded-circle bg-danger d-none" style="font-size:0.7rem;min-width:1.4rem;">0</span>
-          </button>
-        </div>
       </div>
     </main>
-  </div>
-
-  <!-- Demandes modal -->
-  <div class="modal fade" id="demandesModal" tabindex="-1">
-    <div class="modal-dialog modal-xl modal-dialog-scrollable">
-      <div class="modal-content">
-        <div class="modal-header">
-          <h5 class="modal-title"><i class="bi bi-inbox-fill me-2 text-warning"></i>Demandes de projets en attente</h5>
-          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-        </div>
-        <div class="modal-body">
-          <div id="demandesFlash"></div>
-          <div class="table-responsive">
-            <table class="table table-hover align-middle">
-              <thead class="table-light">
-                <tr>
-                  <th>#</th><th>CIN</th><th>Titre</th><th>Type</th><th>Budget</th><th>Localisation</th><th>Date</th><th class="text-center">Actions</th>
-                </tr>
-              </thead>
-              <tbody id="demandesTableBody"></tbody>
-            </table>
-          </div>
-        </div>
-      </div>
-    </div>
   </div>
 
   <!-- Edit modal -->
@@ -285,52 +234,7 @@
     </div>
   </div>
 
-  <!-- Map Modal -->
-  <div class="modal fade" id="mapModal" tabindex="-1">
-    <div class="modal-dialog modal-lg modal-dialog-centered">
-      <div class="modal-content">
-        <div class="modal-header py-2">
-          <h6 class="modal-title mb-0" id="mapModalTitle"><i class="bi bi-geo-alt-fill me-2 text-primary"></i></h6>
-          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
-        </div>
-        <div class="modal-body p-0">
-          <div id="adminLeafletMap" style="height:420px;width:100%;"></div>
-        </div>
-      </div>
-    </div>
-  </div>
-
   <script src="../../../assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-  <script src="js/liste_projets.js?v=6"></script>
-  <script>
-    var _adminMap = null;
-    var _adminMarker = null;
-    function openMapModal(lat, lng, label) {
-      document.getElementById('mapModalTitle').innerHTML =
-        '<i class="bi bi-geo-alt-fill me-2 text-primary"></i>' + label;
-      var modal = new bootstrap.Modal(document.getElementById('mapModal'));
-      modal.show();
-      document.getElementById('mapModal').addEventListener('shown.bs.modal', function handler() {
-        if (!_adminMap) {
-          _adminMap = L.map('adminLeafletMap').setView([lat, lng], 14);
-          L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-            attribution: '© OpenStreetMap contributors'
-          }).addTo(_adminMap);
-          _adminMarker = L.marker([lat, lng]).addTo(_adminMap).bindPopup(label).openPopup();
-        } else {
-          _adminMap.setView([lat, lng], 14);
-          _adminMarker.setLatLng([lat, lng]).setPopupContent(label).openPopup();
-          _adminMap.invalidateSize();
-        }
-        this.removeEventListener('shown.bs.modal', handler);
-      });
-    }
-  </script>
-<script src='/Esprit-PW-2A20-2526-CivicPlus/assets/js/auth.js?v=5'></script>
+  <script src="js/liste_projets.js"></script>
 </body>
 </html>
-
-
-
-

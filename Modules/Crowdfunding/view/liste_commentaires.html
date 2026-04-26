@@ -124,14 +124,12 @@
           <a href="#collapseCrowd" data-bs-toggle="collapse" aria-expanded="true" class="menu-link">
             <i class="bi bi-currency-dollar"></i>
             <span class="menu-text">Crowdfunding</span>
-            <span id="sidebarCrowdBadge" class="badge bg-danger rounded-circle ms-1 d-none" style="font-size:0.65rem;">0</span>
             <i class="bi bi-chevron-right float-end mt-1"></i>
           </a>
           <ul class="collapse show list-unstyled ps-4 mt-2" id="collapseCrowd">
             <li class="menu-item mb-2">
               <a href="/Esprit-PW-2A20-2526-CivicPlus/Modules/Crowdfunding/view/liste_projets.html" class="menu-link">
                 <i class="bi bi-card-list"></i> <span class="menu-text">Liste des projets</span>
-                <span id="sidebarProjetsBadge" class="badge bg-danger rounded-circle ms-1 d-none" style="font-size:0.65rem;">0</span>
               </a>
             </li>
             <li class="menu-item mb-2">
@@ -177,16 +175,16 @@
 
         <div id="flashBox"></div>
 
-        <div class="table-responsive rounded-4 shadow-sm border-0">
+        <div class="table-responsive rounded-4 shadow-sm border-0 overflow-hidden">
           <table class="table table-hover mb-0 admin-table align-middle border-0">
             <thead class="admin-table-head">
               <tr>
                 <th class="border-0">ID</th>
                 <th class="border-0">Auteur</th>
-                <th class="border-0">CIN</th>
                 <th class="border-0">Projet</th>
                 <th class="border-0">Commentaire</th>
                 <th class="border-0">Date</th>
+                <th class="border-0">Statut</th>
                 <th class="border-0 text-center">Actions</th>
               </tr>
             </thead>
@@ -200,16 +198,33 @@
   </div>
 
   <script src="../../../assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+  <!-- Edit modal -->
+  <div class="modal fade" id="editModal" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title"><i class="bi bi-pencil me-2"></i>Modifier le commentaire</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <input type="hidden" id="edit_id">
+          <div class="mb-3">
+            <label class="form-label fw-bold">Contenu</label>
+            <textarea class="form-control" id="edit_contenu" rows="5"></textarea>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+          <button class="btn btn-primary" id="btnSaveEdit">
+            <i class="bi bi-check-lg me-1"></i>Sauvegarder
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <script src="js/liste_commentaires.js?v=2"></script>
   <script src='/Esprit-PW-2A20-2526-CivicPlus/assets/js/auth.js?v=5'></script>
-<script>
-fetch('../controller/ProjetCrowdfundingController.php?action=demandeCount')
-  .then(function(r){return r.json();}).then(function(d){
-    var n=d.count||0; if(!n) return;
-    ['sidebarCrowdBadge','sidebarProjetsBadge'].forEach(function(id){
-      var el=document.getElementById(id); if(el){el.textContent=n;el.classList.remove('d-none');}
-    });
-  }).catch(function(){});
-</script>
 </body>
 </html>

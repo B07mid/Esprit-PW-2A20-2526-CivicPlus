@@ -1,137 +1,91 @@
 document.addEventListener('DOMContentLoaded', function () {
 
-    var params = new URLSearchParams(window.location.search);
-    var preId  = params.get('id_projet');
-    var box    = document.getElementById('alertBox');
-    var select = document.getElementById('id_projet');
-    var hint   = document.getElementById('projetHint');
+    // ── IIFE : Génère automatiquement la référence de transaction au format TXN-YYYYMMDD-XXXX.
+    //           Remplit le champ caché et l'affiche dans la div grise en lecture seule.
+    (function () {
+        const now = new Date();
+        const pad = n => String(n).padStart(2, '0');
+        const ref = 'TXN-' + now.getFullYear() + pad(now.getMonth() + 1) + pad(now.getDate())
+                  + '-' + Math.floor(1000 + Math.random() * 9000);
+        document.getElementById('reference_transaction').value = ref;
+        document.getElementById('reference_display').textContent = ref;
+    })();
 
-    // Alert messages from redirect
-    if (params.get('success') === '1') {
-        if (box) box.innerHTML = '<div class="alert alert-success">&#x2705; Donation enregistree avec succes !</div>';
-    } else if (params.get('error') === 'cin_not_found') {
-        if (box) box.innerHTML = '<div class="alert alert-danger">&#x274C; Ce numero CIN n\'existe pas dans notre base de donnees.</div>';
-    } else if (params.get('error') === 'db_error') {
-        if (box) box.innerHTML = '<div class="alert alert-danger">&#x274C; Une erreur est survenue. Veuillez reessayer.</div>';
-    }
-
-    // ── Auto-fill CIN from session ────────────────────────────────────────────
-    fetch('../../User/Controller/get_current_user.php')
-        .then(function (r) { return r.json(); })
-        .then(function (data) {
+    // ── Pré-remplit le champ CIN depuis la session via get_current_user.php.
+    //    Affiche le numéro en bleu si l'utilisateur est connecté, sinon 'Non connecté'.
+    fetch('../../../Modules/User/Controller/get_current_user.php')
+        .then(r => r.json())
+        .then(data => {
             if (data.success && data.user) {
-                var cinField = document.getElementById('num_cin');
-                if (cinField) {
-                    cinField.value    = data.user.num_cin;
-                    cinField.readOnly = true;
-                    cinField.style.background = '#e9ecef';
-                    cinField.style.cursor     = 'not-allowed';
-                    var col = cinField.closest('.col-md-12');
-                    if (col) {
-                        var h = document.createElement('div');
-                        h.className = 'form-text text-success mt-1';
-                        h.innerHTML = '<i class="bi bi-person-check-fill me-1"></i>Connecte en tant que : <strong>' + data.user.nom + ' ' + data.user.prenom + '</strong>';
-                        col.appendChild(h);
-                    }
-                }
+                document.getElementById('num_cin').value = data.user.num_cin;
+                document.getElementById('cin_display').textContent = data.user.num_cin;
+                document.getElementById('cin_display').style.color = '#112f8d';
+            } else {
+                document.getElementById('cin_display').textContent = 'Non connecté';
             }
         })
-        .catch(function () { /* not logged in – field stays editable */ });
+        .catch(() => { document.getElementById('cin_display').textContent = 'Erreur'; });
 
-    // ── Project field ─────────────────────────────────────────────────────────
-    if (select) {
-        if (preId) {
-            // Arriving from "Donner" button: fetch this specific project immediately
-            select.innerHTML = '<option value="">Chargement...</option>';
-            select.disabled  = true;
-            select.style.background = '#e9ecef';
-            select.style.cursor     = 'not-allowed';
-
-            fetch('../Controller/ProjetCrowdfundingController.php?action=getById&id=' + encodeURIComponent(preId))
-                .then(function (r) { return r.json(); })
-                .then(function (p) {
-                    if (p && p.id_projet) {
-                        // Replace select with a read-only display input
-                        var display = document.createElement('input');
-                        display.type      = 'text';
-                        display.className = 'form-control';
-                        display.readOnly  = true;
-                        display.value     = p.titre + ' — ' + p.ville + ', ' + p.quartier;
-                        display.style.background = '#e9ecef';
-                        display.style.cursor     = 'not-allowed';
-                        display.style.color      = '#112f8d';
-                        display.style.fontWeight = '500';
-
-                        // Hidden input carries the actual id_projet value
-                        var hidden   = document.createElement('input');
-                        hidden.type  = 'hidden';
-                        hidden.name  = 'id_projet';
-                        hidden.value = p.id_projet;
-
-                        select.parentNode.replaceChild(display, select);
-                        display.parentNode.appendChild(hidden);
-
-                        if (hint) {
-                            hint.innerHTML = '<i class="bi bi-check-circle-fill text-success me-1"></i>'
-                                + 'Projet pre-selectionne : <strong>' + p.titre + '</strong>';
-                        }
-                    } else {
-                        // Fallback: show editable dropdown if project not found
-                        chargerTousProjets(select, null);
-                    }
-                })
-                .catch(function () {
-                    chargerTousProjets(select, null);
-                });
-        } else {
-            // No pre-selection: load full dropdown
-            chargerTousProjets(select, null);
-        }
+    // ── Récupère le nom du projet depuis l'URL (?id_projet=X) et le passe à l'API.
+    //    Affiche le titre du projet dans la div grise en lecture seule.
+    const idProjet = new URLSearchParams(window.location.search).get('id_projet');
+    if (idProjet) {
+        document.getElementById('id_projet').value = idProjet;
+        fetch('../controller/ProjetCrowdfundingController.php?action=getById&id=' + idProjet)
+            .then(r => r.json())
+            .then(data => {
+                const nom = data && data.titre ? data.titre : 'Projet #' + idProjet;
+                document.getElementById('projet_display').textContent = nom;
+                document.getElementById('projet_display').style.color = '#112f8d';
+            })
+            .catch(() => {
+                document.getElementById('projet_display').textContent = 'Projet #' + idProjet;
+                document.getElementById('projet_display').style.color = '#112f8d';
+            });
+    } else {
+        document.getElementById('projet_display').textContent = 'Aucun projet sélectionné';
     }
 
-    // ── Form validation ───────────────────────────────────────────────────────
-    var form = document.getElementById('formDonation');
+    // ── Vérifie les paramètres GET pour afficher les messages de succès ou d'erreur
+    //    après la soumission du formulaire (redirecté depuis DonationController.php).
+    const params = new URLSearchParams(window.location.search);
+    const box = document.getElementById('alertBox');
+
+    if (params.get('success') === '1') {
+        if (box) box.innerHTML = '<div class="alert alert-success">✅ Donation enregistrée avec succès !</div>';
+    } else if (params.get('error') === 'cin_not_found') {
+        if (box) box.innerHTML = '<div class="alert alert-danger">❌ Ce numéro CIN n\'existe pas dans notre base de données. Veuillez vérifier votre CIN.</div>';
+    } else if (params.get('error') === 'db_error') {
+        if (box) box.innerHTML = '<div class="alert alert-danger">❌ Une erreur est survenue. Veuillez réessayer.</div>';
+    }
+
+    const form = document.getElementById('formDonation');
     if (!form) return;
 
+    // ── Validation côté client avant soumission du formulaire.
+    //    Vérifie que le CIN et le projet sont chargés, que le montant est positif
+    //    et qu'un statut de paiement a été sélectionné.
     form.addEventListener('submit', function (event) {
-        var cin     = (document.getElementById('num_cin')          || {}).value || '';
-        var projet  = (document.querySelector('[name="id_projet"]') || {}).value || '';
-        var montant = parseFloat((document.getElementById('montant')          || {}).value);
-        var statut  = (document.getElementById('statut_paiement')  || {}).value || '';
+        const cin    = document.getElementById('num_cin').value.trim();
+        const projet = document.getElementById('id_projet').value.trim();
+        const montant = parseFloat(document.getElementById('montant').value);
+        const statut = document.getElementById('statut_paiement').value;
 
-        if (!/^\d{1,15}$/.test(cin.trim()) || parseInt(cin) <= 0) {
-            alert('Erreur : Le numero CIN est invalide.');
+        if (!cin || parseInt(cin) <= 0) {
+            alert('❌ CIN non chargé. Veuillez vous connecter.');
             event.preventDefault(); return;
         }
         if (!projet || parseInt(projet) <= 0) {
-            alert('Erreur : Veuillez selectionner un projet.');
+            alert('❌ Aucun projet sélectionné.');
             event.preventDefault(); return;
         }
         if (isNaN(montant) || montant <= 0) {
-            alert('Erreur : Le montant doit etre un nombre positif.');
+            alert('❌ Le montant doit être un nombre positif.');
             event.preventDefault(); return;
         }
         if (!statut) {
-            alert('Erreur : Veuillez choisir un statut de paiement.');
+            alert('❌ Veuillez choisir un statut de paiement.');
             event.preventDefault(); return;
         }
     });
 });
-
-function chargerTousProjets(select, preId) {
-    select.innerHTML = '<option value="" disabled selected>-- Choisir un projet --</option>';
-    fetch('../Controller/ProjetCrowdfundingController.php?action=getAll')
-        .then(function (r) { return r.json(); })
-        .then(function (projets) {
-            projets.forEach(function (p) {
-                var opt        = document.createElement('option');
-                opt.value      = p.id_projet;
-                opt.textContent = p.titre + ' -- ' + p.ville + ', ' + p.quartier;
-                select.appendChild(opt);
-            });
-            if (preId) { select.value = preId; }
-        })
-        .catch(function () {
-            select.innerHTML = '<option value="" disabled selected>Erreur de chargement</option>';
-        });
-}

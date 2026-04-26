@@ -61,26 +61,23 @@
 
                 <div id="alertBox"></div>
 
-                <form action="../Controller/DonationController.php" method="POST"
+                <form action="../controller/DonationController.php" method="POST"
                       id="formDonation" class="php-email-form"
                       style="background-color:#f8f9fa; border-radius:10px; padding:1.5rem;">
                   <div class="row gy-3">
 
                     <div class="col-md-12">
-                      <label for="num_cin" class="form-label fw-bold">Numéro CIN <span class="text-danger">*</span></label>
-                      <input type="number" class="form-control" name="num_cin" id="num_cin"
-                             placeholder="Ex: 12345678" required
-                             style="color:#112f8d; background-color:#ffffff; font-weight:500;">
+                      <label class="form-label fw-bold">Numéro CIN <span class="text-danger">*</span></label>
+                      <div id="cin_display" class="form-control"
+                           style="background-color:#e9ecef; color:#6c757d; font-family:monospace; cursor:default;">Chargement...</div>
+                      <input type="hidden" name="num_cin" id="num_cin">
                     </div>
 
                     <div class="col-md-12">
-                      <label for="id_projet" class="form-label fw-bold">Projet <span class="text-danger">*</span></label>
-                      <select class="form-select" name="id_projet" id="id_projet" required
-                              style="color:#112f8d; background-color:#ffffff; font-weight:500;">
-                        <option value="" disabled selected>— Chargement des projets… —</option>
-                      </select>
-                      <div class="form-text" id="projetHint"></div>
-                    </div>
+                      <label class="form-label fw-bold">Projet <span class="text-danger">*</span></label>
+                      <div id="projet_display" class="form-control"
+                           style="background-color:#e9ecef; color:#6c757d; cursor:default;">Chargement...</div>
+                      <input type="hidden" name="id_projet" id="id_projet">
 
                     <div class="col-md-6">
                       <label for="montant" class="form-label fw-bold">Montant ($) <span class="text-danger">*</span></label>
@@ -101,10 +98,10 @@
                     </div>
 
                     <div class="col-md-12">
-                      <label for="reference_transaction" class="form-label fw-bold">Référence de transaction</label>
-                      <input type="text" class="form-control" name="reference_transaction" id="reference_transaction"
-                             maxlength="100" placeholder="Ex: TXN-20260412-001"
-                             style="color:#112f8d; background-color:#ffffff; font-weight:500;">
+                      <label class="form-label fw-bold">Référence de transaction</label>
+                      <div id="reference_display" class="form-control"
+                           style="background-color:#e9ecef; color:#6c757d; font-family:monospace; cursor:default;"></div>
+                      <input type="hidden" name="reference_transaction" id="reference_transaction">
                     </div>
 
                   </div>

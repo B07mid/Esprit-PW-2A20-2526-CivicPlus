@@ -12,14 +12,14 @@ class ProjetCrowdfunding {
     private $quartier;
     private $latitude;
     private $longitude;
-    private $type_projet;
 
+    // Initialise une nouvelle instance ProjetCrowdfunding.
+    // Tous les champs sont optionnels pour permettre la création partielle (ex: mise à jour seule).
     public function __construct(
         $id_projet = null, $num_cin = null, $titre = null, $description = null,
         $budget_cible = null, $montant_actuel = 0,
         $statut_projet = 'en_recherche_financement',
-        $ville = null, $quartier = null, $latitude = null, $longitude = null,
-        $type_projet = 'autre'
+        $ville = null, $quartier = null, $latitude = null, $longitude = null
     ) {
         $this->id_projet      = $id_projet;
         $this->num_cin        = $num_cin;
@@ -32,22 +32,21 @@ class ProjetCrowdfunding {
         $this->quartier       = $quartier;
         $this->latitude       = $latitude;
         $this->longitude      = $longitude;
-        $this->type_projet    = $type_projet;
     }
 
     // --- C : Ajouter un projet ---
+    // Insère un nouveau projet crowdfunding en base avec toutes ses données (titre, budget, localisation, etc.).
     public function ajouterProjet($pdo) {
         try {
             $sql = "INSERT INTO projet_crowdfunding
-                    (num_cin, titre, type_projet, description, budget_cible, montant_actuel,
+                    (num_cin, titre, description, budget_cible, montant_actuel,
                      statut_projet, ville, quartier, latitude, longitude)
-                    VALUES (:num_cin, :titre, :type_projet, :description, :budget_cible, :montant_actuel,
+                    VALUES (:num_cin, :titre, :description, :budget_cible, :montant_actuel,
                             :statut_projet, :ville, :quartier, :latitude, :longitude)";
             $stmt = $pdo->prepare($sql);
             $stmt->execute([
                 'num_cin'        => $this->num_cin,
                 'titre'          => $this->titre,
-                'type_projet'    => $this->type_projet,
                 'description'    => $this->description,
                 'budget_cible'   => $this->budget_cible,
                 'montant_actuel' => $this->montant_actuel,
@@ -64,6 +63,7 @@ class ProjetCrowdfunding {
     }
 
     // --- R : Tous les projets ---
+    // Retourne la liste complète des projets crowdfunding, triés du plus récent au plus ancien.
     public static function getAllProjets($pdo) {
         try {
             $stmt = $pdo->query("SELECT * FROM projet_crowdfunding ORDER BY id_projet DESC");
@@ -74,6 +74,7 @@ class ProjetCrowdfunding {
     }
 
     // --- R : Un seul projet ---
+    // Retourne les données d'un projet spécifique via son ID, ou false s'il n'existe pas.
     public static function getProjetById($pdo, $id) {
         try {
             $stmt = $pdo->prepare("SELECT * FROM projet_crowdfunding WHERE id_projet = :id");
@@ -85,6 +86,7 @@ class ProjetCrowdfunding {
     }
 
     // --- U : Modifier un projet ---
+    // Met à jour les champs éditables d'un projet existant (titre, description, budget, statut, ville, quartier).
     public function modifierProjet($pdo) {
         try {
             $sql = "UPDATE projet_crowdfunding SET
@@ -112,6 +114,7 @@ class ProjetCrowdfunding {
     }
 
     // --- D : Supprimer un projet ---
+    // Supprime définitivement un projet par son ID. Retourne true si réussi, false en cas d'erreur.
     public static function supprimerProjet($pdo, $id) {
         try {
             $stmt = $pdo->prepare("DELETE FROM projet_crowdfunding WHERE id_projet = :id");
@@ -122,7 +125,7 @@ class ProjetCrowdfunding {
         }
     }
 
-    // Recalculer montant_actuel depuis les donations confirmees
+    // Recalculer montant_actuel depuis les donations confirmées
     public static function refreshRaised($pdo, $id_projet) {
         try {
             $stmt = $pdo->prepare(
@@ -130,7 +133,7 @@ class ProjetCrowdfunding {
                  SET montant_actuel = (
                      SELECT COALESCE(SUM(montant), 0)
                      FROM donation
-                     WHERE id_projet = :id AND statut_paiement = 'confirme'
+                     WHERE id_projet = :id AND statut_paiement = 'confirmé'
                  )
                  WHERE id_projet = :id2"
             );
@@ -141,3 +144,4 @@ class ProjetCrowdfunding {
         }
     }
 }
+?>

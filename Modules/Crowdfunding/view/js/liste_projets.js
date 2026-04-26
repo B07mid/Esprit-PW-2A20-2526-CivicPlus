@@ -7,17 +7,18 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     chargerProjets();
-    chargerDemandesCount();
     document.getElementById('btnSave').addEventListener('click', sauvegarderProjet);
 });
 
+/** Récupère tous les projets depuis l'API et les affiche sous forme de lignes dans le tableau backoffice.
+ *  Calcule la barre de progression (budget collecté / cible) et génère les liens Google Maps. */
 function chargerProjets() {
     fetch('../controller/ProjetCrowdfundingController.php?action=getAll')
         .then(r => r.json())
         .then(projets => {
-            const tbody = document.getElementById('projetsBody');
-            const empty = document.getElementById('emptyMsg');
-            tbody.innerHTML = '';
+            const container = document.getElementById('projetsContainer');
+            const empty     = document.getElementById('emptyMsg');
+            container.innerHTML = '';
 
             if (projets.length === 0) {
                 empty.classList.remove('d-none');
@@ -30,45 +31,62 @@ function chargerProjets() {
                 const raised   = parseFloat(p.montant_actuel);
                 const pct      = Math.min(100, Math.round((raised / goal) * 100));
                 const barColor = pct >= 100 ? 'bg-success' : pct >= 50 ? 'bg-warning' : 'bg-danger';
-                const titre    = p.titre.length > 45 ? p.titre.substring(0, 45) + '…' : p.titre;
 
-                const lat = parseFloat(p.latitude);
-                const lng = parseFloat(p.longitude);
-                const hasCoords = !isNaN(lat) && !isNaN(lng) && (lat !== 0 || lng !== 0);
-                const locLabel = `${p.ville}, ${p.quartier}`;
-                const locCell = hasCoords
-                    ? `<a href="#" onclick="openMapModal(${lat},${lng},&quot;${locLabel.replace(/"/g,'&amp;quot;')}&quot;);return false;" class="text-primary text-decoration-none fw-medium text-nowrap small"><i class="bi bi-geo-alt-fill me-1"></i>${locLabel}</a>`
-                    : `<span class="text-muted small text-nowrap"><i class="bi bi-geo-alt me-1"></i>${locLabel}</span>`;
+                const hasCoordsVal = p.latitude && p.longitude;
+                const mapsUrl = hasCoordsVal
+                    ? `https://www.google.com/maps?q=${p.latitude},${p.longitude}`
+                    : `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${p.quartier}, ${p.ville}, Tunisie`)}`;
 
                 const tr = document.createElement('tr');
                 tr.innerHTML = `
-                    <td><span class="badge bg-secondary">#${p.id_projet}</span></td>
-                    <td class="text-nowrap fw-semibold" style="max-width:220px;overflow:hidden;text-overflow:ellipsis">${titre}</td>
-                    <td>${locCell}</td>
-                    <td class="fw-semibold text-danger text-nowrap">$${raised.toFixed(2)}</td>
-                    <td class="text-nowrap">$${goal.toFixed(2)}</td>
-                    <td><span class="badge ${statutBadge(p.statut_projet)}">${p.statut_projet.replace(/_/g,' ')}</span></td>
-                    <td class="text-center text-nowrap">
-                        <button class="btn btn-sm btn-outline-primary me-1" title="Modifier"
+                    <td>#${p.id_projet}</td>
+                    <td>
+                        <div class="fw-bold">${p.titre}</div>
+                        <div class="text-muted small">${p.description.length > 80 ? p.description.substring(0, 80) + '…' : p.description}</div>
+                    </td>
+                    <td>
+                        <a href="${mapsUrl}" target="_blank" rel="noopener noreferrer"
+                           class="text-decoration-none">
+                            <i class="bi bi-geo-alt-fill text-primary me-1"></i>${p.ville}
+                        </a><br>
+                        <a href="${mapsUrl}" target="_blank" rel="noopener noreferrer"
+                           class="text-decoration-none text-primary small">${p.quartier}</a>
+                    </td>
+                    <td>${goal.toFixed(2)}</td>
+                    <td>${raised.toFixed(2)}</td>
+                    <td style="min-width:120px">
+                        <div class="progress" style="height:8px;">
+                            <div class="progress-bar ${barColor}" role="progressbar"
+                                 style="width:${pct}%"
+                                 aria-valuenow="${pct}" aria-valuemin="0" aria-valuemax="100">
+                            </div>
+                        </div>
+                        <div class="small text-muted mt-1">${pct}%</div>
+                    </td>
+                    <td><span class="badge ${statutBadge(p.statut_projet)}">${p.statut_projet}</span></td>
+                    <td>
+                        <button class="btn btn-sm btn-outline-primary me-1"
                                 onclick='ouvrirEdit(${JSON.stringify(p)})'>
                             <i class="bi bi-pencil"></i>
                         </button>
-                        <button class="btn btn-sm btn-outline-danger" title="Supprimer"
+                        <button class="btn btn-sm btn-outline-danger"
                                 onclick="supprimerProjet(${p.id_projet})">
                             <i class="bi bi-trash"></i>
                         </button>
                     </td>
                 `;
-                tbody.appendChild(tr);
+                container.appendChild(tr);
             });
         })
         .catch(err => {
             console.error(err);
-            document.getElementById('projetsBody').innerHTML =
-                '<tr><td colspan="8" class="text-center text-danger">Erreur de chargement des projets.</td></tr>';
+            document.getElementById('projetsContainer').innerHTML =
+                '<div class="alert alert-danger">Erreur de chargement des projets.</div>';
         });
 }
 
+/** Retourne la classe CSS Bootstrap correspondant au statut d'un projet
+ *  (ex: 'financé' → 'bg-success', 'annulé' → 'bg-danger'). */
 function statutBadge(statut) {
     const map = {
         'en_recherche_financement': 'bg-info text-dark',
@@ -80,6 +98,8 @@ function statutBadge(statut) {
     return map[statut] || 'bg-secondary';
 }
 
+/** Ouvre le modal d'édition et pré-remplit tous ses champs avec les données du projet sélectionné.
+ *  Appelé depuis le bouton 'crayon' de chaque ligne du tableau. */
 function ouvrirEdit(p) {
     document.getElementById('edit_id_projet').value  = p.id_projet;
     document.getElementById('edit_titre').value      = p.titre;
@@ -91,6 +111,8 @@ function ouvrirEdit(p) {
     new bootstrap.Modal(document.getElementById('editModal')).show();
 }
 
+/** Collecte les valeurs du modal d'édition et envoie un POST à l'API pour mettre à jour le projet.
+ *  Ferme le modal, affiche un flash de confirmation et recharge le tableau en cas de succès. */
 function sauvegarderProjet() {
     const formData = new FormData();
     formData.append('action',        'update');
@@ -116,6 +138,8 @@ function sauvegarderProjet() {
         .catch(err => console.error(err));
 }
 
+/** Demande confirmation puis envoie une requête DELETE à l'API pour supprimer le projet.
+ *  Recharge le tableau si la suppression réussit. */
 function supprimerProjet(id) {
     if (!confirm('Voulez-vous vraiment supprimer ce projet ?')) return;
     fetch(`../controller/ProjetCrowdfundingController.php?action=delete&id=${id}`)
@@ -128,104 +152,13 @@ function supprimerProjet(id) {
         });
 }
 
+/** Affiche une alerte Bootstrap temporaire (4 secondes) dans la zone #flashBox.
+ *  @param {string} msg  - Texte du message
+ *  @param {string} type - Type Bootstrap : 'success', 'danger', 'warning', etc. */
 function showFlash(msg, type) {
     const box = document.getElementById('flashBox');
     if (box) {
         box.innerHTML = `<div class="alert alert-${type}">${msg}</div>`;
         setTimeout(() => box.innerHTML = '', 3500);
     }
-}
-
-// ====================================================
-// Demande de projet functions
-// ====================================================
-
-function chargerDemandesCount() {
-    fetch('../controller/ProjetCrowdfundingController.php?action=demandeCount')
-        .then(r => r.json())
-        .then(data => {
-            const n = data.count || 0;
-            ['demandesCount', 'sidebarCrowdBadge', 'sidebarProjetsBadge'].forEach(id => {
-                const el = document.getElementById(id);
-                if (!el) return;
-                el.textContent = n;
-                el.classList.toggle('d-none', n === 0);
-            });
-        }).catch(() => {});
-}
-
-function ouvrirDemandes() {
-    fetch('../controller/ProjetCrowdfundingController.php?action=demandePending')
-        .then(r => r.json())
-        .then(rows => {
-            const tbody = document.getElementById('demandesTableBody');
-            tbody.innerHTML = '';
-            if (!rows.length) {
-                tbody.innerHTML = '<tr><td colspan="8" class="text-center text-muted py-3"><i class="bi bi-inbox me-2"></i>Aucune demande en attente</td></tr>';
-            } else {
-                rows.forEach(d => {
-                    const tr = document.createElement('tr');
-                    const date = d.date_demande ? new Date(d.date_demande).toLocaleDateString('fr-FR') : '—';
-                    tr.innerHTML = `
-                        <td class="text-nowrap">#${d.id_demande}</td>
-                        <td class="text-nowrap">${d.num_cin}</td>
-                        <td><strong>${d.titre}</strong></td>
-                        <td><span class="badge bg-secondary">${d.type_projet}</span></td>
-                        <td class="text-nowrap">${parseFloat(d.budget_cible).toLocaleString('fr-FR')} TND</td>
-                        <td class="text-nowrap">${d.ville}, ${d.quartier}</td>
-                        <td class="text-nowrap">${date}</td>
-                        <td class="text-center text-nowrap">
-                            <button class="btn btn-sm btn-success me-1" onclick="accepterDemande(${d.id_demande})">
-                                <i class="bi bi-check-lg"></i> Accepter
-                            </button>
-                            <button class="btn btn-sm btn-outline-danger" onclick="refuserDemande(${d.id_demande})">
-                                <i class="bi bi-x-lg"></i> Refuser
-                            </button>
-                        </td>`;
-                    tbody.appendChild(tr);
-                });
-            }
-            new bootstrap.Modal(document.getElementById('demandesModal')).show();
-        }).catch(() => showFlash('Erreur lors du chargement des demandes.', 'danger'));
-}
-
-function accepterDemande(id) {
-    const fd = new FormData();
-    fd.append('action', 'demandeAccept');
-    fetch(`../controller/ProjetCrowdfundingController.php?id=${id}`, { method: 'POST', body: fd })
-        .then(r => r.json())
-        .then(data => {
-            if (data.success) {
-                showDemandesFlash('Demande acceptée — projet créé !', 'success');
-                chargerDemandesCount();
-                chargerProjets();
-                setTimeout(ouvrirDemandes, 600);
-            } else {
-                showDemandesFlash("Erreur lors de l'acceptation.", 'danger');
-            }
-        }).catch(() => showDemandesFlash('Erreur réseau.', 'danger'));
-}
-
-function refuserDemande(id) {
-    if (!confirm('Refuser cette demande de projet ?')) return;
-    const fd = new FormData();
-    fd.append('action', 'demandeDecline');
-    fetch(`../controller/ProjetCrowdfundingController.php?id=${id}`, { method: 'POST', body: fd })
-        .then(r => r.json())
-        .then(data => {
-            if (data.success) {
-                showDemandesFlash('Demande refusée.', 'warning');
-                chargerDemandesCount();
-                setTimeout(ouvrirDemandes, 600);
-            } else {
-                showDemandesFlash('Erreur lors du refus.', 'danger');
-            }
-        }).catch(() => showDemandesFlash('Erreur réseau.', 'danger'));
-}
-
-function showDemandesFlash(msg, type) {
-    const box = document.getElementById('demandesFlash');
-    if (!box) return;
-    box.innerHTML = `<div class="alert alert-${type} alert-dismissible fade show">${msg}<button type="button" class="btn-close" data-bs-dismiss="alert"></button></div>`;
-    setTimeout(() => { const a = box.querySelector('.alert'); if (a) a.remove(); }, 4000);
 }
