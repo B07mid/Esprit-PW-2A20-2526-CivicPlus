@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <title>Vérification email | CivicPlus</title>
+  <meta name="description" content="Vérifier votre adresse email CivicPlus">
+
+  <link href="../../../assets/img/RawShape.png" rel="icon">
+  <link href="../../../assets/img/RawShape.png" rel="apple-touch-icon">
+
+  <link href="https://fonts.googleapis.com" rel="preconnect">
+  <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&family=Raleway:wght@400;500;600;700;800&family=Ubuntu:wght@300;400;500;700&display=swap" rel="stylesheet">
+
+  <link href="../../../assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="../../../assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="../../../assets/vendor/aos/aos.css" rel="stylesheet">
+  <link href="../../../assets/css/main.css" rel="stylesheet">
+</head>
+
+<body class="index-page">
+  <div id="header-container" class="sticky-top" style="top: 0; z-index: 1030;"></div>
+
+  <main id="main">
+    <section class="section contact">
+      <div class="container">
+        <div class="row justify-content-center" data-aos="fade-up" data-aos-delay="100">
+          <div class="col-12 col-xl-5 col-lg-7">
+            <div class="card rounded-4 shadow-lg border-0 overflow-hidden" style="background-color: #f8f9fa;">
+              <div class="card-body p-4 p-lg-5">
+                <div id="verificationIntro" class="mb-4 text-center">
+                  <div class="mb-3">
+                    <i class="bi bi-envelope-check fs-1" style="color: var(--accent-color);"></i>
+                  </div>
+                  <h2 class="h4 mb-1 fw-bold" style="color: var(--heading-color);">Vérification email</h2>
+                  <p class="text-muted mb-0">Entrez le code reçu par email pour activer votre compte.</p>
+                </div>
+
+                <div id="verifyMessage" class="alert d-none mb-3" role="alert"></div>
+
+                <div id="verificationSuccess" class="d-none text-center py-2">
+                  <div class="mx-auto mb-3 d-flex align-items-center justify-content-center" style="width: 70px; height: 70px; border-radius: 18px; background: #198754;">
+                    <i class="bi bi-check2 text-white fs-1"></i>
+                  </div>
+                  <h2 class="h5 fw-bold mb-2" style="color: #198754;">Compte créé avec succès</h2>
+                  <p class="text-muted mb-4">Votre email est vérifié. Vous pouvez maintenant vous connecter.</p>
+                  <a href="login.html" class="btn btn-success rounded-pill px-4 fw-bold">
+                    Aller à la connexion
+                  </a>
+                </div>
+
+                <form id="verifyEmailForm" action="../Controller/VerifyCodeController.php" method="POST">
+                  <div class="mb-3">
+                    <label for="email" class="form-label fw-bold text-secondary">Adresse e-mail</label>
+                    <input type="email" class="form-control rounded-3" id="email" name="email" required style="border-color: #e0e0e0;">
+                  </div>
+
+                  <div class="mb-4">
+                    <label for="verification_code" class="form-label fw-bold text-secondary">Code de vérification</label>
+                    <input type="text" inputmode="numeric" pattern="[0-9]{6}" maxlength="6" class="form-control rounded-3 text-center fw-bold fs-4" id="verification_code" name="verification_code" placeholder="000000" required style="border-color: #e0e0e0; letter-spacing: 8px;">
+                    <div class="form-text text-muted">Le code contient 6 chiffres et expire après quelques minutes.</div>
+                  </div>
+
+                  <div class="d-grid mt-4">
+                    <button type="submit" class="btn rounded-pill px-4 py-2 fw-bold" style="background-color: var(--accent-color); color: var(--contrast-color);">
+                      <i class="bi bi-check-circle me-2"></i>Vérifier et créer mon compte
+                    </button>
+                  </div>
+
+                  <div class="text-center mt-4 fw-bold">
+                    Mauvais email ?
+                    <a href="register.html" style="color: var(--accent-color); text-decoration: underline;">Recommencer l'inscription</a>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center">
+    <i class="bi bi-arrow-up-short"></i>
+  </a>
+
+  <div id="preloader"></div>
+
+  <script src="../../../assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="../../../assets/vendor/aos/aos.js"></script>
+  <script src="../../../assets/js/main.js"></script>
+  <script src="js/verify_email.js"></script>
+  <script src="/civicplus/assets/js/load_header.js"></script>
+  <script src="/civicplus/assets/js/auth.js?v=5"></script>
+</body>
+
+</html>

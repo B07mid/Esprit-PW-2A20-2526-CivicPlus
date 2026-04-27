@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Ajouter POI - CivicPlus</title>
+
+  <!-- Favicons -->
+  <link href="../../../assets/img/RawShape.png" rel="icon">
+  <link href="../../../assets/img/RawShape.png" rel="apple-touch-icon">
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com" rel="preconnect">
+  <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Raleway:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap"
+    rel="stylesheet">
+
+  <!-- Vendor CSS Files -->
+  <link href="../../../assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="../../../assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="../../../assets/vendor/aos/aos.css" rel="stylesheet">
+  <link href="../../../assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+  <link href="../../../assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+
+  <!-- Leaflet CSS & JS -->
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+  <!-- Main CSS File -->
+  <link href="../../../assets/css/main.css" rel="stylesheet">
+</head>
+
+<body class="index-page">
+
+  <!-- === DÉBUT DU HEADER DYNAMIQUE CIVICPLUS === -->
+  <div id="header-container" class="sticky-top" style="top: 0; z-index: 1030;"></div>
+  <!-- === FIN DU HEADER DYNAMIQUE === -->
+
+  <main class="main">
+    <section id="ajouter-poi" class="contact section">
+      <div class="container" data-aos="fade-up">
+        <div class="section-title">
+          <h2>Ajouter un Point d'Intérêt (POI)</h2>
+          <p>Remplissez le formulaire ci-dessous pour proposer un nouveau point d'intérêt.</p>
+        </div>
+
+        <div class="row justify-content-center" data-aos="fade-up" data-aos-delay="200">
+          <div class="col-12 col-xl-8">
+            <div class="card rounded-4 shadow-lg border-0 overflow-hidden">
+              <div class="card-body p-4 p-lg-5">
+                <div class="mb-4">
+                  <h2 class="h4 mb-1">Formulaire Geo-Services</h2>
+                  <p class="text-muted mb-0">Renseignez toutes les informations ci-dessous pour proposer un nouveau
+                    point d'intérêt officiel.</p>
+                </div>
+                <form id="poiForm" method="POST" action="../Controller/PoiController.php"
+                  style="background-color: #f8f9fa; border-radius: 10px; padding: 20px;" class="php-email-form">
+                  <div class="row gy-4">
+
+                    <div class="col-md-12">
+                      <label for="nom_poi" class="pb-2 form-label fw-bold">Nom du Point d'Intérêt <span
+                          class="text-danger">*</span></label>
+                      <input type="text" class="form-control" id="nom_poi" name="nom_poi" placeholder="Ex: Municipalité"
+                        required>
+                      <span id="erreurNom" class="text-danger small mt-1" style="display: none;">Le nom doit contenir au
+                        moins 3 caractères.</span>
+                    </div>
+
+                    <div class="col-md-12">
+                      <label for="num_cin" class="pb-2 form-label fw-bold">Numéro CIN du Déclarant <span
+                          class="text-danger">*</span></label>
+                      <input type="text" class="form-control" id="num_cin" name="num_cin" placeholder="Ex: 12345678"
+                        pattern="[0-9]{8}" maxlength="8" required>
+                      <small class="text-muted d-block mt-1">Si vous êtes connecté, ce champ se remplira
+                        automatiquement.</small>
+                    </div>
+
+                    <div class="col-md-12">
+                      <label for="categorie_service" class="pb-2 form-label fw-bold">Catégorie de Service <span
+                          class="text-danger">*</span></label>
+                      <select class="form-select" id="categorie_service" name="categorie_service" required>
+                        <option value="" disabled selected>Choisir une catégorie...</option>
+                        <option value="administration">Administration</option>
+                        <option value="sante">Santé</option>
+                        <option value="transport">Transport</option>
+                        <option value="education">Éducation</option>
+                        <option value="autre">Autre (Préciser...)</option>
+                      </select>
+
+                      <input type="text" class="form-control mt-2" id="nouvelle_categorie" name="nouvelle_categorie"
+                        placeholder="Saisir la nouvelle catégorie" style="display: none;">
+                      <span id="erreurCategorie" class="text-danger small mt-1" style="display: none;">Veuillez préciser
+                        la catégorie.</span>
+                    </div>
+
+                    <div class="col-md-6">
+                      <label for="latitude" class="pb-2 form-label fw-bold">Latitude <span
+                          class="text-danger">*</span></label>
+                      <input type="number" step="any" class="form-control" id="latitude" name="latitude"
+                        placeholder="Ex: 36.8065" required>
+                    </div>
+
+                    <div class="col-md-6">
+                      <label for="longitude" class="pb-2 form-label fw-bold">Longitude <span
+                          class="text-danger">*</span></label>
+                      <input type="number" step="any" class="form-control" id="longitude" name="longitude"
+                        placeholder="Ex: 10.1815" required>
+                    </div>
+
+                    <div class="col-md-12">
+                      <div id="location-picker-map"
+                        style="height: 300px; width: 100%; border-radius: 8px; margin-top: 10px; margin-bottom: 5px; border: 1px solid #ced4da; z-index: 1;">
+                      </div>
+                      <small class="text-muted d-block mb-3"><i class="bi bi-info-circle"></i> Déplacez le marqueur bleu
+                        ou cliquez sur la carte pour remplir automatiquement les coordonnées.</small>
+                    </div>
+
+                    <div class="col-md-12">
+                      <label for="adresse_postale" class="pb-2 form-label fw-bold">Adresse Postale</label>
+                      <textarea class="form-control" id="adresse_postale" name="adresse_postale" rows="3"
+                        placeholder="Saisissez l'adresse complète ici..."></textarea>
+                    </div>
+
+                    <div class="col-md-6">
+                      <label for="heure_ouverture" class="pb-2 form-label fw-bold">Heure d'Ouverture</label>
+                      <input type="time" class="form-control" id="heure_ouverture" name="heure_ouverture">
+                    </div>
+
+                    <div class="col-md-6">
+                      <label for="heure_fermeture" class="pb-2 form-label fw-bold">Heure de Fermeture</label>
+                      <input type="time" class="form-control" id="heure_fermeture" name="heure_fermeture">
+                      <span id="erreurHoraires" class="text-danger small mt-1" style="display: none;">L'heure de
+                        fermeture doit être après l'heure d'ouverture.</span>
+                    </div>
+
+                    <div class="col-md-12">
+                      <label for="contact_tel" class="pb-2 form-label fw-bold">Contact Téléphonique</label>
+                      <input type="tel" class="form-control" id="contact_tel" name="contact_tel" pattern="[0-9]{8}"
+                        title="Saisir un numéro à 8 chiffres" placeholder="Ex: 22504470">
+                    </div>
+
+                    <div class="col-md-12">
+                      <div class="form-check mt-2">
+                        <input type="checkbox" class="form-check-input" id="accessible_pmr" name="accessible_pmr"
+                          value="1">
+                        <label class="form-check-label fw-bold" for="accessible_pmr">Accessible PMR (Personnes à
+                          Mobilité Réduite)</label>
+                      </div>
+                    </div>
+
+                    <div class="col-md-12 text-end mt-4">
+                      <button type="submit" id="submitPoiBtn" class="btn rounded-pill px-4"
+                        style="background-color: var(--accent-color); color: var(--contrast-color); padding: 10px 25px; border: none;">Enregistrer
+                        le POI</button>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer id="footer" class="footer">
+    <div class="container footer-top">
+      <div class="row gy-4">
+        <div class="col-lg-4 col-md-6 footer-about">
+          <a href="../../../index.html" class="d-flex align-items-center">
+            <span class="sitename">CivicPlus</span>
+          </a>
+          <div class="footer-contact pt-3">
+            <p>Bloc H - ESPRIT</p>
+            <p>Ariana Petite</p>
+            <p class="mt-3"><strong>Phone:</strong> <span>22 504 470</span></p>
+            <p><strong>Email:</strong> <span>civicplus00@gmail.com</span></p>
+          </div>
+        </div>
+
+        <div class="col-lg-2 col-md-3 footer-links">
+          <h4>Useful Links</h4>
+          <ul>
+            <li><i class="bi bi-chevron-right"></i> <a href="../../../index.html#hero">Accueil</a></li>
+            <li><i class="bi bi-chevron-right"></i> <a href="../../../index.html#about">Concept</a></li>
+            <li><i class="bi bi-chevron-right"></i> <a href="../../../index.html#services">Services</a></li>
+            <li><i class="bi bi-chevron-right"></i> <a href="../../../index.html#team">Notre équipe</a></li>
+          </ul>
+        </div>
+
+        <div class="col-lg-2 col-md-3 footer-links">
+          <h4>Our Services</h4>
+          <ul>
+            <li><i class="bi bi-chevron-right"></i> <a href="../../../index.html#services">E-Administration</a></li>
+            <li><i class="bi bi-chevron-right"></i> <a href="../../../index.html#services">Signalement et
+                maintenance</a></li>
+            <li><i class="bi bi-chevron-right"></i> <a href="../../../index.html#services">Smart Transport</a></li>
+            <li><i class="bi bi-chevron-right"></i> <a href="../../../index.html#services">Crowdfunding</a></li>
+            <li><i class="bi bi-chevron-right"></i> <a href="../../../index.html#services">Geo-Services</a></li>
+            <li><i class="bi bi-chevron-right"></i> <a href="../../../index.html#services">Support & Chatbot</a></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <div class="container copyright text-center mt-4">
+      <p>© <span>Copyright</span> <strong class="px-1 sitename">CivicPlus</strong> <span>All Rights Reserved</span></p>
+    </div>
+  </footer>
+
+  <!-- Scroll Top -->
+  <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i
+      class="bi bi-arrow-up-short"></i></a>
+
+  <!-- Vendor JS Files -->
+  <script src="../../../assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="../../../assets/vendor/aos/aos.js"></script>
+  <script src="../../../assets/vendor/glightbox/js/glightbox.min.js"></script>
+  <script src="../../../assets/vendor/swiper/swiper-bundle.min.js"></script>
+
+  <!-- Main JS File -->
+  <script src="../../../assets/js/main.js"></script>
+  <script src="../../../assets/js/location-picker.js"></script>
+  <script src="/civicplus/assets/js/load_header.js"></script>
+  <script src='/civicplus/assets/js/auth.js?v=5'></script>
+</body>
+
+</html>

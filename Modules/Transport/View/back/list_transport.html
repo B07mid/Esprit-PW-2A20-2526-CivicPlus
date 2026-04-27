@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Liste des Problèmes de Transport | CivicPlus BackOffice</title>
+
+  <link rel="icon" type="image/png" href="../../../../assets/img/RawShape.png" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+
+  <link href="../../../../assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="../../../../assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet" />
+  <link href="../../../../assets/css/main.css" rel="stylesheet" />
+  <link href="../../../../assets/css/admin.css" rel="stylesheet" />
+</head>
+
+<body class="index-page">
+  <div class="admin-layout">
+
+    <aside class="admin-sidebar">
+      <div class="brand">
+        <img src="../../../../assets/img/RawShape.png" alt="CivicPlus Logo" class="brand-image" width="24" height="24" />
+        <div>
+          <h1>CivicPlus</h1>
+          <small>BackOffice</small>
+        </div>
+      </div>
+
+            <ul class="menu-inner">
+        <!-- Dashboard -->
+        <li class="menu-item">
+          <a href="/civicplus/admin.html" class="menu-link">
+            <i class="bi bi-house-door-fill"></i>
+            <div>
+              <p class="menu-text mb-0">Tableau de Bord</p>
+              <p class="menu-description mb-0">Vue d'ensemble</p>
+            </div>
+          </a>
+        </li>
+
+        <!-- Back to FrontOffice -->
+        <li class="menu-item">
+          <a href="/civicplus/index.html" class="menu-link text-primary">
+            <i class="bi bi-arrow-left-circle"></i>
+            <div>
+              <p class="menu-text mb-0">Retour au Site</p>
+              <p class="menu-description mb-0">Quitter le BackOffice</p>
+            </div>
+          </a>
+        </li>
+
+        <!-- User -->
+        <li class="menu-item">
+          <a href="/civicplus/Modules/User/View/user_list.html" class="menu-link">
+            <i class="bi bi-people-fill"></i>
+            <span class="menu-text">Citoyens / Utilisateurs</span>
+          </a>
+        </li>
+
+        <!-- E-Administration -->
+        <li class="menu-item">
+          <a href="#collapseEAdmin" data-bs-toggle="collapse" aria-expanded="false" class="menu-link">
+            <i class="bi bi-building"></i>
+            <span class="menu-text">E-Administration</span>
+            <i class="bi bi-chevron-right float-end mt-1"></i>
+          </a>
+          <ul class="collapse list-unstyled ps-4 mt-2" id="collapseEAdmin">
+            <li class="menu-item mb-2">
+              <a href="/civicplus/Modules/E-Administration/view/liste_demandes.html" class="menu-link">
+                <i class="bi bi-card-list"></i> <span class="menu-text">Liste des demandes</span>
+              </a>
+            </li>
+            <li class="menu-item mb-2">
+              <a href="/civicplus/Modules/E-Administration/view/gestion_types.html" class="menu-link">
+                <i class="bi bi-plus-circle"></i> <span class="menu-text">Types</span>
+              </a>
+            </li>
+          </ul>
+        </li>
+
+        <!-- Smart Transport -->
+        <li class="menu-item">
+          <a href="#collapseTransport" data-bs-toggle="collapse" aria-expanded="false" class="menu-link">
+            <i class="bi bi-bus-front"></i>
+            <span class="menu-text">Smart Transport</span>
+            <i class="bi bi-chevron-right float-end mt-1"></i>
+          </a>
+          <ul class="collapse list-unstyled ps-4 mt-2" id="collapseTransport">
+            <li class="menu-item mb-2">
+              <a href="/civicplus/Modules/Transport/View/back/list_transport.html" class="menu-link">
+                <i class="bi bi-card-list"></i> <span class="menu-text">Liste des transports</span>
+              </a>
+            </li>
+            <li class="menu-item mb-2">
+              <a href="/civicplus/Modules/Transport/View/back/ajouter_transport.html" class="menu-link">
+                <i class="bi bi-plus-circle"></i> <span class="menu-text">Ajouter un transport</span>
+              </a>
+            </li>
+          </ul>
+        </li>
+
+        <!-- Signalements Urbains -->
+        <li class="menu-item">
+          <a href="#collapseSignalement" data-bs-toggle="collapse" aria-expanded="false" class="menu-link">
+            <i class="bi bi-flag-fill"></i>
+            <span class="menu-text">Signalements Urbains</span>
+            <i class="bi bi-chevron-right float-end mt-1"></i>
+          </a>
+          <ul class="collapse list-unstyled ps-4 mt-2" id="collapseSignalement">
+            <li class="menu-item mb-2">
+              <a href="/civicplus/Modules/Signalement/view/liste_signalements.html" class="menu-link">
+                <i class="bi bi-card-list"></i> <span class="menu-text">Liste des signalements</span>
+              </a>
+            </li>
+          </ul>
+        </li>
+
+        <!-- Crowdfunding -->
+        <li class="menu-item">
+          <a href="#collapseCrowd" data-bs-toggle="collapse" aria-expanded="false" class="menu-link">
+            <i class="bi bi-currency-dollar"></i>
+            <span class="menu-text">Crowdfunding</span>
+            <i class="bi bi-chevron-right float-end mt-1"></i>
+          </a>
+          <ul class="collapse list-unstyled ps-4 mt-2" id="collapseCrowd">
+            <li class="menu-item mb-2">
+              <a href="/civicplus/Modules/Crowdfunding/view/liste_projets.html" class="menu-link">
+                <i class="bi bi-card-list"></i> <span class="menu-text">Liste des projets</span>
+              </a>
+            </li>
+            <li class="menu-item mb-2">
+              <a href="/civicplus/Modules/Crowdfunding/view/liste_donations.html" class="menu-link">
+                <i class="bi bi-piggy-bank"></i> <span class="menu-text">Liste des donations</span>
+              </a>
+            </li>
+          </ul>
+        </li>
+
+        <!-- Geo-Services -->
+        <li class="menu-item">
+          <a href="#collapseGeo" data-bs-toggle="collapse" aria-expanded="false" class="menu-link">
+            <i class="bi bi-map-fill"></i>
+            <span class="menu-text">Geo-Services</span>
+            <i class="bi bi-chevron-right float-end mt-1"></i>
+          </a>
+          <ul class="collapse list-unstyled ps-4 mt-2" id="collapseGeo">
+            <li class="menu-item mb-2">
+              <a href="/civicplus/Modules/Geo-Services/View/liste_poi.html" class="menu-link">
+                <i class="bi bi-card-list"></i> <span class="menu-text">Liste des POI</span>
+              </a>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </aside>
+
+    <main class="admin-content">
+      <div class="admin-card">
+
+        <div class="d-flex flex-wrap justify-content-between align-items-center gap-3 mb-4">
+          <div>
+            <h2 class="mb-1">Liste des Problèmes de Transport</h2>
+            <p class="page-subtitle">Gestion des incidents et anomalies du module Smart Transport</p>
+          </div>
+
+          <div class="d-flex gap-2">
+            <a href="../front/signaler-transport.html" class="btn btn-primary">
+              <i class="bi bi-plus-circle me-1"></i> Ajouter un problème
+            </a>
+          </div>
+        </div>
+
+        <div class="transport-stats">
+          <div class="transport-stat-card">
+            <div class="transport-stat-icon bg-soft-primary">
+              <i class="bi bi-list-task"></i>
+            </div>
+            <div class="transport-stat-content">
+              <small>Total incidents</small>
+              <h4 id="statTotal">0</h4>
+            </div>
+          </div>
+
+          <div class="transport-stat-card">
+            <div class="transport-stat-icon bg-soft-warning">
+              <i class="bi bi-hourglass-split"></i>
+            </div>
+            <div class="transport-stat-content">
+              <small>En attente</small>
+              <h4 id="statPending">0</h4>
+            </div>
+          </div>
+
+          <div class="transport-stat-card">
+            <div class="transport-stat-icon bg-soft-danger">
+              <i class="bi bi-exclamation-triangle"></i>
+            </div>
+            <div class="transport-stat-content">
+              <small>Priorité élevée</small>
+              <h4 id="statHigh">0</h4>
+            </div>
+          </div>
+
+          <div class="transport-stat-card">
+            <div class="transport-stat-icon bg-soft-success">
+              <i class="bi bi-check2-circle"></i>
+            </div>
+            <div class="transport-stat-content">
+              <small>Résolus</small>
+              <h4 id="statResolved">0</h4>
+            </div>
+          </div>
+        </div>
+
+        <div class="toolbar-card">
+          <div class="row g-3 align-items-center">
+            <div class="col-lg-4 col-md-6">
+              <div class="search-box">
+                <i class="bi bi-search"></i>
+                <input type="text" id="searchId" class="form-control" placeholder="Rechercher par ID..." />
+              </div>
+            </div>
+
+            <div class="col-lg-3 col-md-6">
+              <select id="filterStatut" class="form-select filter-select">
+                <option value="">Tous les statuts</option>
+                <option value="0">En attente</option>
+                <option value="2">En cours</option>
+                <option value="1">Résolu</option>
+              </select>
+            </div>
+
+            <div class="col-lg-3 col-md-6">
+              <select id="filterPriorite" class="form-select filter-select">
+                <option value="">Toutes les priorités</option>
+                <option value="Faible">Faible</option>
+                <option value="Haute">Haute</option>
+              </select>
+            </div>
+
+            <div class="col-lg-2 col-md-6 text-md-end">
+              <button id="btnFilter" class="btn btn-outline-secondary w-100">
+                <i class="bi bi-funnel me-1"></i> Filtrer
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <div class="table-card">
+          <div class="table-responsive">
+            <table class="table table-striped table-hover admin-table">
+              <thead>
+                <tr>
+                  <th>ID</th>
+                  <th>Type</th>
+                  <th>Type de problème</th>
+                  <th>Localisation</th>
+                  <th>Date et heure</th>
+                  <th>Statut</th>
+                  <th>Priorité</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="transportTableBody"></tbody>
+            </table>
+          </div>
+        </div>
+
+      </div>
+    </main>
+  </div>
+
+  <div class="modal fade" id="editTransportModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <form id="editTransportForm">
+          <div class="modal-header">
+            <h5 class="modal-title">Modifier le signalement</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fermer"></button>
+          </div>
+
+          <div class="modal-body">
+            <input type="hidden" id="edit_id_signalement" />
+
+            <div class="mb-3">
+              <label for="edit_type_probleme" class="form-label">Type de problème</label>
+              <input type="text" id="edit_type_probleme" class="form-control" required />
+            </div>
+
+            <div class="mb-3">
+              <label for="edit_pris_en_compte_ia" class="form-label">Statut</label>
+              <select id="edit_pris_en_compte_ia" class="form-select" required>
+                <option value="0">En attente</option>
+                <option value="2">En cours</option>
+                <option value="1">Résolu</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="modal-footer">
+            <button type="button" class="btn btn-outline-secondary" data-bs-dismiss="modal">Annuler</button>
+            <button type="submit" class="btn btn-primary">Enregistrer</button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <script src="../../../../assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="list_transport.js"></script>
+<script src='/civicplus/assets/js/auth.js?v=5'></script>
+</body>
+
+</html>
+
+
+
