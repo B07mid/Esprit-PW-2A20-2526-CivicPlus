@@ -161,7 +161,8 @@ alert(
   `Signalement #${item.id_signalement_tr}\n\n` +
   `CIN : ${item.num_cin}\n` +
   `Nom : ${item.nom}\n` +
-  `Prénom : ${item.prenom}`
+  `Prénom : ${item.prenom}\n` +
+  `Description : ${item.description || ""}`
 );
   } catch (error) {
     console.error(error);
@@ -184,6 +185,7 @@ const result = JSON.parse(text);
 
     document.getElementById("edit_id_signalement").value = item.id_signalement_tr;
     document.getElementById("edit_type_probleme").value = item.type_probleme || "";
+    document.getElementById("edit_description").value = item.description || "";
     document.getElementById("edit_pris_en_compte_ia").value = item.pris_en_compte_ia;
 
     const modal = new bootstrap.Modal(document.getElementById("editTransportModal"));
@@ -198,6 +200,7 @@ async function submitEditForm(e) {
 
   const id = document.getElementById("edit_id_signalement").value;
   const typeProbleme = document.getElementById("edit_type_probleme").value;
+  const description = document.getElementById("edit_description").value;
   const statut = document.getElementById("edit_pris_en_compte_ia").value;
 
   try {
@@ -206,7 +209,7 @@ async function submitEditForm(e) {
       headers: {
         "Content-Type": "application/x-www-form-urlencoded"
       },
-      body: `id_signalement=${encodeURIComponent(id)}&type_probleme=${encodeURIComponent(typeProbleme)}&pris_en_compte_ia=${encodeURIComponent(statut)}`
+      body: `id_signalement=${encodeURIComponent(id)}&type_probleme=${encodeURIComponent(typeProbleme)}&description=${encodeURIComponent(description)}&pris_en_compte_ia=${encodeURIComponent(statut)}`
     });
 
     const text = await response.text();

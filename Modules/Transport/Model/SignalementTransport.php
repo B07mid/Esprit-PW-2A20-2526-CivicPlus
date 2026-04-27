@@ -9,16 +9,17 @@ class SignalementTransport
         $this->db = $db;
     }
 
-public function create(int $numCin, int $idLigne, string $typeProbleme, string $date): int
+public function create(int $numCin, int $idLigne, string $typeProbleme, string $description, string $date): int
 {
     $sql = "INSERT INTO signalement_transport 
-            (num_cin, id_ligne, type_probleme, date_signalement)
-            VALUES (:num_cin, :id_ligne, :type_probleme, :date_signalement)";
+            (num_cin, id_ligne, type_probleme, description, date_signalement)
+            VALUES (:num_cin, :id_ligne, :type_probleme, :description, :date_signalement)";
 
     $stmt = $this->db->prepare($sql);
     $stmt->bindValue(':num_cin', $numCin, PDO::PARAM_INT);
     $stmt->bindValue(':id_ligne', $idLigne, PDO::PARAM_INT);
     $stmt->bindValue(':type_probleme', $typeProbleme, PDO::PARAM_STR);
+    $stmt->bindValue(':description', $description, PDO::PARAM_STR);
     $stmt->bindValue(':date_signalement', $date, PDO::PARAM_STR);
     $stmt->execute();
 
@@ -49,6 +50,7 @@ public function getAllBack($searchId = null, $statut = null, $priorite = null): 
             s.id_signalement_tr,
             lt.type_transport,
             s.type_probleme,
+            s.description,
             'Tunis' AS localisation,
             s.date_signalement,
             s.pris_en_compte_ia,
@@ -120,6 +122,7 @@ public function getOneBack($id): array|false
             c.prenom,
             lt.type_transport,
             s.type_probleme,
+            s.description,
             'Tunis' AS localisation,
             s.date_signalement,
             s.pris_en_compte_ia,
@@ -151,11 +154,12 @@ public function getOneBack($id): array|false
         return $stmt->execute([':id' => $id]);
     }
 
-    public function updateBack($id, $typeProbleme, $statut): bool
+    public function updateBack($id, $typeProbleme, $description, $statut): bool
     {
         $sql = "
             UPDATE signalement_transport
             SET type_probleme = :type_probleme,
+                description = :description,
                 pris_en_compte_ia = :statut
             WHERE id_signalement_tr = :id
         ";
@@ -164,8 +168,11 @@ public function getOneBack($id): array|false
 
         return $stmt->execute([
             ':type_probleme' => $typeProbleme,
+            ':description' => $description,
             ':statut' => $statut,
             ':id' => $id
         ]);
     }
 }
+
+

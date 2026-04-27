@@ -1,0 +1,604 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gestion Smart Transport | CivicPlus BackOffice</title>
+
+  <link rel="icon" type="image/png" href="../../../../assets/img/RawShape.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="../../../../assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="../../../../assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet" />
+  <link href="../../../../assets/css/main.css" rel="stylesheet" />
+  <link href="../../../../assets/css/admin.css" rel="stylesheet" />
+
+  <style>
+    body {
+      font-family: 'Public Sans', sans-serif;
+    }
+
+    .page-subtitle {
+      color: #6c757d;
+      margin: 0;
+    }
+
+    .network-stats {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 14px;
+      margin: 24px 0;
+    }
+
+    .network-stat {
+      border: 1px solid rgba(17, 24, 39, 0.08);
+      border-radius: 8px;
+      padding: 16px;
+      background: #fff;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-height: 88px;
+    }
+
+    .network-stat i {
+      width: 42px;
+      height: 42px;
+      border-radius: 8px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+      background: #0d6efd;
+      flex: 0 0 auto;
+    }
+
+    .network-stat:nth-child(2) i { background: #198754; }
+    .network-stat:nth-child(3) i { background: #f59e0b; }
+    .network-stat:nth-child(4) i { background: #dc3545; }
+
+    .network-stat small {
+      display: block;
+      color: #6c757d;
+      font-size: 13px;
+      margin-bottom: 4px;
+    }
+
+    .network-stat strong {
+      display: block;
+      color: #111827;
+      font-size: 22px;
+      line-height: 1;
+    }
+
+    .transport-tabs {
+      border-bottom: 1px solid rgba(17, 24, 39, 0.1);
+      gap: 8px;
+      margin-bottom: 20px;
+    }
+
+    .transport-tabs .nav-link {
+      border: 0;
+      border-radius: 8px 8px 0 0;
+      color: #374151;
+      font-weight: 700;
+      padding: 12px 16px;
+    }
+
+    .transport-tabs .nav-link.active {
+      background: #111827;
+      color: #fff;
+    }
+
+    .entity-layout {
+      display: grid;
+      grid-template-columns: minmax(280px, 360px) minmax(0, 1fr);
+      gap: 20px;
+      align-items: start;
+    }
+
+    .entity-panel {
+      border: 1px solid rgba(17, 24, 39, 0.08);
+      border-radius: 8px;
+      background: #fff;
+      padding: 18px;
+    }
+
+    .panel-title {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 16px;
+    }
+
+    .panel-title i {
+      color: #0d6efd;
+      font-size: 20px;
+    }
+
+    .panel-title h3 {
+      font-size: 17px;
+      margin: 0;
+      font-weight: 800;
+      color: #111827;
+    }
+
+    .toolbar-row {
+      display: grid;
+      grid-template-columns: minmax(180px, 1fr) minmax(130px, 180px) auto;
+      gap: 10px;
+      margin-bottom: 14px;
+    }
+
+    .toolbar-row.single {
+      grid-template-columns: minmax(180px, 1fr) auto;
+    }
+
+    .form-control,
+    .form-select {
+      min-height: 42px;
+      border-radius: 8px;
+    }
+
+    .table-card {
+      border: 1px solid rgba(17, 24, 39, 0.08);
+      border-radius: 8px;
+      background: #fff;
+      overflow: hidden;
+    }
+
+    .network-table {
+      margin: 0;
+      vertical-align: middle;
+    }
+
+    .network-table thead th {
+      background: #111827;
+      color: #fff;
+      border: none;
+      padding: 13px 14px;
+      font-size: 13px;
+      white-space: nowrap;
+    }
+
+    .network-table tbody td {
+      padding: 13px 14px;
+      white-space: nowrap;
+    }
+
+    .network-table tbody td.text-wrap-cell {
+      white-space: normal;
+      min-width: 180px;
+    }
+
+    .action-buttons {
+      display: flex;
+      gap: 8px;
+    }
+
+    .action-buttons .btn {
+      width: 34px;
+      height: 34px;
+      padding: 0;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 8px;
+    }
+
+    .badge-soft {
+      border-radius: 999px;
+      background: rgba(13, 110, 253, 0.1);
+      color: #0d6efd;
+      padding: 7px 10px;
+      font-weight: 700;
+      font-size: 12px;
+    }
+
+    .message-area {
+      min-height: 0;
+      margin-bottom: 16px;
+    }
+
+    .type-strip {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: -8px;
+      margin-bottom: 18px;
+    }
+
+    .type-pill {
+      border-radius: 999px;
+      background: rgba(17, 24, 39, 0.07);
+      color: #111827;
+      padding: 7px 11px;
+      font-size: 12px;
+      font-weight: 700;
+    }
+
+    @media (max-width: 1199px) {
+      .network-stats {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .entity-layout {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    @media (max-width: 767px) {
+      .network-stats,
+      .toolbar-row,
+      .toolbar-row.single {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+
+<body class="index-page">
+  <div class="admin-layout">
+    <aside class="admin-sidebar">
+      <div class="brand">
+        <img src="../../../../assets/img/RawShape.png" alt="CivicPlus Logo" class="brand-image" width="24" height="24" />
+        <div>
+          <h1>CivicPlus</h1>
+          <small>BackOffice</small>
+        </div>
+      </div>
+
+      <ul class="menu-inner">
+        <li class="menu-item">
+          <a href="/civicplus/admin.html" class="menu-link">
+            <i class="bi bi-house-door-fill"></i>
+            <div>
+              <p class="menu-text mb-0">Tableau de Bord</p>
+              <p class="menu-description mb-0">Vue d'ensemble</p>
+            </div>
+          </a>
+        </li>
+
+        <li class="menu-item">
+          <a href="/civicplus/index.html" class="menu-link text-primary">
+            <i class="bi bi-arrow-left-circle"></i>
+            <div>
+              <p class="menu-text mb-0">Retour au Site</p>
+              <p class="menu-description mb-0">Quitter le BackOffice</p>
+            </div>
+          </a>
+        </li>
+
+        <li class="menu-item">
+          <a href="/civicplus/Modules/User/View/user_list.html" class="menu-link">
+            <i class="bi bi-people-fill"></i>
+            <span class="menu-text">Citoyens / Utilisateurs</span>
+          </a>
+        </li>
+
+        <li class="menu-item">
+          <a href="#collapseEAdmin" data-bs-toggle="collapse" aria-expanded="false" class="menu-link">
+            <i class="bi bi-building"></i>
+            <span class="menu-text">E-Administration</span>
+            <i class="bi bi-chevron-right float-end mt-1"></i>
+          </a>
+          <ul class="collapse list-unstyled ps-4 mt-2" id="collapseEAdmin">
+            <li class="menu-item mb-2">
+              <a href="/civicplus/Modules/E-Administration/view/liste_demandes.html" class="menu-link">
+                <i class="bi bi-card-list"></i> <span class="menu-text">Liste des demandes</span>
+              </a>
+            </li>
+            <li class="menu-item mb-2">
+              <a href="/civicplus/Modules/E-Administration/view/gestion_types.html" class="menu-link">
+                <i class="bi bi-plus-circle"></i> <span class="menu-text">Types</span>
+              </a>
+            </li>
+          </ul>
+        </li>
+
+        <li class="menu-item active">
+          <a href="#collapseTransport" data-bs-toggle="collapse" aria-expanded="true" class="menu-link">
+            <i class="bi bi-bus-front"></i>
+            <span class="menu-text">Smart Transport</span>
+            <i class="bi bi-chevron-right float-end mt-1"></i>
+          </a>
+          <ul class="collapse show list-unstyled ps-4 mt-2" id="collapseTransport">
+            <li class="menu-item mb-2">
+              <a href="/civicplus/Modules/Transport/View/back/list_transport.html" class="menu-link">
+                <i class="bi bi-card-list"></i> <span class="menu-text">Liste des transports</span>
+              </a>
+            </li>
+            <li class="menu-item mb-2 active">
+              <a href="/civicplus/Modules/Transport/View/back/ajouter_transport.html" class="menu-link">
+                <i class="bi bi-plus-circle"></i> <span class="menu-text">Ajouter un transport</span>
+              </a>
+            </li>
+          </ul>
+        </li>
+
+        <li class="menu-item">
+          <a href="#collapseSignalement" data-bs-toggle="collapse" aria-expanded="false" class="menu-link">
+            <i class="bi bi-flag-fill"></i>
+            <span class="menu-text">Signalements Urbains</span>
+            <i class="bi bi-chevron-right float-end mt-1"></i>
+          </a>
+          <ul class="collapse list-unstyled ps-4 mt-2" id="collapseSignalement">
+            <li class="menu-item mb-2">
+              <a href="/civicplus/Modules/Signalement/view/liste_signalements.html" class="menu-link">
+                <i class="bi bi-card-list"></i> <span class="menu-text">Liste des signalements</span>
+              </a>
+            </li>
+          </ul>
+        </li>
+
+        <li class="menu-item">
+          <a href="#collapseCrowd" data-bs-toggle="collapse" aria-expanded="false" class="menu-link">
+            <i class="bi bi-currency-dollar"></i>
+            <span class="menu-text">Crowdfunding</span>
+            <i class="bi bi-chevron-right float-end mt-1"></i>
+          </a>
+          <ul class="collapse list-unstyled ps-4 mt-2" id="collapseCrowd">
+            <li class="menu-item mb-2">
+              <a href="/civicplus/Modules/Crowdfunding/view/liste_projets.html" class="menu-link">
+                <i class="bi bi-card-list"></i> <span class="menu-text">Liste des projets</span>
+              </a>
+            </li>
+            <li class="menu-item mb-2">
+              <a href="/civicplus/Modules/Crowdfunding/view/liste_donations.html" class="menu-link">
+                <i class="bi bi-piggy-bank"></i> <span class="menu-text">Liste des donations</span>
+              </a>
+            </li>
+          </ul>
+        </li>
+
+        <li class="menu-item">
+          <a href="#collapseGeo" data-bs-toggle="collapse" aria-expanded="false" class="menu-link">
+            <i class="bi bi-map-fill"></i>
+            <span class="menu-text">Geo-Services</span>
+            <i class="bi bi-chevron-right float-end mt-1"></i>
+          </a>
+          <ul class="collapse list-unstyled ps-4 mt-2" id="collapseGeo">
+            <li class="menu-item mb-2">
+              <a href="/civicplus/Modules/Geo-Services/View/liste_poi.html" class="menu-link">
+                <i class="bi bi-card-list"></i> <span class="menu-text">Liste des POI</span>
+              </a>
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </aside>
+
+    <main class="admin-content">
+      <div class="admin-card">
+        <div class="d-flex flex-wrap justify-content-between align-items-center gap-3">
+          <div>
+            <h2 class="mb-1">Gestion du reseau Smart Transport</h2>
+            <p class="page-subtitle">Lignes, stations et parcours connectes aux tables ligne_transport, station et parcours_ligne.</p>
+          </div>
+          <a href="list_transport.html" class="btn btn-outline-secondary">
+            <i class="bi bi-card-list me-1"></i> Signalements transport
+          </a>
+        </div>
+
+        <div id="messageArea" class="message-area"></div>
+
+        <div class="network-stats">
+          <div class="network-stat">
+            <i class="bi bi-signpost-2"></i>
+            <div><small>Lignes</small><strong id="statLines">0</strong></div>
+          </div>
+          <div class="network-stat">
+            <i class="bi bi-geo-alt"></i>
+            <div><small>Stations</small><strong id="statStations">0</strong></div>
+          </div>
+          <div class="network-stat">
+            <i class="bi bi-shuffle"></i>
+            <div><small>Parcours</small><strong id="statRoutes">0</strong></div>
+          </div>
+          <div class="network-stat">
+            <i class="bi bi-bar-chart"></i>
+            <div><small>Types actifs</small><strong id="statTypes">0</strong></div>
+          </div>
+        </div>
+
+        <div id="typeStrip" class="type-strip"></div>
+
+        <ul class="nav transport-tabs" id="transportTabs" role="tablist">
+          <li class="nav-item" role="presentation">
+            <button class="nav-link active" id="lines-tab" data-bs-toggle="tab" data-bs-target="#linesPane" type="button" role="tab">
+              <i class="bi bi-signpost-2 me-1"></i> Lignes
+            </button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button class="nav-link" id="stations-tab" data-bs-toggle="tab" data-bs-target="#stationsPane" type="button" role="tab">
+              <i class="bi bi-geo-alt me-1"></i> Stations
+            </button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button class="nav-link" id="routes-tab" data-bs-toggle="tab" data-bs-target="#routesPane" type="button" role="tab">
+              <i class="bi bi-diagram-3 me-1"></i> Parcours
+            </button>
+          </li>
+        </ul>
+
+        <div class="tab-content">
+          <div class="tab-pane fade show active" id="linesPane" role="tabpanel" aria-labelledby="lines-tab">
+            <div class="entity-layout">
+              <section class="entity-panel">
+                <div class="panel-title"><i class="bi bi-plus-circle"></i><h3 id="lineFormTitle">Ajouter une ligne</h3></div>
+                <form id="lineForm">
+                  <input type="hidden" id="lineId" name="id_ligne" />
+                  <div class="mb-3">
+                    <label for="lineName" class="form-label">Nom de la ligne</label>
+                    <input type="text" class="form-control" id="lineName" name="nom_ligne" placeholder="Ex: T4" required />
+                  </div>
+                  <div class="mb-3">
+                    <label for="lineType" class="form-label">Type</label>
+                    <input type="text" class="form-control" id="lineType" name="type_transport" list="transportTypeOptions" placeholder="Metro, Train, TGM..." />
+                    <datalist id="transportTypeOptions"></datalist>
+                  </div>
+                  <div class="d-flex gap-2">
+                    <button type="submit" class="btn btn-primary"><i class="bi bi-check2 me-1"></i> Enregistrer</button>
+                    <button type="button" class="btn btn-outline-secondary" id="resetLineForm">Annuler</button>
+                  </div>
+                </form>
+              </section>
+
+              <section>
+                <div class="toolbar-row">
+                  <input type="search" class="form-control" id="lineSearch" placeholder="Rechercher une ligne..." />
+                  <select class="form-select" id="lineTypeFilter">
+                    <option value="">Tous les types</option>
+                  </select>
+                  <button class="btn btn-outline-secondary" id="lineSearchBtn"><i class="bi bi-search"></i></button>
+                </div>
+                <div class="table-card">
+                  <div class="table-responsive">
+                    <table class="table table-hover network-table">
+                      <thead>
+                        <tr>
+                          <th>ID</th>
+                          <th>Ligne</th>
+                          <th>Type</th>
+                          <th>Parcours</th>
+                          <th>Stations</th>
+                          <th>Actions</th>
+                        </tr>
+                      </thead>
+                      <tbody id="linesTableBody"></tbody>
+                    </table>
+                  </div>
+                </div>
+              </section>
+            </div>
+          </div>
+
+          <div class="tab-pane fade" id="stationsPane" role="tabpanel" aria-labelledby="stations-tab">
+            <div class="entity-layout">
+              <section class="entity-panel">
+                <div class="panel-title"><i class="bi bi-geo-alt"></i><h3 id="stationFormTitle">Ajouter une station</h3></div>
+                <form id="stationForm">
+                  <input type="hidden" id="stationId" name="id_station" />
+                  <div class="mb-3">
+                    <label for="stationName" class="form-label">Nom de la station</label>
+                    <input type="text" class="form-control" id="stationName" name="nom_station" placeholder="Ex: Place de Barcelone" required />
+                  </div>
+                  <div class="row g-3">
+                    <div class="col-md-6">
+                      <label for="stationLatitude" class="form-label">Latitude</label>
+                      <input type="number" step="any" class="form-control" id="stationLatitude" name="latitude" required />
+                    </div>
+                    <div class="col-md-6">
+                      <label for="stationLongitude" class="form-label">Longitude</label>
+                      <input type="number" step="any" class="form-control" id="stationLongitude" name="longitude" required />
+                    </div>
+                  </div>
+                  <div class="d-flex gap-2 mt-3">
+                    <button type="submit" class="btn btn-primary"><i class="bi bi-check2 me-1"></i> Enregistrer</button>
+                    <button type="button" class="btn btn-outline-secondary" id="resetStationForm">Annuler</button>
+                  </div>
+                </form>
+              </section>
+
+              <section>
+                <div class="toolbar-row single">
+                  <input type="search" class="form-control" id="stationSearch" placeholder="Rechercher une station..." />
+                  <button class="btn btn-outline-secondary" id="stationSearchBtn"><i class="bi bi-search"></i></button>
+                </div>
+                <div class="table-card">
+                  <div class="table-responsive">
+                    <table class="table table-hover network-table">
+                      <thead>
+                        <tr>
+                          <th>ID</th>
+                          <th>Station</th>
+                          <th>Latitude</th>
+                          <th>Longitude</th>
+                          <th>Departs</th>
+                          <th>Arrivees</th>
+                          <th>Actions</th>
+                        </tr>
+                      </thead>
+                      <tbody id="stationsTableBody"></tbody>
+                    </table>
+                  </div>
+                </div>
+              </section>
+            </div>
+          </div>
+
+          <div class="tab-pane fade" id="routesPane" role="tabpanel" aria-labelledby="routes-tab">
+            <div class="entity-layout">
+              <section class="entity-panel">
+                <div class="panel-title"><i class="bi bi-diagram-3"></i><h3 id="routeFormTitle">Ajouter un parcours</h3></div>
+                <form id="routeForm">
+                  <input type="hidden" id="routeOriginalLine" name="original_id_ligne" />
+                  <input type="hidden" id="routeOriginalStation" name="original_id_station" />
+                  <div class="mb-3">
+                    <label for="routeLine" class="form-label">Ligne</label>
+                    <select class="form-select" id="routeLine" name="id_ligne" required></select>
+                  </div>
+                  <div class="mb-3">
+                    <label for="routeDeparture" class="form-label">Premiere station</label>
+                    <select class="form-select" id="routeDeparture" name="id_station" required></select>
+                  </div>
+                  <div class="mb-3">
+                    <label for="routeArrival" class="form-label">Derniere station</label>
+                    <select class="form-select" id="routeArrival" name="id_der_station" required></select>
+                  </div>
+                  <div class="mb-3">
+                    <label for="routeOrder" class="form-label">Nombre de stations</label>
+                    <input type="number" min="1" step="1" class="form-control" id="routeOrder" name="ordre_passage" required />
+                  </div>
+                  <div class="form-check mb-3" id="reverseRouteWrap">
+                    <input class="form-check-input" type="checkbox" value="1" id="createReverseRoute" name="create_reverse" checked />
+                    <label class="form-check-label" for="createReverseRoute">Creer aussi le sens inverse</label>
+                  </div>
+                  <div class="d-flex gap-2">
+                    <button type="submit" class="btn btn-primary"><i class="bi bi-check2 me-1"></i> Enregistrer</button>
+                    <button type="button" class="btn btn-outline-secondary" id="resetRouteForm">Annuler</button>
+                  </div>
+                </form>
+              </section>
+
+              <section>
+                <div class="toolbar-row">
+                  <input type="search" class="form-control" id="routeSearch" placeholder="Rechercher par ligne ou station..." />
+                  <select class="form-select" id="routeLineFilter">
+                    <option value="">Toutes les lignes</option>
+                  </select>
+                  <button class="btn btn-outline-secondary" id="routeSearchBtn"><i class="bi bi-search"></i></button>
+                </div>
+                <div class="table-card">
+                  <div class="table-responsive">
+                    <table class="table table-hover network-table">
+                      <thead>
+                        <tr>
+                          <th>Ligne</th>
+                          <th>Type</th>
+                          <th>Premiere station</th>
+                          <th>Derniere station</th>
+                          <th>Stations</th>
+                          <th>Actions</th>
+                        </tr>
+                      </thead>
+                      <tbody id="routesTableBody"></tbody>
+                    </table>
+                  </div>
+                </div>
+              </section>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script src="../../../../assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="ajouter_transport.js?v=1"></script>
+  <script src="/civicplus/assets/js/auth.js?v=5"></script>
+</body>
+
+</html>

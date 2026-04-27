@@ -18,6 +18,7 @@ try {
     $numCin = isset($_POST['num_cin']) ? trim($_POST['num_cin']) : '';
     $idLigne = isset($_POST['id_ligne']) ? trim($_POST['id_ligne']) : '';
     $typeProbleme = isset($_POST['type_probleme']) ? trim($_POST['type_probleme']) : '';
+    $description = isset($_POST['description']) ? trim($_POST['description']) : '';
     $moment = isset($_POST['moment']) ? trim($_POST['moment']) : '';
 
     $errors = [];
@@ -36,6 +37,12 @@ try {
 
     if ($typeProbleme === '') {
         $errors[] = 'Le type de problème est obligatoire.';
+    }
+
+    if ($description === '') {
+        $errors[] = 'La description est obligatoire.';
+    } elseif (mb_strlen($description) > 60) {
+        $errors[] = 'La description ne doit pas depasser 60 caracteres.';
     }
 
     if ($moment === '') {
@@ -78,7 +85,7 @@ try {
 
 
 
-    $newId = $model->create($numCinInt, $idLigneInt, $typeProbleme, $moment);
+    $newId = $model->create($numCinInt, $idLigneInt, $typeProbleme, $description, $moment);
 
     $reportCode = 'TR-' . str_pad((string) $newId, 3, '0', STR_PAD_LEFT);
 
@@ -94,3 +101,5 @@ try {
         'message' => 'Erreur serveur : ' . $e->getMessage()
     ]);
 }
+
+

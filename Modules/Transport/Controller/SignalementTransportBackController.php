@@ -52,10 +52,11 @@ try {
         case 'update':
             $id = isset($_POST['id_signalement']) ? (int) $_POST['id_signalement'] : 0;
             $typeProbleme = trim($_POST['type_probleme'] ?? '');
+            $description = trim($_POST['description'] ?? '');
             $statut = isset($_POST['pris_en_compte_ia']) ? (int) $_POST['pris_en_compte_ia'] : 0;
 
             echo json_encode([
-                'success' => $model->updateBack($id, $typeProbleme, $statut)
+                'success' => $model->updateBack($id, $typeProbleme, $description, $statut)
             ]);
             break;
 
@@ -72,3 +73,5 @@ try {
         'message' => $e->getMessage()
     ]);
 }
+
+

@@ -22,34 +22,15 @@
   <link href="../../../../assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
   <link href="../../../../assets/css/main.css" rel="stylesheet">
   <link rel="stylesheet" href="signaler.css">
-<script src="signaler.js"></script>
+<script src="signaler.js?v=2"></script>
 
 </head>
 
 <body class="index-page">
 
-  <header id="header" class="header d-flex align-items-center sticky-top">
-    <div class="container-fluid container-xl position-relative d-flex align-items-center">
-      <a href="../../../../index.html" class="logo d-flex align-items-center me-auto">
-        <img src="../../../../assets/img/logo.png" alt="CivicPlus Logo">
-        <h1 class="sitename">CivicPlus</h1>
-      </a>
-
-      <nav id="navmenu" class="navmenu">
-        <ul>
-          <li><a href="../../../../index.html#hero">Home</a></li>
-          <li><a href="../../../../index.html#about">Concept</a></li>
-          <li><a href="../../../../index.html#services" class="active">Services</a></li>
-          <li><a href="../../../../index.html#team">Team</a></li>
-          <li id="admin-link" style="display:none;"><a href="../../../../admin.html">Admin Panel</a></li>
-          <li><a href="../../../../index.html#contact">Contact</a></li>
-        </ul>
-        <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
-      </nav>
-
-      <a class="btn-getstarted" href="transport.html">Retour Transport</a>
-    </div>
-  </header>
+  <!-- === DÉBUT DU HEADER DYNAMIQUE CIVICPLUS === -->
+  <div id="header-container" class="sticky-top" style="top: 0; z-index: 1030;"></div>
+  <!-- === FIN DU HEADER DYNAMIQUE === -->
 
   <main class="main">
 
@@ -156,12 +137,12 @@
 
                   <div class="col-md-6">
                     <label for="moment" class="form-label">Moment de l'incident</label>
-                    <input type="datetime-local" class="form-control" id="moment" name="moment">
+                    <input type="datetime-local" class="form-control" id="moment" name="moment" required readonly>
                   </div>
 
                   <div class="col-12">
                     <label for="description" class="form-label">Description<span class="required-star">*</span></label>
-                    <textarea class="form-control" id="description" name="description" placeholder="Décrivez clairement le problème constaté..." required></textarea>
+                    <textarea class="form-control" id="description" name="description" maxlength="60" placeholder="Décrivez clairement le problème constaté..." required></textarea>
                   </div>
 
                   <div class="col-12">
@@ -361,18 +342,11 @@
   <script src="../../../../assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
   <script src="../../../../assets/vendor/swiper/swiper-bundle.min.js"></script>
   <script src="../../../../assets/js/main.js"></script>
-
-  <script>
-    fetch('../../../../check_session.php')
-      .then(response => response.json())
-      .then(data => {
-        if (data.isAdmin) {
-          document.getElementById('admin-link').style.display = 'block';
-        }
-      })
-      .catch(error => console.error('Erreur de vérification session:', error));
-  </script>
-
+  <script src="/civicplus/assets/js/load_header.js"></script>
+  <script src='/civicplus/assets/js/auth.js?v=5'></script>
 </body>
 
 </html>
+
+
+
