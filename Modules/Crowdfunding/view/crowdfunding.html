@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <title>Projects - eNno Bootstrap Template</title>
+</head>
+
+<body>
+
+
+
+  <main>
+    <header id="header" class="header d-flex align-items-center sticky-top">
+    <div class="container-fluid container-xl position-relative d-flex align-items-center">
+      <a href="../../../../index.html" class="logo d-flex align-items-center me-auto">
+        <img src="../../../../assets/img/logo.png" alt="CivicPlus Logo">
+        <h1 class="sitename">CivicPlus</h1>
+      </a>
+
+      <nav id="navmenu" class="navmenu">
+        <ul>
+          <li><a href="../../../../index.html#hero">Home</a></li>
+          <li><a href="../../../../index.html#about">Concept</a></li>
+          <li><a href="../../../../index.html#services" class="active">Services</a></li>
+          <li><a href="../../../../index.html#team">Team</a></li>
+          <li id="admin-link" style="display:none;"><a href="/Esprit-PW-2A20-2526-CivicPlus/admin.html">Dashboard</a></li>
+          <li><a href="../../../../index.html#contact">Contact</a></li>
+        </ul>
+        <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
+      </nav>
+
+      <a class="btn-getstarted" href="ajouter_projet.html">Lancer un Projet</a>
+    </div>
+  </header>
+
+    <!-- Page Title -->
+    <div>
+      <h1>Projects</h1>
+      <nav>
+        <ol>
+          <li><a href="index.html">Home</a></li>
+          <li>Projects</li>
+        </ol>
+      </nav>
+    </div>
+
+    <!-- ADD A PROJECT FORM -->
+    <section id="add-project">
+      <h2>Add a Project</h2>
+      <p>Fill in the details below to publish a new project and set your funding goal.</p>
+
+      <form method="post" action="#" enctype="multipart/form-data">
+
+        <label for="projTitle">Project Title *</label><br>
+        <input type="text" id="projTitle" name="projTitle" placeholder="e.g. Community Sports Arena" required><br><br>
+
+        <label for="projType">Project Type *</label><br>
+        <select id="projType" name="projType" required>
+          <option value="" disabled selected>— Select a type —</option>
+          <option value="sport">Sport</option>
+          <option value="infrastructure">Infrastructure</option>
+          <option value="education">Education</option>
+          <option value="health">Health</option>
+          <option value="environment">Environment</option>
+          <option value="technology">Technology</option>
+          <option value="culture">Culture</option>
+          <option value="other">Other</option>
+        </select><br><br>
+
+        <label for="projCity">City *</label><br>
+        <input type="text" id="projCity" name="projCity" placeholder="e.g. Algiers" required><br><br>
+
+        <label for="projNeighborhood">Neighborhood *</label><br>
+        <input type="text" id="projNeighborhood" name="projNeighborhood" placeholder="e.g. Bab El Oued" required><br><br>
+
+        <label for="projDesc">Description *</label><br>
+        <textarea id="projDesc" name="projDesc" rows="5" cols="50"
+          placeholder="Describe the project goals, expected impact…" required></textarea><br><br>
+
+        <label for="projBudget">Budget Goal ($) *</label><br>
+        <input type="number" id="projBudget" name="projBudget" min="1" step="any"
+          placeholder="e.g. 50000" required><br><br>
+
+        <label for="projRaised">Amount Raised So Far ($)</label><br>
+        <input type="number" id="projRaised" name="projRaised" min="0" step="any"
+          placeholder="0 (optional)"><br><br>
+
+        <label for="projPhotos">Project Photos</label><br>
+        <input type="file" id="projPhotos" name="projPhotos[]" multiple accept="image/*"><br>
+        <small>PNG, JPG, WEBP — up to 10 images, max 5 MB each</small><br><br>
+
+        <button type="reset">Clear</button>
+        <button type="submit">Add Project</button>
+
+      </form>
+    </section>
+
+  </main>
+
+  <footer>
+    <p>© eNno. All Rights Reserved.</p>
+  </footer>
+
+<script src='/Esprit-PW-2A20-2526-CivicPlus/assets/js/auth.js?v=5'></script>
+</body>
+</html>
+
+
+
+

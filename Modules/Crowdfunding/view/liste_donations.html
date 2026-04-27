@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="fr" class="light-style layout-menu-fixed" dir="ltr"
+      data-theme="theme-default" data-assets-path="../../../assets/">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+  <title>Donations – CivicPlus BackOffice</title>
+
+  <link rel="icon" type="image/x-icon" href="../../../assets/img/RawShape.png" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700&display=swap" rel="stylesheet" />
+
+  <link href="../../../assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="../../../assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="../../../assets/css/main.css" rel="stylesheet">
+  <link href="../../../assets/css/admin.css" rel="stylesheet">
+</head>
+
+<body class="index-page">
+  <div class="admin-layout">
+
+    <!-- Sidebar -->
+    <aside class="admin-sidebar" id="admin-sidebar-container"></aside>
+
+    <!-- Main content -->
+    <main class="admin-content">
+      <div class="admin-card">
+        <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
+          <div>
+            <h2 class="mb-1">Liste des Donations</h2>
+            <p class="text-muted mb-0">Gestion des financements participatifs</p>
+          </div>
+          <a href="citoyen_nouvelle_donation.html" class="btn btn-primary">
+            <i class="bi bi-plus-circle"></i> Nouvelle donation
+          </a>
+        </div>
+
+        <div id="flashBox"></div>
+
+        <div class="table-responsive rounded-4 shadow-sm border-0 overflow-hidden">
+          <table class="table table-hover mb-0 admin-table align-middle border-0">
+            <thead class="admin-table-head">
+              <tr>
+                <th class="border-0">ID</th>
+                <th class="border-0">CIN</th>
+                <th class="border-0">Projet</th>
+                <th class="border-0">Montant ($)</th>
+                <th class="border-0">Référence</th>
+                <th class="border-0">Statut</th>
+                <th class="border-0">Date</th>
+                <th class="border-0 text-end">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="donationsTableBody">
+              <!-- Rempli dynamiquement par liste_donations.js -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script src="../../../assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="js/liste_donations.js?v=2"></script>
+<script src='/Esprit-PW-2A20-2526-CivicPlus/assets/js/auth.js?v=5'></script>
+<script>
+fetch('../controller/ProjetCrowdfundingController.php?action=demandeCount')
+  .then(function(r){return r.json();}).then(function(d){
+    var n=d.count||0; if(!n) return;
+    ['sidebarCrowdBadge','sidebarProjetsBadge'].forEach(function(id){
+      var el=document.getElementById(id); if(el){el.textContent=n;el.classList.remove('d-none');}
+    });
+  }).catch(function(){});
+</script>
+  <script src="/Esprit-PW-2A20-2526-CivicPlus/assets/js/load_admin_sidebar.js?v=2"></script>
+  </body>
+</html>
+
+
+
+

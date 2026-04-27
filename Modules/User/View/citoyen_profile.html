@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <title>Mon Profil | CivicPlus</title>
+  <meta name="description" content="">
+  <meta name="keywords" content="">
+
+  <!-- Favicons -->
+  <link href="../../../assets/img/RawShape.png" rel="icon">
+  <link href="../../../assets/img/RawShape.png" rel="apple-touch-icon">
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com" rel="preconnect">
+  <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Raleway:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap"
+    rel="stylesheet">
+
+
+  <!-- Vendor CSS Files -->
+  <link href="../../../assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="../../../assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="../../../assets/vendor/aos/aos.css" rel="stylesheet">
+  <link href="../../../assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+  <link href="../../../assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+
+
+  <!-- Main CSS File -->
+  <link href="../../../assets/css/main.css" rel="stylesheet">
+  <style>
+    .profile-card {
+      background: #fff;
+      border: 1px solid rgba(0, 0, 0, 0.05);
+      border-radius: 20px;
+      padding: 30px;
+      box-shadow: 0 10px 40px rgba(0, 0, 0, 0.05);
+    }
+  </style>
+</head>
+
+<body class="index-page">
+
+  <!-- === DÉBUT DU HEADER DYNAMIQUE CIVICPLUS === -->
+  <div id="header-container" class="sticky-top" style="top: 0; z-index: 1030;"></div>
+  <!-- === FIN DU HEADER DYNAMIQUE === -->
+
+  <main class="main">
+
+    <!-- Page Title -->
+    <div class="page-title" data-aos="fade">
+      <div class="container d-lg-flex justify-content-between align-items-center">
+        <h1 class="mb-2 mb-lg-0">Gestion de Profil</h1>
+        <nav class="breadcrumbs">
+          <ol>
+            <li><a href="../../../index.html">Accueil</a></li>
+            <li class="current">Profil Citoyen</li>
+          </ol>
+        </nav>
+      </div>
+    </div><br>
+
+    <div class="container pb-5" data-aos="fade-up">
+      <div class="row justify-content-center">
+        <div class="col-lg-10">
+          <div class="profile-card">
+
+            <h3 class="mb-4 text-center">Toutes vos informations personnelles</h3>
+            <div id="alert-container"></div>
+
+            <form id="profile-form" enctype="multipart/form-data">
+              <!-- Photo de profil -->
+              <div class="text-center mb-4">
+                <div class="position-relative d-inline-block">
+                  <img id="profile-preview" src="https://cdn-icons-png.flaticon.com/512/149/149071.png" alt="Aperçu"
+                    width="120" height="120" class="rounded-circle border shadow-sm object-fit-cover">
+                  <label for="photo"
+                    class="position-absolute bottom-0 end-0 bg-primary text-white rounded-circle d-flex align-items-center justify-content-center cursor-pointer shadow"
+                    style="width: 35px; height: 35px; cursor: pointer;">
+                    <i class="bi bi-camera"></i>
+                  </label>
+                  <input type="file" id="photo" name="photo" class="d-none" accept="image/*">
+                </div>
+                <p class="mt-2 text-muted small">Cliquez sur l'icône pour changer votre photo</p>
+              </div>
+
+              <div class="row g-3">
+                <div class="col-md-6">
+                  <label class="form-label">Num CIN (Non modifiable)</label>
+                  <input type="number" id="num_cin" name="num_cin" class="form-control" readonly
+                    style="background-color: #e9ecef;">
+                </div>
+
+                <div class="col-md-6">
+                  <label class="form-label">Email</label>
+                  <input type="email" id="email" name="email" class="form-control" required>
+                </div>
+
+                <div class="col-md-6">
+                  <label class="form-label">Nom</label>
+                  <input type="text" id="nom" name="nom" class="form-control" required>
+                </div>
+
+                <div class="col-md-6">
+                  <label class="form-label">Prénom</label>
+                  <input type="text" id="prenom" name="prenom" class="form-control" required>
+                </div>
+
+                <div class="col-md-6">
+                  <label class="form-label">Date de naissance</label>
+                  <input type="date" id="date_naissance" name="date_naissance" class="form-control">
+                </div>
+
+                <div class="col-md-6">
+                  <label class="form-label">Genre</label>
+                  <select id="genre" name="genre" class="form-select">
+                    <option value="">Sélectionnez...</option>
+                    <option value="H">Homme</option>
+                    <option value="F">Femme</option>
+                  </select>
+                </div>
+
+                <div class="col-md-6">
+                  <label class="form-label">Situation familiale</label>
+                  <input type="text" id="situation_familiale" name="situation_familiale" class="form-control">
+                </div>
+
+                <div class="col-md-6">
+                  <label class="form-label">Téléphone</label>
+                  <input type="text" id="numero_telephone" name="numero_telephone" class="form-control">
+                </div>
+
+                <div class="col-md-12">
+                  <label class="form-label">Adresse postale</label>
+                  <textarea id="adresse_postale" name="adresse_postale" class="form-control"></textarea>
+                </div>
+
+                <div class="col-md-4">
+                  <label class="form-label">Code postal</label>
+                  <input type="text" id="code_postal" name="code_postal" class="form-control">
+                </div>
+
+                <div class="col-md-4">
+                  <label class="form-label">Ville</label>
+                  <input type="text" id="ville" name="ville" class="form-control">
+                </div>
+
+                <div class="col-md-4">
+                  <label class="form-label">Langue préférée</label>
+                  <input type="text" id="langue_preferee" name="langue_preferee" class="form-control"
+                    placeholder="FR, AR, EN...">
+                </div>
+
+                <div class="col-md-6">
+                  <label class="form-label">Latitude domicile</label>
+                  <input type="text" id="latitude_domicile" name="latitude_domicile" class="form-control">
+                </div>
+
+                <div class="col-md-6">
+                  <label class="form-label">Longitude domicile</label>
+                  <input type="text" id="longitude_domicile" name="longitude_domicile" class="form-control">
+                </div>
+
+                <div class="col-md-12">
+                  <div id="location-picker-map"
+                    style="height: 300px; width: 100%; border-radius: 8px; border: 1px solid #ced4da; margin-bottom: 10px; z-index: 1;">
+                  </div>
+                  <small class="text-muted"><i class="bi bi-info-circle"></i> Placez le point sur la carte pour définir
+                    vos coordonnées géographiques.</small>
+                </div>
+
+                <div class="col-md-12">
+                  <label class="form-label">Préférences IA transport (Ex: éviter le bus bondé)</label>
+                  <textarea id="preferences_ia_transport" name="preferences_ia_transport"
+                    class="form-control"></textarea>
+                </div>
+              </div>
+
+              <div class="mt-4 text-center">
+                <button type="submit" class="btn btn-primary btn-lg" style="border-radius:25px; padding: 10px 40px;">
+                  <i class="bi bi-save"></i> Mettre à jour mon profil
+                </button>
+              </div>
+            </form>
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </main>
+
+  <footer id="footer" class="footer">
+    <div class="container footer-top">
+      <div class="row gy-4">
+        <div class="col-lg-4 col-md-6 footer-about">
+          <a href="../../../index.html" class="d-flex align-items-center">
+            <span class="sitename">CivicPlus</span>
+          </a>
+          <div class="footer-contact pt-3">
+            <p>Bloc H - ESPRIT</p>
+            <p>Ariana Petite</p>
+            <p class="mt-3"><strong>Phone:</strong> <span>22 504 470</span></p>
+            <p><strong>Email:</strong> <span>civicplus00@gmail.com</span></p>
+          </div>
+        </div>
+        <div class="col-lg-4 col-md-12">
+          <h4>Follow Us</h4>
+          <p>Rejoignez la communauté CivicPlus.</p>
+          <div class="social-links d-flex">
+            <a href=""><i class="bi bi-twitter-x"></i></a>
+            <a href=""><i class="bi bi-facebook"></i></a>
+            <a href=""><i class="bi bi-instagram"></i></a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="container copyright text-center mt-4">
+      <p>© <span>Copyright</span> <strong class="px-1 sitename">CivicPlus</strong></p>
+      <div class="credits">
+        Designed by <strong>NOVA</strong>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scroll Top -->
+  <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i
+      class="bi bi-arrow-up-short"></i></a>
+  <!-- Preloader -->
+  <div id="preloader"></div>
+
+  <!-- Vendor JS Files -->
+  <script src="../../../assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="../../../assets/vendor/aos/aos.js"></script>
+  <script src="../../../assets/vendor/glightbox/js/glightbox.min.js"></script>
+  <script src="../../../assets/vendor/swiper/swiper-bundle.min.js"></script>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+  <!-- Main JS -->
+  <script src="../../../assets/js/main.js"></script>
+  <script src="../../../assets/js/location-picker.js"></script>
+  <script src="/Esprit-PW-2A20-2526-CivicPlus/assets/js/load_header.js"></script>
+  <script src="/Esprit-PW-2A20-2526-CivicPlus/assets/js/auth.js"></script>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const photoInput = document.getElementById('photo');
+      const photoPreview = document.getElementById('profile-preview');
+
+      // Preview de l'image sélectionnée
+      photoInput.addEventListener('change', function () {
+        const file = this.files[0];
+        if (file) {
+          const reader = new FileReader();
+          reader.onload = function (e) {
+            photoPreview.src = e.target.result;
+          }
+          reader.readAsDataURL(file);
+        }
+      });
+
+      // Fetch User Data
+      fetch('../Controller/get_current_user.php')
+        .then(res => res.json())
+        .then(data => {
+          if (data.error) {
+            alert('Erreur: ' + data.error);
+            window.location.href = 'login.html';
+            return;
+          }
+          const user = data.user;
+          document.getElementById('num_cin').value = user.num_cin || '';
+          document.getElementById('email').value = user.email || '';
+          document.getElementById('nom').value = user.nom || '';
+          document.getElementById('prenom').value = user.prenom || '';
+          document.getElementById('date_naissance').value = user.date_naissance || '';
+          document.getElementById('genre').value = user.genre || '';
+          document.getElementById('situation_familiale').value = user.situation_familiale || '';
+          document.getElementById('numero_telephone').value = user.numero_telephone || '';
+          document.getElementById('adresse_postale').value = user.adresse_postale || '';
+          document.getElementById('code_postal').value = user.code_postal || '';
+          document.getElementById('ville').value = user.ville || '';
+          document.getElementById('langue_preferee').value = user.langue_preferee || '';
+          document.getElementById('latitude_domicile').value = user.latitude_domicile || '';
+          document.getElementById('longitude_domicile').value = user.longitude_domicile || '';
+          document.getElementById('preferences_ia_transport').value = user.preferences_ia_transport || '';
+
+          if (user.photo) {
+            photoPreview.src = user.photo.startsWith('http') ? user.photo : '/Esprit-PW-2A20-2526-CivicPlus/' + user.photo;
+          }
+        })
+        .catch(err => console.error(err));
+
+      // Handle submission
+      document.getElementById('profile-form').addEventListener('submit', function (e) {
+        e.preventDefault();
+        const formData = new FormData(this);
+        fetch('../Controller/update_current_user.php', {
+          method: 'POST',
+          body: formData
+        })
+          .then(res => res.json())
+          .then(data => {
+            const alertContainer = document.getElementById('alert-container');
+            if (data.success) {
+              alertContainer.innerHTML = `<div class="alert alert-success">${data.message}</div>`;
+            } else {
+              alertContainer.innerHTML = `<div class="alert alert-danger">${data.error}</div>`;
+            }
+            window.scrollTo(0, 0);
+          })
+          .catch(err => {
+            document.getElementById('alert-container').innerHTML = `<div class="alert alert-danger">Erreur inattendue.</div>`;
+          });
+      });
+    });
+  </script>
+</body>
+
+</html>

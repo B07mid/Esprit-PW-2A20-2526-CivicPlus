@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Explorer les Projets - CivicPlus</title>
+  <link rel="icon" type="image/png" href="../../../assets/img/RawShape.png" />
+
+  <link href="https://fonts.googleapis.com" rel="preconnect" />
+  <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900&family=Raleway:ital,wght@0,100;0,300;0,400;0,500;0,600;0,700;0,800;0,900&family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700&display=swap" rel="stylesheet" />
+
+  <link href="../../../assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="../../../assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet" />
+  <link href="../../../assets/vendor/aos/aos.css" rel="stylesheet" />
+  <link href="../../../assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet" />
+  <link href="../../../assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet" />
+  <link href="../../../assets/css/main.css?v=17" rel="stylesheet" />
+</head>
+
+<body class="index-page">
+
+  <!-- === DÉBUT DU HEADER DYNAMIQUE CIVICPLUS === -->
+  <div id="header-container" class="sticky-top" style="top: 0; z-index: 1030;"></div>
+  <!-- === FIN DU HEADER DYNAMIQUE === -->
+
+  <main id="main">
+    <section class="section contact">
+      <div class="container">
+
+        <!-- Section title -->
+        <div class="section-title" data-aos="fade-up">
+          <span>Crowdfunding</span>
+          <h2>Explorer les Projets</h2>
+          <p>Parcourez les projets citoyens en cours de financement et soutenez ceux de votre quartier.</p>
+        </div>
+
+        <!-- Filters -->
+        <div class="row justify-content-center mb-2 filter-bar g-2">
+          <div class="col-12 col-md-4">
+            <div class="input-group">
+              <span class="input-group-text search-prefix">
+                <i class="bi bi-search"></i>
+              </span>
+              <input type="text" id="searchInput" class="form-control"
+                     placeholder="Rechercher un projet...">
+            </div>
+          </div>
+          <div class="col-12 col-md-3">
+            <select id="filterStatut" class="form-select">
+              <option value="">Tous les statuts</option>
+              <option value="en_recherche_financement">Recherche de financement</option>
+              <option value="finance">Finance</option>
+              <option value="en_cours">En cours</option>
+              <option value="termine">Termine</option>
+              <option value="annule">Annule</option>
+            </select>
+          </div>
+          <div class="col-12 col-md-2">
+            <select id="filterType" class="form-select">
+              <option value="">Tous les types</option>
+              <option value="infrastructure">Infrastructure</option>
+              <option value="sante">Sante</option>
+              <option value="education">Education</option>
+              <option value="environnement">Environnement</option>
+              <option value="culture">Culture</option>
+              <option value="sport">Sport</option>
+              <option value="autre">Autre</option>
+            </select>
+          </div>
+          <div class="col-12 col-md-2">
+            <input type="text" id="filterVille" class="form-control"
+                   placeholder="Filtrer par ville...">
+          </div>
+        </div>
+
+        <!-- Sort + View toggle -->
+        <div class="row justify-content-center mb-4 g-2">
+          <div class="col-12 col-md-auto d-flex align-items-center gap-2 flex-wrap">
+            <span class="text-muted small fw-bold">
+              <i class="bi bi-sort-down me-1"></i>Trier par :
+            </span>
+            <select id="sortSelect" class="form-select form-select-sm">
+              <option value="">-- Par defaut --</option>
+              <option value="nom_asc">Nom A &rarr; Z</option>
+              <option value="nom_desc">Nom Z &rarr; A</option>
+              <option value="budget_asc">Objectif croissant</option>
+              <option value="budget_desc">Objectif decroissant</option>
+              <option value="type_asc">Type A &rarr; Z</option>
+            </select>
+            <div class="view-toggle d-flex gap-1 ms-2" role="group" aria-label="Mode d'affichage">
+              <button id="btnViewGrid" class="view-toggle-btn active" title="Vue grille">
+                <i class="bi bi-grid-3x3-gap-fill"></i>
+              </button>
+              <button id="btnViewList" class="view-toggle-btn" title="Vue liste">
+                <i class="bi bi-list-ul"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Spinner -->
+        <div id="loadingSpinner" class="text-center py-5">
+          <div class="spinner-border" role="status">
+            <span class="visually-hidden">Chargement...</span>
+          </div>
+          <p class="mt-2 text-muted">Chargement des projets...</p>
+        </div>
+
+        <!-- Alert box -->
+        <div id="alertBox"></div>
+
+        <!-- Cards grid -->
+        <div class="row g-4" id="projetsContainer"></div>
+
+        <!-- Empty state -->
+        <div id="emptyMsg" class="d-none text-center py-5">
+          <i class="bi bi-search"></i>
+          <p class="mt-3 text-muted fs-5">Aucun projet ne correspond a votre recherche.</p>
+        </div>
+
+      </div>
+    </section>
+  </main>
+
+  <!-- ====== Modal Détail Projet ====== -->
+  <div class="modal fade" id="projetModal" tabindex="-1" aria-labelledby="projetModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable">
+      <div class="modal-content border-0 shadow-lg">
+
+        <div class="modal-header border-0 pb-2 modal-header-primary">
+          <div class="flex-grow-1">
+            <span id="modalTypeBadge" class="badge mb-2"></span>
+            <h5 class="modal-title text-white fw-bold mb-0" id="projetModalLabel"></h5>
+            <small class="text-white-50" id="modalLocation"></small>
+          </div>
+          <button type="button" class="btn-close btn-close-white ms-3" data-bs-dismiss="modal" aria-label="Fermer"></button>
+        </div>
+
+        <div class="modal-body p-4">
+          <!-- Financement -->
+          <div class="p-3 rounded mb-4 modal-financement">
+            <div class="d-flex justify-content-between small fw-bold mb-1">
+              <span>Collecté : <span id="modalRaised"></span></span>
+              <span>Objectif : <span id="modalGoal"></span></span>
+            </div>
+            <div class="progress modal-funding-progress">
+              <div class="progress-bar" id="modalProgressBar" role="progressbar"></div>
+            </div>
+            <div class="d-flex justify-content-between small mt-1">
+              <span id="modalStatut" class="badge"></span>
+              <span class="text-muted" id="modalPct"></span>
+            </div>
+          </div>
+
+          <!-- Description -->
+          <h6 class="fw-bold mb-2 modal-section-heading"><i class="bi bi-file-text-fill me-1"></i>Description</h6>
+          <p id="modalDescription" class="text-muted mb-4"></p>
+
+          <!-- Bouton don -->
+          <div class="text-end mb-4">
+            <a id="modalDonnerBtn" href="#" class="btn-getstarted">
+              <i class="bi bi-piggy-bank me-1"></i> Faire un don
+            </a>
+          </div>
+
+          <hr class="my-3">
+
+          <!-- Commentaires -->
+          <h6 class="fw-bold mb-3" id="commentsHeading">
+            <i class="bi bi-chat-dots-fill me-1"></i>Commentaires
+            <span class="badge ms-1" id="modalCommentCount">0</span>
+          </h6>
+
+          <div id="modalCommentsList" class="mb-3"></div>
+
+          <!-- Formulaire commentaire -->
+          <div id="commentFormWrapper">
+            <div class="input-group">
+              <span class="input-group-text comment-prefix">
+                <i class="bi bi-person-circle"></i>
+              </span>
+              <textarea class="form-control" id="modalCommentText" rows="2"
+                        placeholder="Écrire un commentaire…"></textarea>
+            </div>
+            <button class="btn btn-primary mt-2 w-100" id="modalPublishBtn">
+              <i class="bi bi-send me-1"></i> Publier le commentaire
+            </button>
+          </div>
+          <div id="commentLoginNotice" class="d-none alert alert-info mt-2 mb-0">
+            <i class="bi bi-info-circle me-1"></i>
+            <a href="../../../Modules/User/View/login.html" style="color:inherit;">Connectez-vous</a>
+            pour laisser un commentaire.
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <!-- ====== Auth Toast ====== -->
+  <div class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index:9999;">
+    <div id="authToast" class="toast align-items-center text-bg-warning border-0" role="alert" aria-live="assertive" aria-atomic="true">
+      <div class="d-flex">
+        <div class="toast-body fw-semibold">
+          <i class="bi bi-lock-fill me-2"></i>
+          <a href="../../../Modules/User/View/login.html" class="text-dark">Connectez-vous</a>
+          pour pouvoir voter.
+        </div>
+        <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Fermer"></button>
+      </div>
+    </div>
+  </div>
+
+  <script src="../../../assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script></script>
+  <script src="../../../assets/vendor/aos/aos.js"></script>
+  <script src="../../../assets/vendor/glightbox/js/glightbox.min.js"></script>
+  <script src="../../../assets/vendor/swiper/swiper-bundle.min.js"></script>
+  <script src="../../../assets/js/main.js?v=2"></script>
+  <script src="js/citoyen_liste_projets.js?v=10"></script>
+  <script src="/Esprit-PW-2A20-2526-CivicPlus/assets/js/load_header.js"></script>
+  <script src='/Esprit-PW-2A20-2526-CivicPlus/assets/js/auth.js?v=5'></script>
+</body>
+</html>

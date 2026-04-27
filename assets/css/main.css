@@ -1,4 +1,4 @@
-/**
+﻿/**
 * Template Name: eNno
 * Template URL: https://bootstrapmade.com/enno-free-simple-bootstrap-template/
 * Updated: Aug 07 2024 with Bootstrap v5.3.3
@@ -1754,3 +1754,892 @@ section,
 .starter-section {
   /* Add your styles here */
 }
+
+/*--------------------------------------------------------------
+# E-Admin Landing Page
+--------------------------------------------------------------*/
+.service-card {
+    border: none;
+    border-radius: 20px;
+    overflow: hidden;
+    transition: all 0.4s ease;
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(10px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05);
+    height: 100%;
+    cursor: pointer;
+    text-decoration: none !important;
+    display: flex;
+    flex-direction: column;
+}
+.service-card a {
+    text-decoration: none !important;
+    color: inherit;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+.service-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 20px 40px rgba(17, 47, 141, 0.15);
+}
+.service-icon-wrapper {
+    width: 80px;
+    height: 80px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 20px;
+    background: linear-gradient(135deg, rgba(17, 47, 141, 0.1), rgba(17, 47, 141, 0.02));
+    transition: all 0.4s ease;
+}
+.service-card:hover .service-icon-wrapper {
+    background: var(--accent-color);
+}
+.service-card:hover .service-icon-wrapper i {
+    color: #ffffff !important;
+}
+.service-title {
+    font-family: var(--heading-font);
+    font-weight: 700;
+    color: var(--heading-color);
+    margin-bottom: 15px;
+    font-size: 1.25rem;
+}
+.service-desc {
+    color: #6c757d;
+    font-size: 0.95rem;
+    line-height: 1.6;
+    margin-bottom: 20px;
+    flex-grow: 1;
+}
+.hero-eadmin {
+    background: linear-gradient(135deg, rgba(255,255,255,0.9), rgba(240,248,255,0.9)), url('../img/hero-bg-2.jpg') center/cover no-repeat;
+    padding: 100px 0 60px 0;
+    position: relative;
+}
+.action-arrow {
+    display: inline-flex;
+    align-items: center;
+    font-weight: 600;
+    color: var(--accent-color);
+    transition: 0.3s;
+    margin-top: auto;
+}
+.action-arrow i {
+    margin-left: 8px;
+    transition: 0.3s;
+}
+.service-card:hover .action-arrow i {
+    transform: translateX(8px);
+}
+/* =============================
+   Crowdfunding â€“ Index Page
+   ============================= */
+
+/* ---------- Cards ---------- */
+.projet-card {
+  transition: transform .25s ease, box-shadow .25s ease;
+  cursor: pointer;
+}
+.projet-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, .15) !important;
+}
+.projet-card .card-click-hint {
+  opacity: 0;
+  transition: opacity .2s ease;
+  font-size: .78rem;
+  color: #112f8d;
+  font-weight: 600;
+}
+.projet-card:hover .card-click-hint {
+  opacity: 1;
+}
+
+/* ---------- Progress ---------- */
+.progress,
+.progress-bar {
+  border-radius: 10px;
+}
+
+/* ---------- Filter bar ---------- */
+.filter-bar .form-control,
+.filter-bar .form-select {
+  border-radius: 20px;
+  font-size: .9rem;
+  color: #112f8d;
+  font-weight: 500;
+}
+#sortSelect {
+  border-radius: 20px;
+  color: #112f8d;
+  font-weight: 500;
+  width: auto;
+}
+
+/* ---------- Search input ---------- */
+.search-prefix {
+  border-radius: 20px 0 0 20px;
+  background: #fff;
+  border-color: #ced4da;
+}
+.search-prefix .bi {
+  color: #112f8d;
+}
+#searchInput {
+  border-radius: 0 20px 20px 0;
+  color: #112f8d;
+  font-weight: 500;
+}
+
+/* ---------- Individual filter controls ---------- */
+#filterStatut,
+#filterType,
+#filterVille {
+  border-radius: 20px;
+  color: #112f8d;
+  font-weight: 500;
+}
+
+/* ---------- Loading spinner ---------- */
+#loadingSpinner .spinner-border {
+  color: #112f8d;
+  width: 2.5rem;
+  height: 2.5rem;
+}
+
+/* ---------- Empty state ---------- */
+#emptyMsg .bi {
+  font-size: 3rem;
+  color: #ccc;
+}
+
+/* ---------- Modal header ---------- */
+.modal-header-primary {
+  background: #112f8d;
+  border-radius: .5rem .5rem 0 0;
+}
+#modalTypeBadge {
+  font-size: .78rem;
+}
+
+/* ---------- Modal financement ---------- */
+.modal-financement {
+  background: #f8f9fa;
+}
+#modalRaised {
+  color: #e86a1e;
+}
+.modal-funding-progress {
+  height: 10px;
+}
+
+/* ---------- Modal description ---------- */
+.modal-section-heading {
+  color: #112f8d;
+}
+#modalDescription {
+  line-height: 1.7;
+  white-space: pre-line;
+}
+
+/* ---------- Modal donate button ---------- */
+#modalDonnerBtn {
+  border-radius: 20px;
+  padding: .45rem 1.4rem;
+  font-size: .9rem;
+  display: inline-flex;
+  align-items: center;
+}
+
+/* ---------- Comments ---------- */
+#commentsHeading {
+  color: #112f8d;
+}
+#modalCommentCount {
+  background: #e8eef8;
+  color: #112f8d;
+}
+#modalCommentsList {
+  max-height: 280px;
+  overflow-y: auto;
+}
+.comment-prefix {
+  background: #f0f4ff;
+  border-color: #d0d8f0;
+}
+.comment-prefix .bi {
+  color: #112f8d;
+}
+#modalCommentText {
+  resize: none;
+}
+#modalPublishBtn {
+  background: #112f8d;
+  border: none;
+}
+
+/* =============================
+   View Toggle (Grid / List)
+   ============================= */
+.view-toggle-btn {
+  border: 1px solid #ced4da;
+  background: #fff;
+  color: #6c757d;
+  border-radius: 8px;
+  padding: .3rem .65rem;
+  cursor: pointer;
+  transition: background .2s, color .2s, border-color .2s;
+  font-size: 1rem;
+  line-height: 1;
+}
+.view-toggle-btn:hover,
+.view-toggle-btn.active {
+  background: #112f8d;
+  color: #fff;
+  border-color: #112f8d;
+}
+
+/* =============================
+   List View Layout
+   ============================= */
+#projetsContainer.list-view {
+  display: flex !important;
+  flex-direction: column;
+  gap: .6rem;
+}
+#projetsContainer.list-view > div {
+  width: 100% !important;
+  flex: 0 0 100% !important;
+  max-width: 100% !important;
+}
+#projetsContainer.list-view .projet-card {
+  flex-direction: row !important;
+}
+#projetsContainer.list-view .card-header-band {
+  width: 5px !important;
+  min-height: unset;
+  border-radius: .375rem 0 0 .375rem !important;
+}
+#projetsContainer.list-view .card-body {
+  flex-direction: row !important;
+  align-items: center;
+  flex-wrap: wrap;
+  padding: .75rem 1rem !important;
+  gap: .75rem 1rem;
+}
+/* Type badge */
+#projetsContainer.list-view .card-body > .mb-2 {
+  flex: 0 0 auto;
+  margin-bottom: 0 !important;
+}
+/* Title */
+#projetsContainer.list-view .card-title {
+  flex: 1 1 180px;
+  margin-bottom: 0 !important;
+  font-size: .95rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 260px;
+}
+/* Location */
+#projetsContainer.list-view .card-body > .text-muted.small {
+  flex: 0 1 150px;
+  margin-bottom: 0 !important;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+/* Description & hint — hidden in list mode */
+#projetsContainer.list-view .card-text,
+#projetsContainer.list-view .card-click-hint {
+  display: none !important;
+}
+/* Progress block */
+#projetsContainer.list-view .proj-progress {
+  flex: 0 1 180px;
+  margin-top: 0 !important;
+}
+/* Action buttons – list mode */
+#projetsContainer.list-view .proj-actions {
+  flex: 0 0 auto;
+  margin-top: 0 !important;
+  margin-left: auto !important;
+  display: flex !important;
+  flex-direction: row !important;
+  align-items: center !important;
+  justify-content: flex-end !important;
+  gap: .5rem !important;
+}
+/* Flatten the two inner groups into the same row */
+#projetsContainer.list-view .proj-actions > div {
+  display: contents !important;
+}
+/* All four buttons: same 32px circle */
+#projetsContainer.list-view .lk-tooltip,
+#projetsContainer.list-view .dk-tooltip {
+  --sz: 0.7rem;
+  --sizer: 32px;
+}
+#projetsContainer.list-view .lk-trigger,
+#projetsContainer.list-view .dk-trigger {
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+#projetsContainer.list-view .lk-trigger .lk-heart {
+  --sizer: 16px;
+}
+#projetsContainer.list-view .dk-trigger .dk-thumb-icon {
+  font-size: 13px;
+}
+/* Comment / Donate: same 32px circle, no text, no expand */
+#projetsContainer.list-view .cm-bookmarkBtn,
+#projetsContainer.list-view .dn-bookmarkBtn {
+  width: 32px !important;
+  height: 32px !important;
+  min-width: 32px;
+  border-radius: 50% !important;
+  padding: 0 !important;
+  box-shadow: rgba(95, 95, 115, 0.2) 0px 2px 5px -1px;
+  overflow: hidden;
+}
+#projetsContainer.list-view .cm-IconContainer,
+#projetsContainer.list-view .dn-IconContainer {
+  width: 32px !important;
+  height: 32px !important;
+  border-radius: 50% !important;
+  flex-shrink: 0;
+  transition: none !important;
+}
+#projetsContainer.list-view .cm-IconContainer svg,
+#projetsContainer.list-view .dn-IconContainer svg {
+  width: 14px;
+  height: 14px;
+}
+#projetsContainer.list-view .cm-bookmarkBtn:hover .cm-IconContainer,
+#projetsContainer.list-view .dn-bookmarkBtn:hover .dn-IconContainer {
+  width: 32px !important;
+  border-radius: 50% !important;
+}
+#projetsContainer.list-view .cm-text,
+#projetsContainer.list-view .dn-text {
+  display: none !important;
+}
+
+/* =============================
+   Like / Dislike vote buttons
+   ============================= */
+.btn-dislike {
+  min-width: 52px;
+}
+.btn-dislike .badge {
+  font-size: .7rem;
+}
+
+/* =============================
+   Fancy Like Button (lk-tooltip)
+   ============================= */
+.lk-tooltip {
+  --bg: #fff;
+  --cl: red;
+  --sz: 0.75rem;
+  --sizer: 32px;
+  --h-cnt: calc(var(--sz) * 2);
+  position: relative;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.lk-trigger {
+  color: var(--cl);
+  background: var(--bg);
+  font-weight: 600;
+  cursor: pointer;
+  border-radius: 999px;
+  padding: calc(var(--sz) / 2);
+  font-size: var(--sz);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  border: 1px solid transparent;
+  outline: none;
+  box-shadow:
+    rgba(95, 95, 115, 0.25) 0px 2px 5px -1px,
+    rgba(255, 255, 255, 0.3) 0px 1px 3px -1px;
+}
+.lk-trigger .lk-heart {
+  --sizer: 18px;
+  transition: all 0.2s ease;
+  color: var(--cl);
+  margin-bottom: -2px;
+}
+.lk-trigger .lk-heart .lk-fill {
+  opacity: 0;
+  display: none;
+}
+
+.lk-trigger:hover {
+  --scale-1: 0.9;
+  --scale-2: 0.8;
+  animation: lkScaling 1s ease infinite;
+}
+.lk-trigger:hover .lk-heart {
+  --scale-1: 1.3;
+  --scale-2: 1.4;
+  animation: lkScaling 1s ease infinite;
+}
+@keyframes lkScaling {
+  0%   { transform: scale(1); }
+  20%, 90% { transform: scale(var(--scale-1)); }
+  50%  { transform: scale(var(--scale-2)); }
+}
+
+.lk-trigger .lk-checkround {
+  position: absolute;
+  fill: none;
+  stroke: var(--cl);
+  scale: 1.1;
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dashoffset: 162.6;
+  stroke-dasharray: 0 330 158 134.6;
+  rotate: 130deg;
+  opacity: 0.6;
+  z-index: -1;
+  cursor: none;
+  pointer-events: none;
+}
+
+.lk-content {
+  position: absolute;
+  border-radius: 999px;
+  top: calc(var(--h-cnt) * -0.75);
+  font-size: 14px;
+  padding: calc(var(--sz) / 4) calc(var(--sz) / 2);
+  z-index: 10;
+  pointer-events: none;
+  user-select: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: max-content;
+  transition: all 0.3s ease;
+  opacity: 0;
+  transform: scale(0) translate(0, 200%);
+  font-weight: 600;
+  background-color: var(--cl);
+  color: whitesmoke;
+  white-space: nowrap;
+}
+.lk-content::before {
+  position: absolute;
+  content: "";
+  height: 1rem;
+  width: 1rem;
+  bottom: -0.2em;
+  left: 50%;
+  transform: translate(-50%) rotate(45deg);
+  border-radius: 2px;
+  z-index: -2;
+  background-color: transparent;
+}
+
+.lk-tooltip .lk-trigger:hover + .lk-content {
+  top: calc(var(--h-cnt) * -1.25);
+  visibility: visible;
+  pointer-events: auto;
+  opacity: 1;
+  transform: scale(1) translate(0%, 0%);
+}
+
+.lk-content span {
+  --y-crease: 16px;
+  position: relative;
+  margin-left: 4px;
+  height: var(--y-crease);
+  overflow: hidden;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  flex-direction: column;
+  margin-bottom: -1px;
+}
+.lk-content span::before,
+.lk-content span::after {
+  line-height: 1.1;
+  position: relative;
+  transform: translateY(calc(var(--y-crease) / 2));
+  transition: transform 0.5s ease;
+  transition-delay: 0s;
+}
+.lk-content span::before { content: attr(data-decrease); }
+.lk-content span::after  { content: attr(data-increase); }
+
+/* Liked state (focus = clicking, lk-liked = persistent) */
+.lk-trigger:focus .lk-heart .lk-fill,
+.lk-trigger.lk-liked .lk-heart .lk-fill {
+  display: unset;
+}
+.lk-trigger:focus .lk-heart .lk-fill {
+  animation: lkFilled 0.2s ease 1s forwards;
+}
+.lk-trigger.lk-liked .lk-heart .lk-fill {
+  opacity: 0.3;
+}
+@keyframes lkFilled {
+  to { opacity: 0.3; }
+}
+
+.lk-trigger:focus + .lk-content span::before,
+.lk-trigger:focus + .lk-content span::after,
+.lk-trigger.lk-liked + .lk-content span::before,
+.lk-trigger.lk-liked + .lk-content span::after {
+  transform: translateY(calc((var(--y-crease) / 2) * -1));
+  transition-delay: 0.2s;
+}
+
+.lk-trigger:focus .lk-checkround {
+  animation:
+    lkStroke 0.9s linear forwards,
+    lkCheckhide 0.45s linear 0.9s forwards;
+}
+@keyframes lkStroke {
+  to { stroke-dasharray: 0 163 158 134.6; }
+}
+@keyframes lkCheckhide {
+  to { stroke: var(--bg); scale: 0; stroke-width: 0; opacity: 0; }
+}
+
+.lk-sizer {
+  width: var(--sizer);
+  min-width: var(--sizer);
+  max-width: var(--sizer);
+  height: var(--sizer);
+  min-height: var(--sizer);
+  max-height: var(--sizer);
+}
+
+/* =============================
+   Dislike Button (dk-tooltip)
+   ============================= */
+.dk-tooltip {
+  --bg: #fff;
+  --cl: #6366f1;
+  --cl-light: #eef2ff;
+  --sz: 0.75rem;
+  --sizer: 32px;
+  --h-cnt: calc(var(--sz) * 2);
+  position: relative;
+  transition: all 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.dk-trigger {
+  color: var(--cl);
+  background: var(--bg);
+  font-weight: 600;
+  cursor: pointer;
+  border-radius: 999px;
+  padding: calc(var(--sz) / 2);
+  font-size: var(--sz);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.2s ease, box-shadow 0.2s ease;
+  border: 1px solid transparent;
+  outline: none;
+  box-shadow:
+    rgba(95, 95, 115, 0.25) 0px 2px 5px -1px,
+    rgba(255, 255, 255, 0.3) 0px 1px 3px -1px;
+}
+.dk-trigger .dk-thumb-icon {
+  font-size: 14px;
+  color: var(--cl);
+  transition: all 0.2s ease;
+  opacity: 0.75;
+  line-height: 1;
+}
+
+.dk-trigger:hover {
+  background: var(--cl-light);
+  box-shadow:
+    rgba(99, 102, 241, 0.35) 0px 4px 12px -2px,
+    rgba(255, 255, 255, 0.4) 0px 1px 3px -1px;
+}
+.dk-trigger:hover .dk-thumb-icon {
+  animation: dkWobble 0.6s ease;
+  opacity: 1;
+}
+
+@keyframes dkWobble {
+  0%   { transform: rotate(0deg)   scale(1); }
+  20%  { transform: rotate(-10deg) scale(1.15); }
+  40%  { transform: rotate(8deg)   scale(1.1); }
+  60%  { transform: rotate(-5deg)  scale(1.08); }
+  80%  { transform: rotate(3deg)   scale(1.04); }
+  100% { transform: rotate(0deg)   scale(1); }
+}
+
+.dk-trigger .dk-checkround {
+  position: absolute;
+  fill: none;
+  stroke: var(--cl);
+  scale: 1.1;
+  stroke-width: 3;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  stroke-dashoffset: 162.6;
+  stroke-dasharray: 0 330 158 134.6;
+  rotate: 130deg;
+  opacity: 0.6;
+  z-index: -1;
+  cursor: none;
+  pointer-events: none;
+}
+
+.dk-content {
+  position: absolute;
+  border-radius: 999px;
+  top: calc(var(--h-cnt) * -0.75);
+  font-size: 13px;
+  padding: 4px 10px;
+  z-index: 10;
+  pointer-events: none;
+  user-select: none;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: max-content;
+  transition: all 0.3s ease;
+  opacity: 0;
+  transform: scale(0) translate(0, 200%);
+  font-weight: 600;
+  background-color: var(--cl);
+  color: #fff;
+  white-space: nowrap;
+}
+.dk-content::before {
+  position: absolute;
+  content: "";
+  height: 1rem;
+  width: 1rem;
+  bottom: -0.2em;
+  left: 50%;
+  transform: translate(-50%) rotate(45deg);
+  border-radius: 2px;
+  z-index: -2;
+  background-color: transparent;
+}
+
+.dk-tooltip .dk-trigger:hover + .dk-content {
+  top: calc(var(--h-cnt) * -1.25);
+  visibility: visible;
+  pointer-events: auto;
+  opacity: 1;
+  transform: scale(1) translate(0%, 0%);
+}
+
+.dk-content span {
+  --y-crease: 16px;
+  position: relative;
+  margin-left: 4px;
+  height: var(--y-crease);
+  overflow: hidden;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  flex-direction: column;
+  margin-bottom: -1px;
+}
+.dk-content span::before,
+.dk-content span::after {
+  line-height: 1.1;
+  position: relative;
+  transform: translateY(calc(var(--y-crease) / 2));
+  transition: transform 0.5s ease;
+  transition-delay: 0s;
+}
+.dk-content span::before { content: attr(data-decrease); }
+.dk-content span::after  { content: attr(data-increase); }
+
+/* Disliked / active state */
+.dk-trigger.dk-disliked {
+  background: var(--cl-light);
+}
+.dk-trigger.dk-disliked .dk-thumb-icon,
+.dk-trigger:focus .dk-thumb-icon {
+  opacity: 1;
+  color: var(--cl);
+}
+
+.dk-trigger:focus + .dk-content span::before,
+.dk-trigger:focus + .dk-content span::after,
+.dk-trigger.dk-disliked + .dk-content span::before,
+.dk-trigger.dk-disliked + .dk-content span::after {
+  transform: translateY(calc((var(--y-crease) / 2) * -1));
+  transition-delay: 0.2s;
+}
+
+.dk-trigger:focus .dk-checkround {
+  animation:
+    lkStroke 0.9s linear forwards,
+    lkCheckhide 0.45s linear 0.9s forwards;
+}
+
+/* =============================
+   Comment Button (cm-bookmark)
+   ============================= */
+.cm-bookmarkBtn {
+  width: 90px;
+  height: 28px;
+  border-radius: 28px;
+  border: none;
+  background-color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition-duration: .3s;
+  overflow: hidden;
+  box-shadow: 6px 6px 10px rgba(0, 0, 0, 0.07);
+  flex-shrink: 0;
+  gap: 0;
+}
+
+.cm-IconContainer {
+  width: 22px;
+  height: 22px;
+  background-color: rgb(103, 74, 228);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  z-index: 2;
+  transition-duration: .3s;
+  flex-shrink: 0;
+}
+
+.cm-IconContainer svg {
+  width: 12px;
+  height: 12px;
+}
+
+.cm-text {
+  height: 80%;
+  width: 62px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgb(26, 26, 26);
+  z-index: 1;
+  transition-duration: .3s;
+  font-size: .71rem;
+  font-weight: 600;
+  margin: 0;
+  white-space: nowrap;
+}
+
+.cm-bookmarkBtn:hover .cm-IconContainer {
+  width: 80px;
+  border-radius: 28px;
+  transition-duration: .3s;
+}
+
+.cm-bookmarkBtn:hover .cm-text {
+  transform: translate(10px);
+  width: 0;
+  font-size: 0;
+  transition-duration: .3s;
+}
+
+.cm-bookmarkBtn:active {
+  transform: scale(0.95);
+  transition-duration: .3s;
+}
+
+/* =============================
+   Donate Button (dn-bookmark)
+   ============================= */
+.dn-bookmarkBtn {
+  width: 90px;
+  height: 28px;
+  border-radius: 28px;
+  border: none;
+  background-color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition-duration: .3s;
+  overflow: hidden;
+  box-shadow: 6px 6px 10px rgba(0, 0, 0, 0.07);
+  flex-shrink: 0;
+  text-decoration: none;
+}
+
+.dn-IconContainer {
+  width: 22px;
+  height: 22px;
+  background-color: #e86a1e;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  z-index: 2;
+  transition-duration: .3s;
+  flex-shrink: 0;
+}
+
+.dn-IconContainer svg {
+  width: 12px;
+  height: 12px;
+}
+
+.dn-text {
+  height: 80%;
+  width: 62px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: rgb(26, 26, 26);
+  z-index: 1;
+  transition-duration: .3s;
+  font-size: .71rem;
+  font-weight: 600;
+  margin: 0;
+  white-space: nowrap;
+}
+
+.dn-bookmarkBtn:hover .dn-IconContainer {
+  width: 80px;
+  border-radius: 28px;
+  transition-duration: .3s;
+}
+
+.dn-bookmarkBtn:hover .dn-text {
+  transform: translate(10px);
+  width: 0;
+  font-size: 0;
+  transition-duration: .3s;
+}
+
+.dn-bookmarkBtn:active {
+  transform: scale(0.95);
+  transition-duration: .3s;
+}
+

@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mon Portfolio | CivicPlus</title>
+  <meta name="description" content="Portfolio Citoyen" />
+  <link rel="icon" type="image/png" href="../../../assets/img/RawShape.png" />
+
+  <link href="https://fonts.googleapis.com" rel="preconnect" />
+  <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Raleway:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap" rel="stylesheet" />
+
+  <link href="../../../assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="../../../assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet" />
+  <link href="../../../assets/vendor/aos/aos.css" rel="stylesheet" />
+  <link href="../../../assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet" />
+  <link href="../../../assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet" />
+  <link href="../../../assets/css/main.css" rel="stylesheet" />
+
+  <style>
+    /* Wallet portfolio inspired by Uiverse layout */
+    .wallet-shell {
+      padding: 8px 8px 4px;
+      border-radius: 20px;
+      background: color-mix(in srgb, var(--surface-color), var(--background-color) 35%);
+      box-shadow: 0 12px 30px color-mix(in srgb, var(--default-color), transparent 86%);
+      overflow: hidden;
+      min-height: 460px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+    }
+
+    .wallet-zoom {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      margin-top: 18px;
+    }
+
+    .wallet {
+      position: relative;
+      width: 280px;
+      height: 235px;
+      margin: 0 auto;
+      perspective: 1000px;
+      display: flex;
+      justify-content: center;
+      align-items: flex-end;
+      transition: transform 0.4s ease;
+    }
+
+    .wallet::after {
+      content: "Survolez et cliquez sur une carte";
+      position: absolute;
+      bottom: -28px;
+      color: var(--heading-color);
+      font-size: 13px;
+      font-weight: 600;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+
+    @keyframes slideIntoPocket {
+      0% {
+        transform: translateY(-110px);
+        opacity: 0;
+      }
+      100% {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+
+    .wallet-back {
+      position: absolute;
+      bottom: 0;
+      width: 280px;
+      height: 200px;
+      background: color-mix(in srgb, var(--heading-color), #102a66 25%);
+      border-radius: 22px 22px 60px 60px;
+      z-index: 5;
+      box-shadow:
+        inset 0 25px 35px rgba(0, 0, 0, 0.3),
+        inset 0 5px 15px rgba(0, 0, 0, 0.35);
+    }
+
+    .wallet-card {
+      position: absolute;
+      width: 260px;
+      height: 146px;
+      left: 10px;
+      border-radius: 16px;
+      padding: 12px;
+      color: #ffffff;
+      text-decoration: none;
+      box-shadow:
+        inset 0 1px 1px rgba(255, 255, 255, 0.28),
+        0 -4px 15px rgba(0, 0, 0, 0.12);
+      transition:
+        transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1),
+        z-index 0s,
+        box-shadow 0.3s ease;
+      animation: slideIntoPocket 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) backwards;
+      cursor: pointer;
+    }
+
+    .wallet-card:focus-visible {
+      outline: 3px solid color-mix(in srgb, var(--accent-color), white 18%);
+      outline-offset: 2px;
+    }
+
+    .wallet-card-1 {
+      background: #4f63f6;
+      bottom: 90px;
+      z-index: 12;
+      animation-delay: 0.1s;
+    }
+
+    .wallet-card-2 {
+      background: #5aa656;
+      bottom: 65px;
+      z-index: 22;
+      animation-delay: 0.2s;
+    }
+
+    .wallet-card-3 {
+      background: #f4f7fb;
+      color: var(--heading-color);
+      bottom: 40px;
+      z-index: 32;
+      animation-delay: 0.3s;
+    }
+
+    .wallet-card-inner {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+    }
+
+    .wallet-card-top {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+      gap: 8px;
+    }
+
+    .wallet-chip {
+      width: 28px;
+      height: 20px;
+      border-radius: 5px;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      background: rgba(255, 255, 255, 0.25);
+      flex-shrink: 0;
+    }
+
+    .wallet-card-3 .wallet-chip {
+      border-color: color-mix(in srgb, var(--heading-color), transparent 65%);
+      background: color-mix(in srgb, var(--heading-color), transparent 90%);
+    }
+
+    .wallet-status {
+      font-size: 0.7rem;
+      font-weight: 700;
+      padding: 0.2rem 0.45rem;
+      border-radius: 999px;
+      letter-spacing: 0.03em;
+      white-space: nowrap;
+      max-width: 170px;
+      text-overflow: ellipsis;
+      overflow: hidden;
+    }
+
+    .wallet-status.valid {
+      background: rgba(25, 135, 84, 0.25);
+      color: #ffffff;
+      border: 1px solid rgba(255, 255, 255, 0.45);
+    }
+
+    .wallet-status.pending {
+      background: rgba(255, 193, 7, 0.25);
+      color: #ffffff;
+      border: 1px solid rgba(255, 255, 255, 0.45);
+    }
+
+    .wallet-status.expired {
+      background: rgba(220, 53, 69, 0.25);
+      color: #ffffff;
+      border: 1px solid rgba(255, 255, 255, 0.45);
+    }
+
+    .wallet-card-3 .wallet-status {
+      color: var(--heading-color);
+      border-color: color-mix(in srgb, var(--heading-color), transparent 55%);
+      background: color-mix(in srgb, var(--accent-color), transparent 82%);
+    }
+
+    .doc-preview-frame {
+      flex: 1;
+      border: 2px solid #111111;
+      border-radius: 10px;
+      overflow: hidden;
+      background: #ffffff;
+      min-height: 74px;
+    }
+
+    .doc-preview-frame img,
+    .doc-preview-frame embed {
+      max-width: 100%;
+      max-height: 100%;
+      width: auto;
+      height: auto;
+      border: 0;
+      display: block;
+      object-fit: initial;
+      pointer-events: none;
+      background: #ffffff;
+      margin: 0 auto;
+    }
+
+    .doc-preview-frame.fallback {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--heading-color);
+      font-size: 0.74rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .wallet-card-bottom {
+      margin-top: 7px;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      gap: 8px;
+      font-size: 0.74rem;
+    }
+
+    .wallet-doc-title {
+      font-weight: 700;
+      max-width: 160px;
+      line-height: 1.2;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .wallet-doc-number {
+      font-size: 0.68rem;
+      opacity: 0.9;
+      text-align: right;
+      max-width: 95px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .wallet-pocket {
+      position: absolute;
+      bottom: 0;
+      width: 280px;
+      height: 162px;
+      z-index: 42;
+      filter: drop-shadow(0 14px 22px rgba(20, 40, 20, 0.35));
+    }
+
+    .wallet-pocket svg {
+      width: 100%;
+      height: 100%;
+    }
+
+    .wallet-pocket-content {
+      position: absolute;
+      top: 48px;
+      width: 100%;
+      z-index: 50;
+      text-align: center;
+      color: #d7e4f5;
+    }
+
+    .wallet-pocket-content strong {
+      display: block;
+      font-size: 1.5rem;
+      line-height: 1;
+    }
+
+    .wallet-pocket-content small {
+      font-size: 0.78rem;
+      opacity: 0.86;
+      letter-spacing: 0.03em;
+    }
+
+    .wallet:hover {
+      transform: translateY(-5px);
+    }
+
+    .wallet:hover .wallet-card-1 {
+      transform: translateY(-75px) rotate(-3deg);
+    }
+
+    .wallet:hover .wallet-card-2 {
+      transform: translateY(-45px) rotate(2deg);
+    }
+
+    .wallet:hover .wallet-card-3 {
+      transform: translateY(-12px);
+    }
+
+    .wallet-card:hover {
+      z-index: 100 !important;
+      box-shadow:
+        inset 0 1px 1px rgba(255, 255, 255, 0.28),
+        0 12px 26px rgba(0, 0, 0, 0.22);
+    }
+
+    .wallet:hover .wallet-card-1:hover,
+    .wallet:hover .wallet-card-2:hover,
+    .wallet:hover .wallet-card-3:hover {
+      transform: translateY(-62px) scale(1.04) rotate(0);
+    }
+
+    .wallet-footer {
+      margin-top: 38px;
+      text-align: center;
+      color: color-mix(in srgb, var(--default-color), transparent 25%);
+      font-size: 0.86rem;
+      font-weight: 500;
+    }
+
+    .wallet-card-only .wallet-card-1 {
+      bottom: 50px;
+      z-index: 35;
+    }
+
+    .wallet-card-only .wallet-card-2,
+    .wallet-card-only .wallet-card-3 {
+      display: none;
+    }
+
+    .wallet-card-two .wallet-card-3 {
+      display: none;
+    }
+
+    @media (max-width: 575.98px) {
+      .wallet-shell {
+        min-height: 350px;
+      }
+
+      .wallet-zoom {
+        margin-top: 4px;
+      }
+    }
+
+    .history-card {
+        border-left: 4px solid var(--accent-color);
+        background: #ffffff;
+        transition: all 0.3s;
+    }
+    .history-card:hover {
+        background: #fdfdfd;
+        box-shadow: 0 5px 15px rgba(0,0,0,0.05);
+    }
+  </style>
+</head>
+
+<body class="index-page">
+  <!-- === DÉBUT DU HEADER DYNAMIQUE CIVICPLUS === -->
+  <div id="header-container" class="sticky-top" style="top: 0; z-index: 1030;"></div>
+  <!-- === FIN DU HEADER DYNAMIQUE === -->
+
+  <main id="main">
+    <section class="section">
+      <div class="container">
+        <div class="section-title">
+          <span>Portfolio</span>
+          <h2>Mon Portfolio Citoyen</h2>
+          <p>Consultez vos documents officiels et l'historique de vos demandes sous forme de cartes d'identité interactives.</p>
+        </div>
+
+        <div class="d-flex justify-content-center mb-5">
+            <button class="btn btn-outline-secondary mx-2 rounded-pill px-4" onclick="afficherOnglet('documents')">📄 Mes Documents</button>
+            <button class="btn btn-outline-secondary mx-2 rounded-pill px-4" onclick="afficherOnglet('historique')">🕐 Suivi & Historique</button>
+            <a href="ajouter_portfolio.html" class="btn btn-primary mx-2 rounded-pill px-4">➕ Ajouter un document</a>
+        </div>
+
+        <div class="row justify-content-center">
+          <div class="col-12">
+            <div class="card rounded-4 shadow-sm border-0 overflow-hidden" style="background: transparent;">
+              <div class="card-body p-0">
+
+                <!-- ONGLET DOCUMENTS: Grille de cartes -->
+                <div id="onglet-documents">
+                    <div class="row g-4" id="documentsGrid">
+                        <!-- Rempli par JavaScript -->
+                    </div>
+                </div>
+
+                <!-- ONGLET HISTORIQUE: Liste stylisée type Timeline/Cards -->
+                <div id="onglet-historique" style="display: none;">
+                    <div id="historiqueList" class="d-flex flex-column gap-3">
+                        <!-- Rempli par JavaScript -->
+                    </div>
+                </div>
+
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+  </main>
+
+  <footer id="footer" class="footer">
+    <div class="container footer-top">
+      <div class="row gy-4">
+        <div class="col-lg-4 col-md-6 footer-about">
+          <a href="../../../index.html" class="d-flex align-items-center">
+            <span class="sitename">CivicPlus</span>
+          </a>
+          <div class="footer-contact pt-3">
+            <p>Bloc H - ESPRIT</p>
+            <p>Ariana Petite</p>
+            <p class="mt-3"><strong>Phone:</strong> <span>22 504 470</span></p>
+            <p><strong>Email:</strong> <span>civicplus00@gmail.com</span></p>
+          </div>
+        </div>
+        <div class="col-lg-2 col-md-3 footer-links">
+          <h4>Useful Links</h4>
+          <ul>
+            <li><i class="bi bi-chevron-right"></i> <a href="../../../index.html">Accueil</a></li>
+            <li><i class="bi bi-chevron-right"></i> <a href="../../../index.html#about">Concept</a></li>
+            <li><i class="bi bi-chevron-right"></i> <a href="../../../index.html#services">Services</a></li>
+            <li><i class="bi bi-chevron-right"></i> <a href="../../../index.html#team">Notre équipe</a></li>
+          </ul>
+        </div>
+        <div class="col-lg-2 col-md-3 footer-links">
+          <h4>Nos Services</h4>
+          <ul>
+            <li><i class="bi bi-chevron-right"></i> <a href="../../../index.html#services">E-Administration</a></li>
+            <li><i class="bi bi-chevron-right"></i> <a href="../../../index.html#services">Signalement</a></li>
+            <li><i class="bi bi-chevron-right"></i> <a href="../../../index.html#services">Transport</a></li>
+            <li><i class="bi bi-chevron-right"></i> <a href="../../../index.html#services">Crowdfunding</a></li>
+          </ul>
+        </div>
+        <div class="col-lg-4 col-md-12">
+          <h4>Follow Us</h4>
+          <p>Suivez CivicPlus pour rester connecté aux nouveautés et projets de la ville.</p>
+          <div class="social-links d-flex">
+            <a href="#"><i class="bi bi-twitter-x"></i></a>
+            <a href="#"><i class="bi bi-facebook"></i></a>
+            <a href="#"><i class="bi bi-instagram"></i></a>
+            <a href="#"><i class="bi bi-linkedin"></i></a>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="container copyright text-center mt-4">
+      <p>© <span>Copyright</span> <strong class="px-1 sitename">CivicPlus</strong> <span>All Rights Reserved</span></p>
+      <div class="credits">Designed by <strong>NOVA</strong> Distributed by <strong>ESPRIT</strong></div>
+    </div>
+  </footer>
+
+  <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+  <div id="preloader"></div>
+
+  <script src="../../../assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="../../../assets/vendor/php-email-form/validate.js"></script>
+  <script src="../../../assets/vendor/aos/aos.js"></script>
+  <script src="../../../assets/vendor/glightbox/js/glightbox.min.js"></script>
+  <script src="../../../assets/vendor/purecounter/purecounter_vanilla.js"></script>
+  <script src="../../../assets/vendor/imagesloaded/imagesloaded.pkgd.min.js"></script>
+  <script src="../../../assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
+  <script src="../../../assets/vendor/swiper/swiper-bundle.min.js"></script>
+  <script src="../../../assets/js/main.js"></script>
+  <script src="/Esprit-PW-2A20-2526-CivicPlus/assets/js/load_header.js"></script>
+  <script src='/Esprit-PW-2A20-2526-CivicPlus/assets/js/auth.js?v=5'></script>
+  <script src="js/citoyen_portfolio.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="fr" class="light-style layout-menu-fixed" dir="ltr" data-theme="theme-default" data-assets-path="../../../assets/" data-template="vertical-menu-template-free">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
+  <title>Historique Affluence - Geo-Services Admin</title>
+  <link rel="icon" type="image/x-icon" href="../../../assets/img/favicon/RawShape.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet" />
+  <link href="../../../assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="../../../assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="../../../assets/css/main.css" rel="stylesheet">
+  <link href="../../../assets/css/admin.css" rel="stylesheet">
+</head>
+<body class="index-page">
+  <div class="admin-layout">
+    <aside class="admin-sidebar" id="admin-sidebar-container"></aside>
+    <main class="admin-content">
+      <div class="admin-card">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+          <h2>Historique Affluence (Provisoire)</h2>
+          <button class="btn btn-primary" onclick="AffluenceCrud.openAddModal()" style="background-color:#4f46e5; border:none;">
+            <i class="bi bi-plus-circle me-1"></i> Ajouter
+          </button>
+        </div>
+        <div class="table-responsive">
+          <table class="table table-hover table-striped align-middle">
+            <thead class="table-light">
+              <tr>
+                <th>ID</th>
+                <th>Point d'Intérêt</th>
+                <th>Jour</th>
+                <th>Heure</th>
+                <th>Niveau de Faule</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="affluenceTableBody">
+              <tr><td colspan="6" class="text-center">Chargement...</td></tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Modal Affluence -->
+  <div class="modal fade" id="affluenceModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="modalTitle">Ajouter Affluence</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form id="formAffluence">
+            <input type="hidden" id="id_affluence" name="id_affluence">
+            
+            <div class="mb-3">
+              <label class="form-label">ID du POI</label>
+              <input type="number" id="id_poi" name="id_poi" class="form-control" required>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Jour de la semaine</label>
+              <select id="jour_semaine" name="jour_semaine" class="form-select" required>
+                <option value="Lundi">Lundi</option>
+                <option value="Mardi">Mardi</option>
+                <option value="Mercredi">Mercredi</option>
+                <option value="Jeudi">Jeudi</option>
+                <option value="Vendredi">Vendredi</option>
+                <option value="Samedi">Samedi</option>
+                <option value="Dimanche">Dimanche</option>
+              </select>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Heure d'enregistrement</label>
+              <input type="time" id="heure_enregistrement" name="heure_enregistrement" class="form-control" required>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Niveau de foule (ex: 1 à 100)</label>
+              <input type="number" id="niveau_foule" name="niveau_foule" class="form-control" required>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Commentaire</label>
+              <textarea id="commentaire" name="commentaire" class="form-control" rows="2"></textarea>
+            </div>
+            <button type="submit" class="btn btn-primary w-100" style="background-color:#f68d56; border:none;">Enregistrer</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="../../../assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="../../../assets/js/load_admin_sidebar.js?v=2"></script>
+  <script>
+    const AffluenceCrud = {
+      modal: null,
+      
+      init: function() {
+        this.modal = new bootstrap.Modal(document.getElementById('affluenceModal'));
+        this.loadData();
+        
+        const form = document.getElementById('formAffluence');
+        const poi = document.getElementById('id_poi');
+        const jour = document.getElementById('jour_semaine');
+        const heure = document.getElementById('heure_enregistrement');
+        const foule = document.getElementById('niveau_foule');
+        const submitBtn = form.querySelector('button[type="submit"]');
+
+        const checkValidity = () => {
+            let isValid = true;
+            
+            if (!poi.value || parseInt(poi.value) <= 0) {
+                poi.classList.add("is-invalid"); poi.classList.remove("is-valid");
+                isValid = false;
+            } else {
+                poi.classList.remove("is-invalid"); poi.classList.add("is-valid");
+            }
+
+            if (!jour.value) {
+                jour.classList.add("is-invalid"); jour.classList.remove("is-valid");
+                isValid = false;
+            } else {
+                jour.classList.remove("is-invalid"); jour.classList.add("is-valid");
+            }
+
+            if (!heure.value) {
+                heure.classList.add("is-invalid"); heure.classList.remove("is-valid");
+                isValid = false;
+            } else {
+                heure.classList.remove("is-invalid"); heure.classList.add("is-valid");
+            }
+
+            if (!foule.value || parseInt(foule.value) < 0 || parseInt(foule.value) > 100) {
+                foule.classList.add("is-invalid"); foule.classList.remove("is-valid");
+                isValid = false;
+            } else {
+                foule.classList.remove("is-invalid"); foule.classList.add("is-valid");
+            }
+
+            submitBtn.disabled = !isValid;
+            submitBtn.style.opacity = isValid ? "1" : "0.5";
+        };
+
+        [poi, jour, heure, foule].forEach(el => {
+            el.addEventListener("input", checkValidity);
+            el.addEventListener("change", checkValidity);
+        });
+
+        // Event listener for opening modal to reset classes
+        document.getElementById('affluenceModal').addEventListener('show.bs.modal', function () {
+            [poi, jour, heure, foule].forEach(el => {
+                el.classList.remove("is-invalid", "is-valid");
+            });
+            submitBtn.disabled = true;
+            submitBtn.style.opacity = "0.5";
+        });
+
+        form.addEventListener('submit', (e) => {
+          e.preventDefault();
+          checkValidity();
+          if(!submitBtn.disabled) {
+            this.saveData();
+          }
+        });
+      },
+      
+      loadData: function() {
+        fetch('../Controller/AffluenceController.php?action=getAll')
+          .then(res => res.json())
+          .then(data => {
+            const tbody = document.getElementById('affluenceTableBody');
+            tbody.innerHTML = '';
+            if(data.length === 0) {
+              tbody.innerHTML = '<tr><td colspan="6" class="text-center">Aucune donnée</td></tr>';
+              return;
+            }
+            data.forEach(row => {
+              const tr = document.createElement('tr');
+              tr.innerHTML = `
+                <td>${row.id_affluence}</td>
+                <td><span class="badge bg-info text-dark">POI #${row.id_poi}</span> ${row.nom_poi || ''}</td>
+                <td>${row.jour_semaine}</td>
+                <td>${row.heure_enregistrement}</td>
+                <td><span class="badge bg-secondary">${row.niveau_foule}</span></td>
+                <td>
+                  <button class="btn btn-sm btn-outline-primary me-2" onclick="AffluenceCrud.openEditModal(${row.id_affluence})"><i class="bi bi-pencil"></i></button>
+                  <button class="btn btn-sm btn-outline-danger" onclick="AffluenceCrud.delete(${row.id_affluence})"><i class="bi bi-trash"></i></button>
+                </td>
+              `;
+              tbody.appendChild(tr);
+            });
+          });
+      },
+      
+      openAddModal: function() {
+        document.getElementById('formAffluence').reset();
+        document.getElementById('id_affluence').value = '';
+        document.getElementById('modalTitle').innerText = 'Ajouter Affluence';
+        this.modal.show();
+      },
+      
+      openEditModal: function(id) {
+        fetch(`../Controller/AffluenceController.php?action=get&id=${id}`)
+          .then(res => res.json())
+          .then(data => {
+            document.getElementById('id_affluence').value = data.id_affluence;
+            document.getElementById('id_poi').value = data.id_poi;
+            document.getElementById('jour_semaine').value = data.jour_semaine;
+            document.getElementById('heure_enregistrement').value = data.heure_enregistrement;
+            document.getElementById('niveau_foule').value = data.niveau_foule;
+            document.getElementById('commentaire').value = data.commentaire;
+            document.getElementById('modalTitle').innerText = 'Modifier Affluence';
+            this.modal.show();
+          });
+      },
+      
+      saveData: function() {
+        const formData = new FormData(document.getElementById('formAffluence'));
+        const action = formData.get('id_affluence') ? 'update' : 'create';
+        formData.append('action', action);
+        
+        fetch('../Controller/AffluenceController.php', { method: 'POST', body: formData })
+          .then(res => res.json())
+          .then(data => {
+            if(data.success) {
+              this.modal.hide();
+              this.loadData();
+            } else {
+              alert('Erreur lors de la sauvegarde');
+            }
+          });
+      },
+      
+      delete: function(id) {
+        if(confirm('Supprimer cette affluence ?')) {
+          fetch(`../Controller/AffluenceController.php?action=delete&id=${id}`)
+            .then(res => res.json())
+            .then(data => {
+              if(data.success) {
+                this.loadData();
+              }
+            });
+        }
+      }
+    };
+    
+    document.addEventListener("DOMContentLoaded", () => AffluenceCrud.init());
+  </script>
+</body>
+</html>

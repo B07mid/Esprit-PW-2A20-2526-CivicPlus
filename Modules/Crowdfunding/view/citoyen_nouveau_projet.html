@@ -1,0 +1,175 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Créer un Projet – CivicPlus</title>
+  <link rel="icon" type="image/png" href="../../../assets/img/RawShape.png" />
+
+  <link href="https://fonts.googleapis.com" rel="preconnect" />
+  <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900&family=Raleway:ital,wght@0,100;0,300;0,400;0,500;0,600;0,700;0,800;0,900&family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700&display=swap" rel="stylesheet" />
+
+  <link href="../../../assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="../../../assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet" />
+  <link href="../../../assets/vendor/aos/aos.css" rel="stylesheet" />
+  <link href="../../../assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet" />
+  <link href="../../../assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet" />
+  <link href="../../../assets/css/main.css" rel="stylesheet" />
+</head>
+
+<body class="index-page">
+
+  <header id="header" class="header d-flex align-items-center sticky-top">
+    <div class="container-fluid container-xl position-relative d-flex align-items-center">
+      <a href="../../../index.html" class="logo d-flex align-items-center me-auto">
+        <img src="../../../assets/img/logo.png" alt="CivicPlus Logo" />
+        <h1 class="sitename">CivicPlus</h1>
+      </a>
+      <nav id="navmenu" class="navmenu">
+        <ul>
+          <li><a href="../../../index.html#hero">Home</a></li>
+          <li><a href="../../../index.html#about">Concept</a></li>
+          <li><a href="../../../index.html#services" class="active">Services</a></li>
+          <li><a href="../../../index.html#team">Team</a></li>
+          <li><a href="../../../index.html#contact">Contact</a></li>
+        </ul>
+        <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
+      </nav>
+      <a class="btn-getstarted" href="../../../crowdfunding.php">Crowdfunding</a>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="section contact">
+      <div class="container">
+        <div class="section-title">
+          <span>Crowdfunding</span>
+          <h2>Demander un nouveau projet</h2>
+          <p>Soumettez une demande de projet communautaire — un administrateur l'examinera et la validera.</p>
+        </div>
+
+        <div class="row justify-content-center">
+          <div class="col-12 col-xl-8">
+            <div class="card rounded-4 shadow-lg border-0 overflow-hidden">
+              <div class="card-body p-4 p-lg-5">
+                <div class="mb-4">
+                  <h2 class="h4 mb-1">Demande de Projet</h2>
+                  <p class="text-muted mb-0">Renseignez les détails de votre demande ci-dessous.</p>
+                </div>
+
+                <div id="alertBox"></div>
+
+                <form action="../Controller/ProjetCrowdfundingController.php?demande=1" method="POST"
+                      id="formProjet" class="php-email-form"
+                      style="background-color:#f8f9fa; border-radius:10px; padding:1.5rem;">
+                  <div class="row gy-3">
+
+                    <div class="col-md-12">
+                      <label for="num_cin" class="form-label fw-bold">Numéro CIN <span class="text-danger">*</span></label>
+                      <input type="number" class="form-control" name="num_cin" id="num_cin"
+                             placeholder="Ex: 12345678" required
+                             style="color:#112f8d; background-color:#ffffff; font-weight:500;">
+                    </div>
+
+                    <div class="col-md-12">
+                      <label for="titre" class="form-label fw-bold">Titre du projet <span class="text-danger">*</span></label>
+                      <input type="text" class="form-control" name="titre" id="titre"
+                             placeholder="Ex: Rénovation du parc municipal" required
+                             style="color:#112f8d; background-color:#ffffff; font-weight:500;">
+                    </div>
+
+                    <div class="col-md-12">
+                      <label for="type_projet" class="form-label fw-bold">Type de projet <span class="text-danger">*</span></label>
+                      <select class="form-select" name="type_projet" id="type_projet" required
+                              style="color:#112f8d; background-color:#ffffff; font-weight:500;">
+                        <option value="" disabled selected>— Choisir un type —</option>
+                        <option value="infrastructure">🏗️ Infrastructure</option>
+                        <option value="sante">🏥 Santé</option>
+                        <option value="education">📚 Éducation</option>
+                        <option value="environnement">🌿 Environnement</option>
+                        <option value="culture">🎭 Culture</option>
+                        <option value="sport">⚽ Sport</option>
+                        <option value="autre">💡 Autre</option>
+                      </select>
+                    </div>
+
+                    <div class="col-md-12">
+                      <label for="description" class="form-label fw-bold">Description <span class="text-danger">*</span></label>
+                      <textarea class="form-control" name="description" id="description" rows="5"
+                                placeholder="Décrivez les objectifs, l'impact attendu..." required
+                                style="color:#112f8d; background-color:#ffffff; font-weight:500;"></textarea>
+                    </div>
+
+                    <div class="col-md-6">
+                      <label for="budget_cible" class="form-label fw-bold">Objectif de financement ($) <span class="text-danger">*</span></label>
+                      <input type="number" class="form-control" name="budget_cible" id="budget_cible"
+                             min="1" step="any" placeholder="Ex: 50000" required
+                             style="color:#112f8d; background-color:#ffffff; font-weight:500;">
+                    </div>
+
+                    <div class="col-md-6">
+                      <label for="ville" class="form-label fw-bold">Ville <span class="text-danger">*</span></label>
+                      <input type="text" class="form-control" name="ville" id="ville"
+                             placeholder="Ex: Tunis" required
+                             style="color:#112f8d; background-color:#ffffff; font-weight:500;">
+                    </div>
+
+                    <div class="col-md-6">
+                      <label for="quartier" class="form-label fw-bold">Quartier <span class="text-danger">*</span></label>
+                      <input type="text" class="form-control" name="quartier" id="quartier"
+                             placeholder="Ex: Bab El Bhar" required
+                             style="color:#112f8d; background-color:#ffffff; font-weight:500;">
+                    </div>
+
+                    <div class="col-md-3">
+                      <label for="latitude" class="form-label fw-bold">Latitude</label>
+                      <input type="number" class="form-control" name="latitude" id="latitude"
+                             step="any" placeholder="36.8065"
+                             style="color:#112f8d; background-color:#ffffff; font-weight:500;">
+                    </div>
+
+                    <div class="col-md-3">
+                      <label for="longitude" class="form-label fw-bold">Longitude</label>
+                      <input type="number" class="form-control" name="longitude" id="longitude"
+                             step="any" placeholder="10.1815"
+                             style="color:#112f8d; background-color:#ffffff; font-weight:500;">
+                    </div>
+
+                    <div class="col-md-12">
+                      <label class="form-label fw-bold">Localisation sur la carte</label>
+                      <p class="text-muted small mb-2">Cliquez sur la carte pour placer le projet. Les coordonnées se remplissent automatiquement.</p>
+                      <div id="location-picker-map"
+                           style="height:320px; border-radius:12px; border:1px solid #dee2e6; z-index:0;"></div>
+                    </div>
+
+                  </div>
+
+                  <div class="text-end mt-4">
+                    <button type="button" class="btn btn-secondary rounded-pill px-4 me-2"
+                            onclick="history.back()">Annuler</button>
+                    <button type="submit" class="btn-getstarted rounded-pill px-4">Envoyer la demande</button>
+                  </div>
+                </form>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script src="../../../assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="../../../assets/vendor/aos/aos.js"></script>
+  <script src="../../../assets/vendor/glightbox/js/glightbox.min.js"></script>
+  <script src="../../../assets/vendor/swiper/swiper-bundle.min.js"></script>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="../../../assets/js/main.js"></script>
+  <script src="../../../assets/js/location-picker.js"></script>
+  <script src="js/citoyen_projet.js"></script>
+
+</body>
+</html>

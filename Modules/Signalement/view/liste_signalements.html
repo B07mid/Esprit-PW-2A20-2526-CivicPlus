@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="fr" class="light-style layout-menu-fixed" dir="ltr" data-theme="theme-default"
+  data-assets-path="../../../assets/" data-template="vertical-menu-template-free">
+
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport"
+    content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
+
+  <title>Gestion des Signalements - CivicPlus BackOffice</title>
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/x-icon" href="../../../assets/img/favicon/RawShape.png" />
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap"
+    rel="stylesheet" />
+
+  <!-- Vendor CSS Files -->
+  <link href="../../../assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="../../../assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+
+  <!-- Main CSS File -->
+  <link href="../../../assets/css/main.css" rel="stylesheet">
+  <link href="../../../assets/css/admin.css" rel="stylesheet">
+</head>
+
+<body class="index-page">
+  <div class="admin-layout">
+    <aside class="admin-sidebar" id="admin-sidebar-container"></aside>
+
+    <main class="admin-content">
+      <div class="admin-card">
+        <h2 class="mb-4">Liste des Signalements Citoyens</h2>
+
+
+        <div class="table-card">
+          <table class="table admin-table align-middle mb-0">
+            <thead class="admin-table-head">
+              <tr>
+                <th>ID</th>
+                <th>CIN</th>
+                <th>Titre</th>
+                <th>Date</th>
+                <th>Priorité</th>
+                <th>Statut</th>
+                <th>Intervention</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody id="signalementsTableBody">
+              <!-- Rempli dynamiquement par le script js -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Modal pour Planifier une Intervention -->
+  <div class="modal fade" id="interventionModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Planifier une Intervention</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form id="formIntervention">
+            <input type="hidden" id="inter_id_signalement" name="id_signalement">
+            <div class="mb-3">
+              <label class="form-label">Type d'intervention</label>
+              <input type="text" id="inter_type" name="type_intervention" class="form-control"
+                placeholder="Ex: Réparation voirie, Élagage..." required>
+            </div>
+            <!-- Équipe responsable : simple champ texte -->
+            <div class="mb-3">
+              <label class="form-label fw-bold">Équipe responsable</label>
+              <input type="text" id="inter_equipe" name="equipe_responsable" class="form-control"
+                placeholder="Ex: Équipe technique A" required>
+            </div>
+
+            <!-- Lieu de l'intervention : l'admin cherche l'adresse du sinistre -->
+            <div class="mb-3">
+              <label class="form-label fw-bold">
+                <i class="bi bi-pin-map-fill text-danger me-1"></i>Lieu de l'intervention
+              </label>
+              <div class="input-group">
+                <input type="text" id="inter_adresse" name="adresse_intervention" class="form-control"
+                  placeholder="Ex: Avenue Habib Bourguiba, Tunis...">
+                <button type="button" id="btnSearchLocation" class="btn btn-primary"
+                  style="background:#4f46e5; border:none; min-width:120px;">
+                  <i class="bi bi-search"></i> Localiser
+                </button>
+              </div>
+              <small class="text-muted">Entrez l'adresse exacte ou le quartier du sinistre signalé</small>
+
+              <!-- Champs GPS cachés -->
+              <input type="hidden" id="inter_latitude" name="latitude">
+              <input type="hidden" id="inter_longitude" name="longitude">
+
+              <!-- Carte + Coordonnées -->
+              <div id="locationResult" class="mt-2 d-none" style="border-radius:12px; overflow:hidden; border:2px solid #6366f1; box-shadow:0 8px 25px rgba(99,102,241,0.15);">
+                <div style="position:relative; height:200px; background:#e8eaf0;">
+                  <iframe id="locationMap" width="100%" height="200" frameborder="0"
+                    scrolling="no" marginheight="0" marginwidth="0"
+                    style="border:none; display:block;" src="about:blank" loading="lazy">
+                  </iframe>
+                  <div id="mapLoading" style="position:absolute;top:0;left:0;width:100%;height:100%;background:rgba(15,23,42,0.85);display:flex;align-items:center;justify-content:center;">
+                    <div class="text-center text-white">
+                      <div class="spinner-border text-primary mb-2" role="status"></div>
+                      <p class="mb-0" style="font-size:0.75rem;">Recherche de l'adresse...</p>
+                    </div>
+                  </div>
+                </div>
+                <div style="background:#0f172a; padding:10px 15px;">
+                  <div class="d-flex justify-content-between align-items-center flex-wrap gap-2">
+                    <div style="flex:1; min-width:0;">
+                      <div style="color:#818cf8;font-size:0.55rem;text-transform:uppercase;letter-spacing:1px;">
+                        <i class="bi bi-pin-map-fill me-1"></i>Adresse confirmée
+                      </div>
+                      <div id="confirmedAddress" title="" style="color:white;font-weight:600;font-size:0.72rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">--</div>
+                    </div>
+                    <div class="text-center">
+                      <div style="color:#818cf8;font-size:0.55rem;text-transform:uppercase;">Latitude</div>
+                      <div id="coordLat" style="color:#4ade80;font-weight:700;font-size:0.73rem;font-family:monospace;">--</div>
+                    </div>
+                    <div class="text-center">
+                      <div style="color:#818cf8;font-size:0.55rem;text-transform:uppercase;">Longitude</div>
+                      <div id="coordLng" style="color:#4ade80;font-weight:700;font-size:0.73rem;font-family:monospace;">--</div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Message d'erreur -->
+              <div id="locationError" class="alert alert-warning d-none mt-2 py-2" style="font-size:0.8rem;">
+                <i class="bi bi-exclamation-triangle me-1"></i>Adresse introuvable. Précisez davantage (ville, pays...).
+              </div>
+            </div>
+
+
+            <div class="mb-3">
+              <label class="form-label">Date de planification</label>
+              <input type="date" id="inter_date" name="date_planification" class="form-control" required>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Statut de l'intervention</label>
+              <select id="inter_statut" name="statut_intervention" class="form-select">
+                <option value="en_attente">En attente</option>
+                <option value="planifie">Planifiée</option>
+                <option value="en_cours">En cours</option>
+                <option value="termine">Terminée</option>
+                <option value="annule">Annulée</option>
+              </select>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Date de résolution (si terminée)</label>
+              <input type="date" id="inter_date_res" name="date_resolution" class="form-control">
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Commentaires techniques</label>
+              <textarea id="inter_comm" name="commentaires_techniques" class="form-control" rows="3"
+                placeholder="Notes pour les techniciens ou compte-rendu..."></textarea>
+            </div>
+            <button type="submit" class="btn w-100"
+              style="background-color: #f68d56; color: white; border: none; font-weight: 500;">Enregistrer
+              l'intervention</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Modal pour Modifier le Signalement (Statut et Priorité) -->
+  <div class="modal fade" id="signalementModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Modifier le Signalement</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form id="formModifSignalement">
+            <input type="hidden" id="edit_sig_id" name="id_signalement">
+            <div class="mb-3">
+              <label class="form-label">Statut du signalement</label>
+              <select id="edit_sig_statut" name="statut" class="form-select">
+                <option value="ouvert">Ouvert</option>
+                <option value="en_cours">En cours</option>
+                <option value="résolu">Résolu</option>
+              </select>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Niveau de priorité</label>
+              <select id="edit_sig_priorite" name="niveau_priorite" class="form-select">
+                <option value="Faible">Faible</option>
+                <option value="Normale">Normale</option>
+                <option value="Urgente">Urgente</option>
+              </select>
+            </div>
+            <button type="submit" class="btn w-100"
+              style="background-color: #f68d56; color: white; border: none; font-weight: 500;">Enregistrer les
+              changements</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Vendor JS Files -->
+  <script src="../../../assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+  <!-- Page JS -->
+  <script src="js/liste_signalement.js?v=4"></script>
+  
+  <script>
+    // === RECHERCHE D'ADRESSE DU SINISTRE (Nominatim / OpenStreetMap) ===
+    const btnSearch = document.getElementById('btnSearchLocation');
+    const adresseInput = document.getElementById('inter_adresse');
+    const locationResult = document.getElementById('locationResult');
+    const locationError = document.getElementById('locationError');
+
+    // Recherche via Nominatim (géocodage d'adresse)
+    btnSearch.addEventListener('click', async function () {
+      const adresse = adresseInput.value.trim();
+
+      if (!adresse) {
+        adresseInput.focus();
+        adresseInput.classList.add('is-invalid');
+        setTimeout(() => adresseInput.classList.remove('is-invalid'), 2000);
+        return;
+      }
+
+      // État chargement
+      btnSearch.disabled = true;
+      btnSearch.innerHTML = '<span class="spinner-border spinner-border-sm me-1"></span> Recherche...';
+      locationError.classList.add('d-none');
+      locationResult.classList.remove('d-none');
+      document.getElementById('mapLoading').style.display = 'flex';
+
+      try {
+        const url = 'https://nominatim.openstreetmap.org/search?q='
+          + encodeURIComponent(adresse)
+          + '&format=json&limit=1&accept-language=fr';
+
+        const res  = await fetch(url, { headers: { 'Accept-Language': 'fr' } });
+        const data = await res.json();
+
+        if (!data || data.length === 0) {
+          locationResult.classList.add('d-none');
+          locationError.classList.remove('d-none');
+          btnSearch.disabled = false;
+          btnSearch.innerHTML = '<i class="bi bi-search"></i> Localiser';
+          btnSearch.style.background = '#4f46e5';
+          return;
+        }
+
+        const lat = parseFloat(data[0].lat);
+        const lng = parseFloat(data[0].lon);
+        const displayName = data[0].display_name;
+
+        // Sauvegarder les coordonnées
+        document.getElementById('inter_latitude').value  = lat.toFixed(6);
+        document.getElementById('inter_longitude').value = lng.toFixed(6);
+
+        // Afficher les infos
+        const confirmedEl = document.getElementById('confirmedAddress');
+        confirmedEl.innerText = displayName;
+        confirmedEl.title    = displayName;
+        document.getElementById('coordLat').innerText = lat.toFixed(6) + '°';
+        document.getElementById('coordLng').innerText = lng.toFixed(6) + '°';
+
+        // Charger la carte OSM avec marqueur sur le sinistre
+        const delta  = 0.008;
+        const bbox   = (lng - delta) + ',' + (lat - delta) + ',' + (lng + delta) + ',' + (lat + delta);
+        const mapEl  = document.getElementById('locationMap');
+        mapEl.src = 'https://www.openstreetmap.org/export/embed.html?bbox=' + bbox + '&layer=mapnik&marker=' + lat + ',' + lng;
+        mapEl.onload = function () {
+          document.getElementById('mapLoading').style.display = 'none';
+        };
+
+        // Bouton confirmé
+        btnSearch.disabled = false;
+        btnSearch.innerHTML = '<i class="bi bi-check-circle-fill me-1"></i>Localisé';
+        btnSearch.style.background = '#16a34a';
+
+      } catch (e) {
+        locationResult.classList.add('d-none');
+        locationError.classList.remove('d-none');
+        locationError.innerHTML = '<i class="bi bi-exclamation-triangle me-1"></i>Erreur réseau. Vérifiez votre connexion.';
+        btnSearch.disabled = false;
+        btnSearch.innerHTML = '<i class="bi bi-search"></i> Localiser';
+        btnSearch.style.background = '#4f46e5';
+      }
+    });
+
+    // Réinitialiser si l'admin change l'adresse
+    adresseInput.addEventListener('input', function () {
+      btnSearch.style.background = '#4f46e5';
+      btnSearch.innerHTML = '<i class="bi bi-search"></i> Localiser';
+      locationResult.classList.add('d-none');
+      locationError.classList.add('d-none');
+      document.getElementById('inter_latitude').value  = '';
+      document.getElementById('inter_longitude').value = '';
+    });
+
+    // Permettre la recherche avec la touche Entrée
+    adresseInput.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter') { e.preventDefault(); btnSearch.click(); }
+    });
+  </script>
+  <script src="/Esprit-PW-2A20-2526-CivicPlus/assets/js/load_admin_sidebar.js?v=2"></script>
+  </body>
+
+</html>
