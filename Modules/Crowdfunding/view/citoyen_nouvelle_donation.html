@@ -61,7 +61,7 @@
 
                 <div id="alertBox"></div>
 
-                <form action="../controller/DonationController.php" method="POST"
+                <form action="../Controller/DonationController.php" method="POST"
                       id="formDonation" class="php-email-form"
                       style="background-color:#f8f9fa; border-radius:10px; padding:1.5rem;">
                   <div class="row gy-3">
@@ -74,11 +74,12 @@
                     </div>
 
                     <div class="col-md-12">
-                      <label for="id_projet" class="form-label fw-bold">ID du Projet <span class="text-danger">*</span></label>
-                      <input type="number" class="form-control" name="id_projet" id="id_projet"
-                             min="1" placeholder="Ex: 7" required
-                             style="color:#112f8d; background-color:#ffffff; font-weight:500;">
-                      <div class="form-text">Consultez la <a href="liste_projets.html">liste des projets</a> pour trouver l'ID.</div>
+                      <label for="id_projet" class="form-label fw-bold">Projet <span class="text-danger">*</span></label>
+                      <select class="form-select" name="id_projet" id="id_projet" required
+                              style="color:#112f8d; background-color:#ffffff; font-weight:500;">
+                        <option value="" disabled selected>— Chargement des projets… —</option>
+                      </select>
+                      <div class="form-text" id="projetHint"></div>
                     </div>
 
                     <div class="col-md-6">

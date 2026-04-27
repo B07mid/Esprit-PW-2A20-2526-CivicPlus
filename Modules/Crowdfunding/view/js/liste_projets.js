@@ -7,6 +7,7 @@ document.addEventListener('DOMContentLoaded', function () {
     }
 
     chargerProjets();
+    chargerDemandesCount();
     document.getElementById('btnSave').addEventListener('click', sauvegarderProjet);
 });
 
@@ -14,9 +15,9 @@ function chargerProjets() {
     fetch('../controller/ProjetCrowdfundingController.php?action=getAll')
         .then(r => r.json())
         .then(projets => {
-            const container = document.getElementById('projetsContainer');
-            const empty     = document.getElementById('emptyMsg');
-            container.innerHTML = '';
+            const tbody = document.getElementById('projetsBody');
+            const empty = document.getElementById('emptyMsg');
+            tbody.innerHTML = '';
 
             if (projets.length === 0) {
                 empty.classList.remove('d-none');
@@ -25,96 +26,46 @@ function chargerProjets() {
             empty.classList.add('d-none');
 
             projets.forEach(p => {
-                const goal   = Math.max(parseFloat(p.budget_cible), 0.01);
-                const raised = parseFloat(p.montant_actuel);
-                const pct    = Math.min(100, Math.round((raised / goal) * 100));
+                const goal     = Math.max(parseFloat(p.budget_cible), 0.01);
+                const raised   = parseFloat(p.montant_actuel);
+                const pct      = Math.min(100, Math.round((raised / goal) * 100));
                 const barColor = pct >= 100 ? 'bg-success' : pct >= 50 ? 'bg-warning' : 'bg-danger';
+                const titre    = p.titre.length > 45 ? p.titre.substring(0, 45) + '…' : p.titre;
 
-                const col = document.createElement('div');
-                col.className = 'col-lg-4 col-md-6';
-                col.innerHTML = `
-                    <div class="card h-100 shadow-sm border-0">
-                        <div class="card-body d-flex flex-column p-4">
-                            <span class="badge bg-secondary mb-2 align-self-start">#${p.id_projet}</span>
-                            <h5 class="card-title fw-bold mb-1">${p.titre}</h5>
-                            <p class="text-muted small mb-2">${p.ville}, ${p.quartier}</p>
-                            <p class="card-text flex-grow-1" style="font-size:.9rem;">
-                                ${p.description.length > 120 ? p.description.substring(0, 120) + '…' : p.description}
-                            </p>
+                const lat = parseFloat(p.latitude);
+                const lng = parseFloat(p.longitude);
+                const hasCoords = !isNaN(lat) && !isNaN(lng) && (lat !== 0 || lng !== 0);
+                const locLabel = `${p.ville}, ${p.quartier}`;
+                const locCell = hasCoords
+                    ? `<a href="#" onclick="openMapModal(${lat},${lng},&quot;${locLabel.replace(/"/g,'&amp;quot;')}&quot;);return false;" class="text-primary text-decoration-none fw-medium text-nowrap small"><i class="bi bi-geo-alt-fill me-1"></i>${locLabel}</a>`
+                    : `<span class="text-muted small text-nowrap"><i class="bi bi-geo-alt me-1"></i>${locLabel}</span>`;
 
-                            <!-- Progress bar -->
-                            <div class="mt-3">
-                                <div class="d-flex justify-content-between small mb-1">
-                                    <span>Collecté : <strong>$${raised.toFixed(2)}</strong></span>
-                                    <span>Objectif : <strong>$${goal.toFixed(2)}</strong></span>
-                                </div>
-                                <div class="progress" style="height:10px;">
-                                    <div class="progress-bar ${barColor}" role="progressbar"
-                                         style="width:${pct}%"
-                                         aria-valuenow="${pct}" aria-valuemin="0" aria-valuemax="100">
-                                    </div>
-                                </div>
-                                <div class="text-end small mt-1 text-muted">${pct}% financé</div>
-                            </div>
-
-                            <!-- Status badge -->
-                            <div class="mt-2">
-                                <span class="badge ${statutBadge(p.statut_projet)}">${p.statut_projet}</span>
-                            </div>
-
-                            <!-- Action buttons -->
-                            <div class="d-flex gap-2 mt-3">
-                                <button class="btn btn-outline-danger btn-sm flex-fill btn-like"
-                                        data-id="${p.id_projet}">
-                                    <i class="bi bi-heart"></i> Like
-                                </button>
-                                <button class="btn btn-outline-secondary btn-sm flex-fill"
-                                        data-bs-toggle="collapse"
-                                        data-bs-target="#comment-${p.id_projet}">
-                                    <i class="bi bi-chat"></i> Commenter
-                                </button>
-                                <button class="btn btn-outline-primary btn-sm"
-                                        onclick='ouvrirEdit(${JSON.stringify(p)})'>
-                                    <i class="bi bi-pencil"></i>
-                                </button>
-                                <button class="btn btn-outline-danger btn-sm"
-                                        onclick="supprimerProjet(${p.id_projet})">
-                                    <i class="bi bi-trash"></i>
-                                </button>
-                            </div>
-
-                            <!-- Comment collapse -->
-                            <div class="collapse mt-3" id="comment-${p.id_projet}">
-                                <textarea class="form-control form-control-sm" rows="2"
-                                          placeholder="Écrire un commentaire…"></textarea>
-                                <button class="btn btn-primary btn-sm mt-2 w-100">Publier</button>
-                            </div>
-                        </div>
-                    </div>
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td><span class="badge bg-secondary">#${p.id_projet}</span></td>
+                    <td class="text-nowrap fw-semibold" style="max-width:220px;overflow:hidden;text-overflow:ellipsis">${titre}</td>
+                    <td>${locCell}</td>
+                    <td class="fw-semibold text-danger text-nowrap">$${raised.toFixed(2)}</td>
+                    <td class="text-nowrap">$${goal.toFixed(2)}</td>
+                    <td><span class="badge ${statutBadge(p.statut_projet)}">${p.statut_projet.replace(/_/g,' ')}</span></td>
+                    <td class="text-center text-nowrap">
+                        <button class="btn btn-sm btn-outline-primary me-1" title="Modifier"
+                                onclick='ouvrirEdit(${JSON.stringify(p)})'>
+                            <i class="bi bi-pencil"></i>
+                        </button>
+                        <button class="btn btn-sm btn-outline-danger" title="Supprimer"
+                                onclick="supprimerProjet(${p.id_projet})">
+                            <i class="bi bi-trash"></i>
+                        </button>
+                    </td>
                 `;
-                container.appendChild(col);
-            });
-
-            // Like button toggle
-            document.querySelectorAll('.btn-like').forEach(btn => {
-                btn.addEventListener('click', function () {
-                    const icon = this.querySelector('i');
-                    if (icon.classList.contains('bi-heart')) {
-                        icon.classList.replace('bi-heart', 'bi-heart-fill');
-                        this.classList.replace('btn-outline-danger', 'btn-danger');
-                        this.innerHTML = '<i class="bi bi-heart-fill"></i> Aimé';
-                    } else {
-                        icon.classList.replace('bi-heart-fill', 'bi-heart');
-                        this.classList.replace('btn-danger', 'btn-outline-danger');
-                        this.innerHTML = '<i class="bi bi-heart"></i> Like';
-                    }
-                });
+                tbody.appendChild(tr);
             });
         })
         .catch(err => {
             console.error(err);
-            document.getElementById('projetsContainer').innerHTML =
-                '<div class="alert alert-danger">Erreur de chargement des projets.</div>';
+            document.getElementById('projetsBody').innerHTML =
+                '<tr><td colspan="8" class="text-center text-danger">Erreur de chargement des projets.</td></tr>';
         });
 }
 
@@ -183,4 +134,98 @@ function showFlash(msg, type) {
         box.innerHTML = `<div class="alert alert-${type}">${msg}</div>`;
         setTimeout(() => box.innerHTML = '', 3500);
     }
+}
+
+// ====================================================
+// Demande de projet functions
+// ====================================================
+
+function chargerDemandesCount() {
+    fetch('../controller/ProjetCrowdfundingController.php?action=demandeCount')
+        .then(r => r.json())
+        .then(data => {
+            const n = data.count || 0;
+            ['demandesCount', 'sidebarCrowdBadge', 'sidebarProjetsBadge'].forEach(id => {
+                const el = document.getElementById(id);
+                if (!el) return;
+                el.textContent = n;
+                el.classList.toggle('d-none', n === 0);
+            });
+        }).catch(() => {});
+}
+
+function ouvrirDemandes() {
+    fetch('../controller/ProjetCrowdfundingController.php?action=demandePending')
+        .then(r => r.json())
+        .then(rows => {
+            const tbody = document.getElementById('demandesTableBody');
+            tbody.innerHTML = '';
+            if (!rows.length) {
+                tbody.innerHTML = '<tr><td colspan="8" class="text-center text-muted py-3"><i class="bi bi-inbox me-2"></i>Aucune demande en attente</td></tr>';
+            } else {
+                rows.forEach(d => {
+                    const tr = document.createElement('tr');
+                    const date = d.date_demande ? new Date(d.date_demande).toLocaleDateString('fr-FR') : '—';
+                    tr.innerHTML = `
+                        <td class="text-nowrap">#${d.id_demande}</td>
+                        <td class="text-nowrap">${d.num_cin}</td>
+                        <td><strong>${d.titre}</strong></td>
+                        <td><span class="badge bg-secondary">${d.type_projet}</span></td>
+                        <td class="text-nowrap">${parseFloat(d.budget_cible).toLocaleString('fr-FR')} TND</td>
+                        <td class="text-nowrap">${d.ville}, ${d.quartier}</td>
+                        <td class="text-nowrap">${date}</td>
+                        <td class="text-center text-nowrap">
+                            <button class="btn btn-sm btn-success me-1" onclick="accepterDemande(${d.id_demande})">
+                                <i class="bi bi-check-lg"></i> Accepter
+                            </button>
+                            <button class="btn btn-sm btn-outline-danger" onclick="refuserDemande(${d.id_demande})">
+                                <i class="bi bi-x-lg"></i> Refuser
+                            </button>
+                        </td>`;
+                    tbody.appendChild(tr);
+                });
+            }
+            new bootstrap.Modal(document.getElementById('demandesModal')).show();
+        }).catch(() => showFlash('Erreur lors du chargement des demandes.', 'danger'));
+}
+
+function accepterDemande(id) {
+    const fd = new FormData();
+    fd.append('action', 'demandeAccept');
+    fetch(`../controller/ProjetCrowdfundingController.php?id=${id}`, { method: 'POST', body: fd })
+        .then(r => r.json())
+        .then(data => {
+            if (data.success) {
+                showDemandesFlash('Demande acceptée — projet créé !', 'success');
+                chargerDemandesCount();
+                chargerProjets();
+                setTimeout(ouvrirDemandes, 600);
+            } else {
+                showDemandesFlash("Erreur lors de l'acceptation.", 'danger');
+            }
+        }).catch(() => showDemandesFlash('Erreur réseau.', 'danger'));
+}
+
+function refuserDemande(id) {
+    if (!confirm('Refuser cette demande de projet ?')) return;
+    const fd = new FormData();
+    fd.append('action', 'demandeDecline');
+    fetch(`../controller/ProjetCrowdfundingController.php?id=${id}`, { method: 'POST', body: fd })
+        .then(r => r.json())
+        .then(data => {
+            if (data.success) {
+                showDemandesFlash('Demande refusée.', 'warning');
+                chargerDemandesCount();
+                setTimeout(ouvrirDemandes, 600);
+            } else {
+                showDemandesFlash('Erreur lors du refus.', 'danger');
+            }
+        }).catch(() => showDemandesFlash('Erreur réseau.', 'danger'));
+}
+
+function showDemandesFlash(msg, type) {
+    const box = document.getElementById('demandesFlash');
+    if (!box) return;
+    box.innerHTML = `<div class="alert alert-${type} alert-dismissible fade show">${msg}<button type="button" class="btn-close" data-bs-dismiss="alert"></button></div>`;
+    setTimeout(() => { const a = box.querySelector('.alert'); if (a) a.remove(); }, 4000);
 }

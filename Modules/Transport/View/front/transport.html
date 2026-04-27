@@ -1,0 +1,1014 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <title>Smart Transport - CivicPlus</title>
+  <meta name="description" content="Solution Smart Transport de CivicPlus pour la mobilité urbaine intelligente.">
+  <meta name="keywords" content="transport, civicplus, smart city, mobilité, itinéraire, bus">
+
+  <link href="../../../../assets/img/RawShape.png" rel="icon">
+  <link href="../../../../assets/img/RawShape.png" rel="apple-touch-icon">
+
+  <link href="https://fonts.googleapis.com" rel="preconnect">
+  <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Raleway:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap" rel="stylesheet">
+
+  <link href="../../../../assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="../../../../assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="../../../../assets/vendor/aos/aos.css" rel="stylesheet">
+  <link href="../../../../assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
+  <link href="../../../../assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+  <link href="../../../../assets/css/main.css" rel="stylesheet">
+
+  <style>
+    .transport-hero {
+      padding: 90px 0 50px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .transport-hero::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(circle at top right, color-mix(in srgb, var(--accent-color), white 85%) 0%, transparent 32%),
+                  radial-gradient(circle at bottom left, color-mix(in srgb, var(--accent-color), white 92%) 0%, transparent 28%);
+      pointer-events: none;
+    }
+
+    .transport-hero .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 16px;
+      border-radius: 999px;
+      background: color-mix(in srgb, var(--accent-color), white 90%);
+      color: var(--accent-color);
+      font-weight: 600;
+      margin-bottom: 18px;
+    }
+
+    .transport-hero h1 {
+      font-size: 46px;
+      line-height: 1.15;
+      margin-bottom: 16px;
+    }
+
+    .transport-hero p.lead {
+      font-size: 18px;
+      color: color-mix(in srgb, var(--default-color), transparent 15%);
+      margin-bottom: 28px;
+      max-width: 640px;
+    }
+
+    .transport-hero .hero-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      margin-bottom: 32px;
+    }
+
+    .transport-hero .hero-actions .btn-primary-soft {
+      background: var(--accent-color);
+      color: var(--contrast-color);
+      border-radius: 999px;
+      padding: 12px 24px;
+      font-weight: 600;
+      box-shadow: 0 12px 30px rgba(16, 188, 105, 0.18);
+    }
+
+    .transport-hero .hero-actions .btn-outline-soft {
+      border: 1px solid color-mix(in srgb, var(--heading-color), transparent 75%);
+      color: var(--heading-color);
+      background: var(--surface-color);
+      border-radius: 999px;
+      padding: 12px 24px;
+      font-weight: 600;
+    }
+
+    .hero-stats {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .hero-stat-card {
+      background: var(--surface-color);
+      border-radius: 22px;
+      padding: 20px;
+      box-shadow: 0 18px 45px rgba(0, 0, 0, 0.08);
+      border: 1px solid color-mix(in srgb, var(--default-color), transparent 92%);
+    }
+
+    .hero-stat-card .value {
+      display: block;
+      font-size: 30px;
+      font-weight: 700;
+      color: var(--accent-color);
+      line-height: 1;
+      margin-bottom: 8px;
+    }
+
+    .hero-stat-card .label {
+      margin: 0;
+      color: var(--heading-color);
+      font-weight: 600;
+      font-size: 14px;
+    }
+
+    .transport-visual {
+      position: relative;
+      z-index: 2;
+    }
+
+    .transport-visual .main-visual-card {
+      background: linear-gradient(145deg, #ffffff 0%, #f2fff8 100%);
+      border-radius: 28px;
+      box-shadow: 0 20px 60px rgba(0, 0, 0, 0.12);
+      padding: 24px;
+      border: 1px solid color-mix(in srgb, var(--accent-color), transparent 85%);
+    }
+
+    .transport-visual img {
+      width: 100%;
+      border-radius: 22px;
+      object-fit: cover;
+    }
+
+    .floating-mini-card {
+      position: absolute;
+      background: var(--surface-color);
+      border-radius: 18px;
+      padding: 16px 18px;
+      box-shadow: 0 16px 35px rgba(0, 0, 0, 0.12);
+      border: 1px solid color-mix(in srgb, var(--default-color), transparent 90%);
+      min-width: 210px;
+    }
+
+    .floating-mini-card.top {
+      top: -56px;
+      left: -20px;
+    }
+
+    .floating-mini-card.bottom {
+      right: -18px;
+      bottom: -24px;
+    }
+
+    .floating-mini-card .mini-title {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-weight: 700;
+      margin-bottom: 8px;
+      color: var(--heading-color);
+    }
+
+    .floating-mini-card p {
+      margin: 0;
+      font-size: 14px;
+      color: color-mix(in srgb, var(--default-color), transparent 18%);
+    }
+
+    .transport-card {
+      background: var(--surface-color);
+      border-radius: 24px;
+      padding: 28px;
+      height: 100%;
+      box-shadow: 0 12px 38px rgba(0, 0, 0, 0.08);
+      border: 1px solid color-mix(in srgb, var(--default-color), transparent 92%);
+    }
+
+    .transport-card .icon-wrap {
+      width: 62px;
+      height: 62px;
+      border-radius: 18px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: color-mix(in srgb, var(--accent-color), white 88%);
+      color: var(--accent-color);
+      font-size: 28px;
+      margin-bottom: 18px;
+    }
+
+    .transport-card h3 {
+      font-size: 22px;
+      margin-bottom: 12px;
+    }
+
+    .transport-card p {
+      margin-bottom: 0;
+      color: color-mix(in srgb, var(--default-color), transparent 20%);
+    }
+
+    .journey-panel {
+      background: linear-gradient(135deg, #ffffff 0%, #f8fffb 100%);
+      border-radius: 30px;
+      padding: 34px;
+      box-shadow: 0 20px 55px rgba(0, 0, 0, 0.08);
+      border: 1px solid color-mix(in srgb, var(--accent-color), transparent 86%);
+    }
+
+    .journey-chip {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 14px;
+      border-radius: 999px;
+      background: color-mix(in srgb, var(--accent-color), white 90%);
+      color: var(--accent-color);
+      font-weight: 600;
+      margin-bottom: 18px;
+    }
+
+    .journey-list {
+      display: grid;
+      gap: 16px;
+      margin-top: 24px;
+    }
+
+    .journey-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 16px;
+      padding: 18px;
+      border-radius: 18px;
+      background: #fff;
+      border: 1px solid color-mix(in srgb, var(--default-color), transparent 92%);
+    }
+
+    .journey-item .step-icon {
+      width: 46px;
+      height: 46px;
+      border-radius: 14px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      background: color-mix(in srgb, var(--accent-color), white 88%);
+      color: var(--accent-color);
+      font-size: 20px;
+      flex-shrink: 0;
+    }
+
+    .journey-item h4 {
+      font-size: 17px;
+      margin-bottom: 6px;
+    }
+
+    .journey-item p {
+      margin: 0;
+      color: color-mix(in srgb, var(--default-color), transparent 20%);
+      font-size: 14px;
+    }
+
+    .route-card {
+      border-radius: 22px;
+      overflow: hidden;
+      background: var(--surface-color);
+      box-shadow: 0 14px 38px rgba(0, 0, 0, 0.08);
+      border: 1px solid color-mix(in srgb, var(--default-color), transparent 92%);
+      height: 100%;
+    }
+
+    .route-card .route-top {
+      padding: 22px 22px 14px;
+      border-bottom: 1px solid color-mix(in srgb, var(--default-color), transparent 92%);
+    }
+
+    .route-badge {
+      display: inline-block;
+      padding: 6px 12px;
+      border-radius: 999px;
+      background: color-mix(in srgb, var(--accent-color), white 90%);
+      color: var(--accent-color);
+      font-size: 13px;
+      font-weight: 700;
+      margin-bottom: 12px;
+    }
+
+    .route-card .route-body {
+      padding: 22px;
+    }
+
+    .route-meta {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 0;
+      border-bottom: 1px dashed color-mix(in srgb, var(--default-color), transparent 88%);
+      font-size: 14px;
+    }
+
+    .route-meta:last-child {
+      border-bottom: 0;
+      padding-bottom: 0;
+    }
+
+    .route-status {
+      font-weight: 700;
+    }
+
+    .status-good {
+      color: #059652;
+    }
+
+    .status-warn {
+      color: #d98c00;
+    }
+
+    .status-soft {
+      color: var(--accent-color);
+    }
+
+    .cta-panel {
+      background: linear-gradient(135deg, color-mix(in srgb, var(--accent-color), white 8%) 0%, color-mix(in srgb, var(--accent-color), black 12%) 100%);
+      color: #fff;
+      border-radius: 30px;
+      padding: 36px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .cta-panel::before,
+    .cta-panel::after {
+      content: "";
+      position: absolute;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.08);
+    }
+
+    .cta-panel::before {
+      width: 220px;
+      height: 220px;
+      top: -80px;
+      right: -80px;
+    }
+
+    .cta-panel::after {
+      width: 160px;
+      height: 160px;
+      bottom: -60px;
+      left: -40px;
+    }
+
+    .cta-panel h3,
+    .cta-panel p,
+    .cta-panel li,
+    .cta-panel .btn {
+      position: relative;
+      z-index: 2;
+    }
+
+    .cta-panel h3 {
+      color: #fff;
+      font-size: 32px;
+      margin-bottom: 14px;
+    }
+
+    .cta-panel ul {
+      list-style: none;
+      padding: 0;
+      margin: 22px 0 0;
+      display: grid;
+      gap: 10px;
+    }
+
+    .cta-panel li {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .cta-panel .btn-light,
+    .cta-panel .btn-outline-light {
+      border-radius: 999px;
+      padding: 12px 24px;
+      font-weight: 600;
+    }
+
+    .help-btn {
+      position: fixed;
+      right: 24px;
+      bottom: 80px;
+      width: 58px;
+      height: 58px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: var(--accent-color);
+      color: #fff;
+      font-size: 28px;
+      font-weight: 700;
+      box-shadow: 0 16px 35px rgba(16, 188, 105, 0.35);
+      z-index: 1000;
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    .help-btn:hover {
+      color: #fff;
+      transform: translateY(-4px) scale(1.04);
+      box-shadow: 0 22px 42px rgba(16, 188, 105, 0.42);
+    }
+
+    .help-btn::after {
+      content: "Signaler un problème";
+      position: absolute;
+      right: 72px;
+      top: 50%;
+      transform: translateY(-50%) translateX(8px);
+      background: #1f2b25;
+      color: #fff;
+      padding: 10px 14px;
+      border-radius: 12px;
+      white-space: nowrap;
+      font-size: 14px;
+      font-weight: 500;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.25s ease, transform 0.25s ease;
+    }
+
+    .help-btn:hover::after {
+      opacity: 1;
+      transform: translateY(-50%) translateX(0);
+    }
+
+    @media (max-width: 991px) {
+      .transport-hero {
+        padding-top: 70px;
+      }
+
+      .transport-hero h1 {
+        font-size: 36px;
+      }
+
+      .floating-mini-card {
+        position: static;
+        margin-top: 16px;
+      }
+
+      .hero-stats {
+        grid-template-columns: 1fr;
+      }
+    }
+
+
+
+
+
+
+
+
+
+
+  .swap-routes-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  border: 0;
+  background: var(--accent-color);
+  color: #fff;
+  border-radius: 999px;
+  padding: 12px 18px;
+  font-weight: 600;
+  box-shadow: 0 12px 28px rgba(16, 188, 105, 0.22);
+  transition: 0.25s ease;
+}
+
+.swap-routes-btn:hover {
+  transform: translateY(-2px);
+  background: color-mix(in srgb, var(--accent-color), black 8%);
+}
+
+.swap-routes-btn i {
+  font-size: 18px;
+}
+
+
+    @media (max-width: 767px) {
+      .transport-hero h1 {
+        font-size: 30px;
+      }
+
+      .journey-panel,
+      .cta-panel,
+      .transport-card {
+        padding: 24px;
+      }
+
+      .help-btn {
+        width: 52px;
+        height: 52px;
+        font-size: 24px;
+        right: 18px;
+        bottom: 18px;
+      }
+
+      .help-btn::after {
+        display: none;
+      }
+    }
+
+
+
+.main-visual-card {
+  height: 520px;
+  padding: 0;
+  overflow: hidden;
+  border-radius: 28px;
+}
+
+.network-map-wrap {
+  width: 100%;
+  padding: 20px 0;
+}
+
+.network-map-img {
+  width: 100%;
+  max-width: 1100px;
+  height: auto;
+  display: block;
+  margin: 0 auto;
+  border-radius: 24px;
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.12);
+}
+  </style>
+</head>
+
+<body class="index-page">
+
+  <!-- === DÉBUT DU HEADER DYNAMIQUE CIVICPLUS === -->
+  <div id="header-container" class="sticky-top" style="top: 0; z-index: 1030;"></div>
+  <!-- === FIN DU HEADER DYNAMIQUE === -->
+
+  <main class="main">
+
+    <section class="transport-hero section">
+      <div class="container position-relative">
+        <div class="row align-items-center gy-5">
+
+
+          <div class="col-lg-6" data-aos="fade-up">
+            <div class="hero-badge">
+              <i class="bi bi-bus-front"></i>
+              Smart Transport CivicPlus
+            </div>
+            <h1>Déplacez-vous dans la ville avec une mobilité plus fluide, plus intelligente et plus prévisible.</h1>
+            <p class="lead">Suivez les lignes disponibles, consultez les estimations d'arrivée, identifiez le niveau d'affluence et trouvez rapidement l'itinéraire qui convient le mieux à votre trajet quotidien.</p>
+
+            <div class="hero-actions">
+              <a href="itineraire-transport.html" class="btn btn-primary-soft">Rechercher un itinéraire</a>
+              <a href="#lignes" class="btn btn-outline-soft">Voir les lignes actives</a>
+            </div>
+
+            <div class="hero-stats">
+              <div class="hero-stat-card">
+                <span class="value">12</span>
+                <p class="label">Lignes suivies en temps réel</p>
+              </div>
+              <div class="hero-stat-card">
+                <span class="value">4 min</span>
+                <p class="label">Temps moyen de mise à jour</p>
+              </div>
+              <div class="hero-stat-card">
+                <span class="value">89%</span>
+                <p class="label">Précision estimée d'arrivée</p>
+              </div>
+            </div>
+          </div>
+
+          <div class="col-lg-6" data-aos="zoom-out" data-aos-delay="100">
+            <div class="transport-visual">
+              <div class="">
+<img src="pics/hero.png"
+     class="img-fluid"
+     style="width:100%; height:100%; object-fit:cover; display:block; border-radius:22px;">
+                  </div>
+              <div class="floating-mini-card top">
+                <div class="mini-title">
+                  <i class="bi bi-clock-history"></i>
+                  Prochain départ
+                </div>
+                <p><strong>Ligne T2</strong> dans 6 minutes vers Centre-Ville.</p>
+              </div>
+              <div class="floating-mini-card bottom">
+                <div class="mini-title">
+                  <i class="bi bi-people"></i>
+                  Affluence estimée
+                </div>
+                <p>Niveau <strong>modéré</strong> sur les axes les plus demandés.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section light-background">
+      <div class="container section-title" data-aos="fade-up">
+        <span>Mobilité Intelligente</span>
+        <h2>Pourquoi utiliser Smart Transport ?</h2>
+        <p>Une interface conçue pour offrir aux citoyens une vision claire, moderne et utile du réseau de transport.</p>
+      </div>
+
+      <div class="container">
+        <div class="row gy-4">
+          <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="100">
+            <div class="transport-card">
+              <div class="icon-wrap"><i class="bi bi-signpost-split"></i></div>
+              <h3>Itinéraires simplifiés</h3>
+              <p>Trouvez rapidement le meilleur chemin entre deux points avec un affichage clair, compréhensible et pensé pour un usage quotidien.</p>
+            </div>
+          </div>
+
+          <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="200">
+            <div class="transport-card">
+              <div class="icon-wrap"><i class="bi bi-graph-up-arrow"></i></div>
+              <h3>Données utiles en direct</h3>
+              <p>Visualisez les arrivées estimées, les retards probables et l'état général du trafic pour mieux anticiper vos déplacements.</p>
+            </div>
+          </div>
+
+          <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="300">
+            <div class="transport-card">
+              <div class="icon-wrap"><i class="bi bi-shield-check"></i></div>
+              <h3>Expérience citoyenne fiable</h3>
+              <p>Le service centralise l'information de mobilité dans une présentation cohérente avec l'écosystème CivicPlus et ses autres modules.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="row gy-4 align-items-center">
+          <div class="col-lg-6" data-aos="fade-right">
+            <div class="journey-panel">
+              <div class="journey-chip">
+                <i class="bi bi-stars"></i>
+                Trajet recommandé
+              </div>
+              <h2 class="mb-3">Planifiez votre déplacement en quelques secondes</h2>
+              <p class="text-muted mb-0">L'espace itinéraire peut vous guider depuis votre quartier jusqu'à votre destination en mettant en avant les correspondances les plus pratiques.</p>
+
+              <div class="journey-list">
+                <div class="journey-item">
+                  <div class="step-icon"><i class="bi bi-geo-alt"></i></div>
+                  <div>
+                    <h4>Départ</h4>
+                    <p>Choisissez votre position de départ pour afficher les lignes ou arrêts pertinents à proximité.</p>
+                  </div>
+                </div>
+
+                <div class="journey-item">
+                  <div class="step-icon"><i class="bi bi-arrow-left-right"></i></div>
+                  <div>
+                    <h4>Correspondance optimisée</h4>
+                    <p>Repérez les itinéraires combinés qui réduisent le temps de trajet ou évitent les zones à forte affluence.</p>
+                  </div>
+                </div>
+
+                <div class="journey-item">
+                  <div class="step-icon"><i class="bi bi-check2-circle"></i></div>
+                  <div>
+                    <h4>Arrivée estimée</h4>
+                    <p>Consultez une estimation claire de l'arrivée avec une lecture simple des délais et variations probables.</p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+                <!-- Lines -->
+<div class="col-lg-6" data-aos="fade-left" id="lignes">
+  <div class="d-flex justify-content-end mb-3">
+    <button id="toggleRoutesBtn" class="swap-routes-btn" type="button">
+      <i class="bi bi-arrow-left-right"></i>
+      <span>Correspondance optimisée</span>
+    </button>
+  </div>
+
+  <!-- Vue 1 : Cités -> Tunis -->
+  <div class="row gy-4" id="routesToTunis">
+    <div class="col-md-6">
+      <div class="route-card">
+        <div class="route-top">
+          <span class="route-badge">Ligne T1</span>
+          <h3 class="mb-1">Ben Arous → Tunis</h3>
+          <p class="text-muted mb-0">Arrivée vers la station Barcelone</p>
+        </div>
+        <div class="route-body">
+          <div class="route-meta">
+            <span>Arrivée estimée</span>
+            <span class="route-status status-good">7 min</span>
+          </div>
+          <div class="route-meta">
+            <span>Retard</span>
+            <span class="route-status status-soft">+2 min</span>
+          </div>
+          <div class="route-meta">
+            <span>Affluence</span>
+            <span class="route-status status-warn">Modérée</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-6">
+      <div class="route-card">
+        <div class="route-top">
+          <span class="route-badge">Ligne T2</span>
+          <h3 class="mb-1">Ariana → Tunis</h3>
+          <p class="text-muted mb-0">Connexion vers le centre de Tunis</p>
+        </div>
+        <div class="route-body">
+          <div class="route-meta">
+            <span>Arrivée estimée</span>
+            <span class="route-status status-good">10 min</span>
+          </div>
+          <div class="route-meta">
+            <span>Retard</span>
+            <span class="route-status status-soft">+4 min</span>
+          </div>
+          <div class="route-meta">
+            <span>Affluence</span>
+            <span class="route-status status-good">Faible</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-6">
+      <div class="route-card">
+        <div class="route-top">
+          <span class="route-badge">Ligne T3</span>
+          <h3 class="mb-1">Ibn Khaldoun → Tunis</h3>
+          <p class="text-muted mb-0">Accès direct au pôle central Barcelone</p>
+        </div>
+        <div class="route-body">
+          <div class="route-meta">
+            <span>Arrivée estimée</span>
+            <span class="route-status status-good">6 min</span>
+          </div>
+          <div class="route-meta">
+            <span>Retard</span>
+            <span class="route-status status-good">À l'heure</span>
+          </div>
+          <div class="route-meta">
+            <span>Affluence</span>
+            <span class="route-status status-warn">Élevée</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-6">
+      <div class="route-card">
+        <div class="route-top">
+          <span class="route-badge">Ligne T4</span>
+          <h3 class="mb-1">Manouba → Tunis</h3>
+          <p class="text-muted mb-0">Trajet vers la station centrale Barcelone</p>
+        </div>
+        <div class="route-body">
+          <div class="route-meta">
+            <span>Arrivée estimée</span>
+            <span class="route-status status-good">8 min</span>
+          </div>
+          <div class="route-meta">
+            <span>Retard</span>
+            <span class="route-status status-soft">+3 min</span>
+          </div>
+          <div class="route-meta">
+            <span>Affluence</span>
+            <span class="route-status status-warn">Modérée à élevée</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Vue 2 : Tunis -> Cités -->
+  <div class="row gy-4 d-none" id="routesFromTunis">
+    <div class="col-md-6">
+      <div class="route-card">
+        <div class="route-top">
+          <span class="route-badge">Ligne T1</span>
+          <h3 class="mb-1">Tunis → Ben Arous</h3>
+          <p class="text-muted mb-0">Départ depuis la station Barcelone</p>
+        </div>
+        <div class="route-body">
+          <div class="route-meta">
+            <span>Départ estimé</span>
+            <span class="route-status status-good">7 min</span>
+          </div>
+          <div class="route-meta">
+            <span>Retard</span>
+            <span class="route-status status-soft">+2 min</span>
+          </div>
+          <div class="route-meta">
+            <span>Affluence</span>
+            <span class="route-status status-warn">Modérée</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-6">
+      <div class="route-card">
+        <div class="route-top">
+          <span class="route-badge">Ligne T2</span>
+          <h3 class="mb-1">Tunis → Ariana</h3>
+          <p class="text-muted mb-0">Sortie rapide vers le nord de la ville</p>
+        </div>
+        <div class="route-body">
+          <div class="route-meta">
+            <span>Départ estimé</span>
+            <span class="route-status status-good">10 min</span>
+          </div>
+          <div class="route-meta">
+            <span>Retard</span>
+            <span class="route-status status-soft">+4 min</span>
+          </div>
+          <div class="route-meta">
+            <span>Affluence</span>
+            <span class="route-status status-good">Faible</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-6">
+      <div class="route-card">
+        <div class="route-top">
+          <span class="route-badge">Ligne T3</span>
+          <h3 class="mb-1">Tunis → Ibn Khaldoun</h3>
+          <p class="text-muted mb-0">Départ depuis le centre de Tunis</p>
+        </div>
+        <div class="route-body">
+          <div class="route-meta">
+            <span>Départ estimé</span>
+            <span class="route-status status-good">6 min</span>
+          </div>
+          <div class="route-meta">
+            <span>Retard</span>
+            <span class="route-status status-good">À l'heure</span>
+          </div>
+          <div class="route-meta">
+            <span>Affluence</span>
+            <span class="route-status status-warn">Élevée</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="col-md-6">
+      <div class="route-card">
+        <div class="route-top">
+          <span class="route-badge">Ligne T4</span>
+          <h3 class="mb-1">Tunis → Manouba</h3>
+          <p class="text-muted mb-0">Trajet au départ de Barcelone</p>
+        </div>
+        <div class="route-body">
+          <div class="route-meta">
+            <span>Départ estimé</span>
+            <span class="route-status status-good">8 min</span>
+          </div>
+          <div class="route-meta">
+            <span>Retard</span>
+            <span class="route-status status-soft">+3 min</span>
+          </div>
+          <div class="route-meta">
+            <span>Affluence</span>
+            <span class="route-status status-warn">Modérée à élevée</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+                        <!-- Lines end -->
+
+        </div>
+      </div>
+    </section>
+
+<div class="network-map-wrap text-center">
+  <img src="pics/map1.jpg" alt="Plan du réseau métro de Tunis" class="img-fluid network-map-img">
+</div>
+
+    <section class="section light-background">
+      <div class="container" data-aos="zoom-in">
+        <div class="cta-panel">
+          <div class="row gy-4 align-items-center">
+            <div class="col-lg-8">
+              <h3>Une meilleure mobilité commence par une meilleure visibilité.</h3>
+              <p class="mb-0">Profitez d'un espace transport cohérent avec CivicPlus, pensé pour faciliter la consultation des lignes, l'orientation et le suivi des déplacements urbains.</p>
+              <!-- IMAGE -->
+
+              <ul>
+                <li><i class="bi bi-check-circle-fill"></i> Consultation rapide des lignes disponibles</li>
+                <li><i class="bi bi-check-circle-fill"></i> Estimation d'arrivée et état de circulation</li>
+                <li><i class="bi bi-check-circle-fill"></i> Accès direct à la recherche d'itinéraire</li>
+              </ul>
+            </div>
+            <div class="col-lg-4 text-lg-end">
+              <a href="itineraire-transport.html" class="btn btn-light me-2 mb-2 mb-lg-0">Commencer</a>
+              <a href="../../../../index.html#services" class="btn btn-outline-light">Retour aux services</a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <footer id="footer" class="footer">
+    <div class="container footer-top">
+      <div class="row gy-4">
+        <div class="col-lg-4 col-md-6 footer-about">
+          <a href="../../../../index.html" class="d-flex align-items-center">
+            <span class="sitename">CivicPlus</span>
+          </a>
+          <div class="footer-contact pt-3">
+            <p>Bloc H - ESPRIT</p>
+            <p>Ariana Petite</p>
+            <p class="mt-3"><strong>Phone:</strong> <span>22 504 470</span></p>
+            <p><strong>Email:</strong> <span>civicplus00@gmail.com</span></p>
+          </div>
+        </div>
+
+        <div class="col-lg-2 col-md-3 footer-links">
+          <h4>Useful Links</h4>
+          <ul>
+            <li><i class="bi bi-chevron-right"></i> <a href="../../../../index.html">Accueil</a></li>
+            <li><i class="bi bi-chevron-right"></i> <a href="../../../../index.html#about">Concept</a></li>
+            <li><i class="bi bi-chevron-right"></i> <a href="../../../../index.html#services">Services</a></li>
+            <li><i class="bi bi-chevron-right"></i> <a href="../../../../index.html#team">Notre équipe</a></li>
+          </ul>
+        </div>
+
+        <div class="col-lg-2 col-md-3 footer-links">
+          <h4>Nos Services</h4>
+          <ul>
+            <li><i class="bi bi-chevron-right"></i> <a href="../../../../index.html#services">E-Administration</a></li>
+            <li><i class="bi bi-chevron-right"></i> <a href="../../../../index.html#services">Signalement</a></li>
+            <li><i class="bi bi-chevron-right"></i> <a href="../../../../index.html#services">Transport</a></li>
+            <li><i class="bi bi-chevron-right"></i> <a href="../../../../index.html#services">Crowdfunding</a></li>
+          </ul>
+        </div>
+
+        <div class="col-lg-4 col-md-12">
+          <h4>Follow Us</h4>
+          <p>Suivez CivicPlus pour rester connecté aux nouveautés et projets de la ville.</p>
+          <div class="social-links d-flex">
+            <a href="#"><i class="bi bi-twitter-x"></i></a>
+            <a href="#"><i class="bi bi-facebook"></i></a>
+            <a href="#"><i class="bi bi-instagram"></i></a>
+            <a href="#"><i class="bi bi-linkedin"></i></a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="container copyright text-center mt-4">
+      <p>© <span>Copyright</span> <strong class="px-1 sitename">CivicPlus</strong> <span>All Rights Reserved</span></p>
+      <div class="credits">Designed by <strong>NOVA</strong> Distributed by <strong>ESPRIT</strong></div>
+    </div>
+  </footer>
+<script>
+  const toggleRoutesBtn = document.getElementById('toggleRoutesBtn');
+  const routesToTunis = document.getElementById('routesToTunis');
+  const routesFromTunis = document.getElementById('routesFromTunis');
+
+  toggleRoutesBtn.addEventListener('click', function () {
+    routesToTunis.classList.toggle('d-none');
+    routesFromTunis.classList.toggle('d-none');
+  });
+</script>
+  <a href="signaler-transport.html" class="help-btn" aria-label="Signaler un problème">?</a>
+
+  <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+  <div id="preloader"></div>
+
+  <script src="../../../../assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="../../../../assets/vendor/php-email-form/validate.js"></script>
+  <script src="../../../../assets/vendor/aos/aos.js"></script>
+  <script src="../../../../assets/vendor/glightbox/js/glightbox.min.js"></script>
+  <script src="../../../../assets/vendor/purecounter/purecounter_vanilla.js"></script>
+  <script src="../../../../assets/vendor/imagesloaded/imagesloaded.pkgd.min.js"></script>
+  <script src="../../../../assets/vendor/isotope-layout/isotope.pkgd.min.js"></script>
+  <script src="../../../../assets/vendor/swiper/swiper-bundle.min.js"></script>
+  <script src="../../../../assets/js/main.js"></script>
+  <script src="/Esprit-PW-2A20-2526-CivicPlus/assets/js/load_header.js"></script>
+  <script src='/Esprit-PW-2A20-2526-CivicPlus/assets/js/auth.js?v=5'></script>
+</body>
+
+</html>
+
+
+
+

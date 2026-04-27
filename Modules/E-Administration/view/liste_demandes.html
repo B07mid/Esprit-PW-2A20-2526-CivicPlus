@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+?<!DOCTYPE html>
 <html lang="fr">
 
 <head>
@@ -22,63 +22,7 @@
 
 <body class="index-page">
   <div class="admin-layout">
-    <aside class="admin-sidebar">
-      <div class="brand">
-        <img src="../../../assets/img/RawShape.png" alt="CivicPlus Logo" class="brand-image" width="24" height="24" />
-        <div>
-          <h1>CivicPlus</h1>
-          <small>BackOffice</small>
-        </div>
-      </div>
-
-      <ul class="menu-inner">
-        <li class="menu-item">
-          <a href="../../../admin.html" class="menu-link">
-            <i class="bi bi-house-door-fill"></i>
-            <div>
-              <p class="menu-text mb-0">Tableau de Bord</p>
-              <p class="menu-description mb-0">Vue d'ensemble</p>
-            </div>
-          </a>
-        </li>
-        <li class="menu-item active">
-          <a href="#" class="menu-link">
-            <i class="bi bi-building"></i>
-            <span class="menu-text">E-Administration</span>
-          </a>
-        </li>
-        <li class="menu-item">
-          <a href="#" class="menu-link">
-            <i class="bi bi-bus-front"></i>
-            <span class="menu-text">Smart Transport</span>
-          </a>
-        </li>
-        <li class="menu-item">
-          <a href="#" class="menu-link">
-            <i class="bi bi-flag-fill"></i>
-            <span class="menu-text">Signalements Urbains</span>
-          </a>
-        </li>
-        <li class="menu-item">
-          <a href="#" class="menu-link">
-            <i class="bi bi-currency-dollar"></i>
-            <span class="menu-text">Crowdfunding</span>
-          </a>
-        </li>
-        <li class="menu-item">
-          <a href="#" class="menu-link">
-            <i class="bi bi-map-fill"></i>
-            <span class="menu-text">Geo-Services</span>
-          </a>
-        </li>
-        <li class="menu-item">
-          <a href="#" class="menu-link">
-            <i class="bi bi-life-preserver"></i>
-            <span class="menu-text">Support & IA</span>
-          </a>
-        </li>
-      </ul>
-    </aside>
+    <aside class="admin-sidebar" id="admin-sidebar-container"></aside>
 
     <main class="admin-content">
       <div class="admin-card">
@@ -93,7 +37,7 @@
           <table class="table table-striped table-hover table-bordered mb-0 align-middle admin-table">
             <thead class="admin-table-head">
               <tr>
-                <th>Réf. Demande</th>
+                <th>R�f. Demande</th>
                 <th>CIN Citoyen</th>
                 <th>Document (Type)</th>
                 <th>Nature</th>
@@ -116,6 +60,12 @@
   <script src="../../../assets/vendor/swiper/swiper-bundle.min.js"></script>
   <script src="../../../assets/js/main.js"></script>
   <script src="js/liste_demandes.js"></script>
-</body>
+<script src='/Esprit-PW-2A20-2526-CivicPlus/assets/js/auth.js?v=5'></script>
+  <script src="/Esprit-PW-2A20-2526-CivicPlus/assets/js/load_admin_sidebar.js?v=2"></script>
+  </body>
 
 </html>
+
+
+
+

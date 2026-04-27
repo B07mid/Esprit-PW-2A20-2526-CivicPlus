@@ -15,7 +15,9 @@
   <!-- Fonts -->
   <link href="https://fonts.googleapis.com" rel="preconnect">
   <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Raleway:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap" rel="stylesheet">
+  <link
+    href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Raleway:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap"
+    rel="stylesheet">
 
   <!-- Vendor CSS Files -->
   <link href="assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
@@ -38,29 +40,10 @@
 
 <body class="index-page">
 
-  <header id="header" class="header d-flex align-items-center sticky-top">
-    <div class="container-fluid container-xl position-relative d-flex align-items-center">
-
-      <a href="index.html" class="logo d-flex align-items-center me-auto">
-       <img src="assets/img/logo.png" alt="CivicPlus Logo"> <h1 class="sitename">CivicPlus</h1>
-      </a>
-
-      <nav id="navmenu" class="navmenu">
-        <ul>
-          <li><a href="#hero" class="active">Home</a></li>
-          <li ><a href="#about">Concept</a></li>
-          <li><a href="#services">Services</a></li>
-          <li><a href="#team">Team</a></li>
-          <li id="admin-link" style="display:none;"><a href="admin.html">Admin Panel</a></li>
-          <li><a href="#contact">Contact</a></li>
-        </ul>
-        <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
-      </nav>
-
-      <a class="btn-getstarted" href="index.html#about">Get Started</a>
-
-    </div>
-  </header>
+  <!-- === DÉBUT DU HEADER DYNAMIQUE CIVICPLUS === -->
+  <!-- Ce conteneur sera rempli par le header généré par PHP -->
+  <div id="header-container" class="sticky-top" style="top: 0; z-index: 1030;"></div>
+  <!-- === FIN DU HEADER DYNAMIQUE === -->
 
   <main class="main">
 
@@ -71,10 +54,13 @@
         <div class="row gy-4">
           <div class="col-lg-6 order-2 order-lg-1 d-flex flex-column justify-content-center" data-aos="fade-up">
             <h1>Une plateforme au service de votre communauté</h1>
-            <p>CivicPlus connecte les citoyens et les autorités pour construire ensemble une ville meilleure, plus intelligente et plus engagée.</p>
+            <p>CivicPlus connecte les citoyens et les autorités pour construire ensemble une ville meilleure, plus
+              intelligente et plus engagée.</p>
             <div class="d-flex">
               <a href="#about" class="btn-get-started">Get Started</a>
-              <a href="https://www.youtube.com/watch?v=Y7f98aduVJ8" class="glightbox btn-watch-video d-flex align-items-center"><i class="bi bi-play-circle"></i><span>Watch Video</span></a>
+              <a href="https://www.youtube.com/watch?v=Y7f98aduVJ8"
+                class="glightbox btn-watch-video d-flex align-items-center"><i class="bi bi-play-circle"></i><span>Watch
+                  Video</span></a>
             </div>
           </div>
           <div class="col-lg-6 order-1 order-lg-2 hero-img" data-aos="zoom-out" data-aos-delay="100">
@@ -95,7 +81,7 @@
           <div class="col-lg-4 d-flex" data-aos="fade-up" data-aos-delay="100">
             <div class="service-item position-relative">
               <div class="icon"><i class="bi bi-file-earmark-check"></i></div>
-              <h4><a href="Modules/E-Administration/view/ajouter_demande.html" class="stretched-link">E-Administration</a></h4>
+              <h4><a href="Modules/E-Administration/view/index.html" class="stretched-link">E-Administration</a></h4>
               <p>Services digitalisés et validation de documents par IA 24h/7j.</p>
             </div>
           </div><!-- End Service Item -->
@@ -104,15 +90,18 @@
             <div class="service-item position-relative">
               <div class="icon"><i class="bi bi-bus-front"></i></div>
               <h4><a href="" class="stretched-link">Smart Transport</a></h4>
-              <p>Optimisation des transports en temps réel et prédiction d'affluence grâce aux signalements citoyens.</p>
+              <p>Optimisation des transports en temps réel et prédiction d'affluence grâce aux signalements citoyens.
+              </p>
             </div>
           </div><!-- End Service Item -->
 
           <div class="col-lg-4 d-flex" data-aos="fade-up" data-aos-delay="300">
             <div class="service-item position-relative">
               <div class="icon"><i class="bi bi-exclamation-triangle"></i></div>
-              <h4><a href="Modules/Signalement/view/citoyen_nouveau_signalement.html" class="stretched-link">Signalement et Maintenance</a></h4>
-              <p>Signalez un incident urbain avec une photo. L'IA détecte automatiquement le type et la priorité de l'incident.</p>
+              <h4><a href="Modules/Signalement/view/citoyen_nouveau_signalement.html" class="stretched-link">Signalement
+                  et Maintenance</a></h4>
+              <p>Signalez un incident urbain avec une photo. L'IA détecte automatiquement le type et la priorité de
+                l'incident.</p>
             </div>
           </div><!-- End Service Item -->
 
@@ -142,15 +131,21 @@
           <div class="col-lg-6 content" data-aos="fade-up" data-aos-delay="200">
             <h3>L'Intelligence au Service de la Cité</h3>
             <p class="fst-italic">
-              CivicPlus n'est pas qu'une plateforme, c'est un écosystème urbain centralisé. Nous utilisons l'IA pour bâtir une infrastructure numérique solide et durable.CivicPlus est un écosystème urbain centralisé où l'Intelligence Artificielle optimise les services publics pour bâtir une infrastructure numérique solide.
+              CivicPlus n'est pas qu'une plateforme, c'est un écosystème urbain centralisé. Nous utilisons l'IA pour
+              bâtir une infrastructure numérique solide et durable.CivicPlus est un écosystème urbain centralisé où
+              l'Intelligence Artificielle optimise les services publics pour bâtir une infrastructure numérique solide.
             </p>
             <ul>
-              <li><i class="bi bi-check2-all"></i> <span><strong>Infrastructure Numérique :</strong> Remplacer la lourdeur administrative par des services digitalisés et propulsés par l'IA.</span></li>
-              <li><i class="bi bi-check2-all"></i> <span><strong>Communautés Durables :</strong> Rendre l'espace urbain intelligent et écologique grâce à l'optimisation des transports.</span></li>
-              <li><i class="bi bi-check2-all"></i> <span><strong>Action Participative :</strong> Signalement citoyen en temps réel et financement participatif pour des villes plus réactives.</span></li>
+              <li><i class="bi bi-check2-all"></i> <span><strong>Infrastructure Numérique :</strong> Remplacer la
+                  lourdeur administrative par des services digitalisés et propulsés par l'IA.</span></li>
+              <li><i class="bi bi-check2-all"></i> <span><strong>Communautés Durables :</strong> Rendre l'espace urbain
+                  intelligent et écologique grâce à l'optimisation des transports.</span></li>
+              <li><i class="bi bi-check2-all"></i> <span><strong>Action Participative :</strong> Signalement citoyen en
+                  temps réel et financement participatif pour des villes plus réactives.</span></li>
             </ul>
             <p>
-              Notre objectif est de transformer l'interaction entre le citoyen et l'autorité grâce à une IA qui prédit les besoins et accélère les solutions.
+              Notre objectif est de transformer l'interaction entre le citoyen et l'autorité grâce à une IA qui prédit
+              les besoins et accélère les solutions.
             </p>
           </div>
         </div>
@@ -168,28 +163,32 @@
 
           <div class="col-lg-3 col-md-6">
             <div class="stats-item text-center w-100 h-100">
-              <span data-purecounter-start="0" data-purecounter-end="232" data-purecounter-duration="1" class="purecounter"></span>
+              <span data-purecounter-start="0" data-purecounter-end="232" data-purecounter-duration="1"
+                class="purecounter"></span>
               <p>Citoyens Acteurs</p>
             </div>
           </div><!-- End Stats Item -->
 
           <div class="col-lg-3 col-md-6">
             <div class="stats-item text-center w-100 h-100">
-              <span data-purecounter-start="0" data-purecounter-end="521" data-purecounter-duration="1" class="purecounter"></span>
+              <span data-purecounter-start="0" data-purecounter-end="521" data-purecounter-duration="1"
+                class="purecounter"></span>
               <p>Signalements Traités</p>
             </div>
           </div><!-- End Stats Item -->
 
           <div class="col-lg-3 col-md-6">
             <div class="stats-item text-center w-100 h-100">
-              <span data-purecounter-start="0" data-purecounter-end="1453" data-purecounter-duration="1" class="purecounter"></span>
+              <span data-purecounter-start="0" data-purecounter-end="1453" data-purecounter-duration="1"
+                class="purecounter"></span>
               <p>Demandes Validées</p>
             </div>
           </div><!-- End Stats Item -->
 
           <div class="col-lg-3 col-md-6">
             <div class="stats-item text-center w-100 h-100">
-              <span data-purecounter-start="0" data-purecounter-end="32" data-purecounter-duration="1" class="purecounter"></span>
+              <span data-purecounter-start="0" data-purecounter-end="32" data-purecounter-duration="1"
+                class="purecounter"></span>
               <p>Workers</p>
             </div>
           </div><!-- End Stats Item -->
@@ -203,6 +202,7 @@
     <!-- Services Section -->
     <section id="services" class="services section light-background">
 
+<<<<<<< Updated upstream
      <div class="container section-title" data-aos="fade-up">
      <span>Nos Solutions</span>
       <h2>Services Intelligents</h2>
@@ -260,7 +260,79 @@
           <p>Un bot intelligent capable de comprendre vos besoins en langage naturel et de vous orienter vers les services adaptés
       </div></div>
 
+=======
+      <div class="container section-title" data-aos="fade-up">
+        <span>Nos Solutions</span>
+        <h2>Services Intelligents</h2>
+        <p>Une suite complète de services digitalisés pour transformer l'interaction entre les citoyens et la cité.</p>
+>>>>>>> Stashed changes
       </div>
+      <div class="container">
+
+        <div class="row gy-4">
+
+          <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="100">
+            <div class="service-item position-relative">
+              <div class="icon"><i class="bi bi-file-earmark-text"></i></div>
+              <a href="Modules/E-Administration/view/index.html" class="stretched-link">
+                <h3>E-Administration</h3>
+              </a>
+              <p>Numérisation des documents officiels avec une IA qui valide la conformité des dossiers 24h/7j pour
+                éliminer l'attente.</p>
+            </div>
+          </div>
+          <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="200">
+            <div class="service-item position-relative">
+              <div class="icon"><i class="bi bi-bus-front"></i></div>
+              <a href="Modules/Transport/View/front/index.html" class="stretched-link">
+                <h3>Smart Transport</h3>
+              </a>
+              <p>Suivi en temps réel et IA prédictive pour anticiper l'affluence dans les bus et recalculer
+                dynamiquement l'heure d'arrivée.</p>
+            </div>
+          </div>
+          <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="300">
+            <div class="service-item position-relative">
+              <div class="icon"><i class="bi bi-exclamation-triangle"></i></div>
+              <a href="Modules/Signalement/view/index.html" class="stretched-link">
+                <h3>Signalement Urbain</h3>
+              </a>
+              <p>Signalez des incidents via photo. Notre IA détecte automatiquement le type d'incident et priorise les
+                interventions municipales.</p>
+            </div>
+          </div>
+          <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="400">
+            <div class="service-item position-relative">
+              <div class="icon"><i class="bi bi-piggy-bank"></i></div>
+              <a href="Modules/Crowdfunding/view/index.html" class="stretched-link">
+                <h3>Crowdfunding</h3>
+              </a>
+              <p>Participez au financement de projets de quartier. L'IA vous recommande des initiatives locales selon
+                votre position géographique.</p>
+            </div>
+          </div>
+          <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="500">
+            <div class="service-item position-relative">
+              <div class="icon"><i class="bi bi-geo-alt"></i></div>
+              <a href="Modules/Geo-Services/View/index.html" class="stretched-link">
+                <h3>Geo-Services</h3>
+              </a>
+              <p>Carte interactive des services publics avec algorithme de prédiction d'affluence pour conseiller le
+                meilleur horaire de visite.</p>
+            </div>
+          </div>
+          <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="600">
+            <div class="service-item position-relative">
+              <div class="icon"><i class="bi bi-chat-dots"></i></div>
+              <a href="index.html" class="stretched-link">
+                <h3>Assistance Chatbot</h3>
+              </a>
+              <p>Un bot intelligent capable de comprendre vos besoins en langage naturel et de vous orienter vers les
+                services adaptés
+            </div>
+          </div>
+
+        </div>
 
     </section>
 
@@ -276,7 +348,8 @@
 
       <div class="container" data-aos="fade-up" data-aos-delay="100">
 
-        <div class="swiper init-swiper" data-speed="600" data-delay="5000" data-breakpoints="{ &quot;320&quot;: { &quot;slidesPerView&quot;: 1, &quot;spaceBetween&quot;: 40 }, &quot;1200&quot;: { &quot;slidesPerView&quot;: 3, &quot;spaceBetween&quot;: 40 } }">
+        <div class="swiper init-swiper" data-speed="600" data-delay="5000"
+          data-breakpoints="{ &quot;320&quot;: { &quot;slidesPerView&quot;: 1, &quot;spaceBetween&quot;: 40 }, &quot;1200&quot;: { &quot;slidesPerView&quot;: 3, &quot;spaceBetween&quot;: 40 } }">
           <script type="application/json" class="swiper-config">
             {
               "loop": true,
@@ -308,7 +381,8 @@
               <div class="testimonial-item" "="">
             <p>
               <i class=" bi bi-quote quote-icon-left"></i>
-                <span>Proin iaculis purus consequat sem cure digni ssim donec porttitora entum suscipit rhoncus. Accusantium quam, ultricies eget id, aliquam eget nibh et. Maecen aliquam, risus at semper.</span>
+                <span>Proin iaculis purus consequat sem cure digni ssim donec porttitora entum suscipit rhoncus.
+                  Accusantium quam, ultricies eget id, aliquam eget nibh et. Maecen aliquam, risus at semper.</span>
                 <i class="bi bi-quote quote-icon-right"></i>
                 </p>
                 <img src="assets/img/testimonials/testimonials-1.jpg" class="testimonial-img" alt="">
@@ -321,7 +395,8 @@
               <div class="testimonial-item">
                 <p>
                   <i class="bi bi-quote quote-icon-left"></i>
-                  <span>Export tempor illum tamen malis malis eram quae irure esse labore quem cillum quid malis quorum velit fore eram velit sunt aliqua noster fugiat irure amet legam anim culpa.</span>
+                  <span>Export tempor illum tamen malis malis eram quae irure esse labore quem cillum quid malis quorum
+                    velit fore eram velit sunt aliqua noster fugiat irure amet legam anim culpa.</span>
                   <i class="bi bi-quote quote-icon-right"></i>
                 </p>
                 <img src="assets/img/testimonials/testimonials-2.jpg" class="testimonial-img" alt="">
@@ -334,7 +409,8 @@
               <div class="testimonial-item">
                 <p>
                   <i class="bi bi-quote quote-icon-left"></i>
-                  <span>Enim nisi quem export duis labore cillum quae magna enim sint quorum nulla quem veniam duis minim tempor labore quem eram duis noster aute amet eram fore quis sint minim.</span>
+                  <span>Enim nisi quem export duis labore cillum quae magna enim sint quorum nulla quem veniam duis
+                    minim tempor labore quem eram duis noster aute amet eram fore quis sint minim.</span>
                   <i class="bi bi-quote quote-icon-right"></i>
                 </p>
                 <img src="assets/img/testimonials/testimonials-3.jpg" class="testimonial-img" alt="">
@@ -347,7 +423,8 @@
               <div class="testimonial-item">
                 <p>
                   <i class="bi bi-quote quote-icon-left"></i>
-                  <span>Fugiat enim eram quae cillum dolore dolor amet nulla culpa multos export minim fugiat dolor enim duis veniam ipsum anim magna sunt elit fore quem dolore labore illum veniam.</span>
+                  <span>Fugiat enim eram quae cillum dolore dolor amet nulla culpa multos export minim fugiat dolor enim
+                    duis veniam ipsum anim magna sunt elit fore quem dolore labore illum veniam.</span>
                   <i class="bi bi-quote quote-icon-right"></i>
                 </p>
                 <img src="assets/img/testimonials/testimonials-4.jpg" class="testimonial-img" alt="">
@@ -360,7 +437,8 @@
               <div class="testimonial-item">
                 <p>
                   <i class="bi bi-quote quote-icon-left"></i>
-                  <span>Quis quorum aliqua sint quem legam fore sunt eram irure aliqua veniam tempor noster veniam sunt culpa nulla illum cillum fugiat legam esse veniam culpa fore nisi cillum quid.</span>
+                  <span>Quis quorum aliqua sint quem legam fore sunt eram irure aliqua veniam tempor noster veniam sunt
+                    culpa nulla illum cillum fugiat legam esse veniam culpa fore nisi cillum quid.</span>
                   <i class="bi bi-quote quote-icon-right"></i>
                 </p>
                 <img src="assets/img/testimonials/testimonials-5.jpg" class="testimonial-img" alt="">
@@ -385,8 +463,9 @@
           <div class="col-xl-10">
             <div class="text-center">
               <h3>Prêt à devenir un citoyen acteur ?</h3>
-              <p>Rejoignez CivicPlus dès aujourd'hui pour simplifier vos démarches administratives et participer activement à l'amélioration de votre ville grâce à l'intelligence artificielle.</p>
-              <a class="cta-btn" href="#">Créer mon compte</a>
+              <p>Rejoignez CivicPlus dès aujourd'hui pour simplifier vos démarches administratives et participer
+                activement à l'amélioration de votre ville grâce à l'intelligence artificielle.</p>
+              <a class="cta-btn" href="Modules/User/View/register.html">Créer mon compte</a>
             </div>
           </div>
         </div>
@@ -439,7 +518,7 @@
           </div><!-- End Team Member -->
 
         </div>
-      </br>
+        </br>
         <div class="row gy-5">
 
           <div class="col-lg-4 col-md-6" data-aos="fade-up" data-aos-delay="100">
@@ -547,7 +626,8 @@
   </footer>
 
   <!-- Scroll Top -->
-  <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i class="bi bi-arrow-up-short"></i></a>
+  <a href="#" id="scroll-top" class="scroll-top d-flex align-items-center justify-content-center"><i
+      class="bi bi-arrow-up-short"></i></a>
 
   <!-- Preloader -->
   <div id="preloader"></div>
@@ -564,16 +644,8 @@
 
   <!-- Main JS File -->
   <script src="assets/js/main.js"></script>
-  <script>
-  fetch('check_session.php')
-    .then(response => response.json())
-    .then(data => {
-      if (data.isAdmin) {
-        document.getElementById('admin-link').style.display = 'block';
-      }
-    })
-    .catch(error => console.error('Erreur de vérification session:', error));
-</script>
+  <script src="/Esprit-PW-2A20-2526-CivicPlus/assets/js/load_header.js?v=3"></script>
+  <script src="/Esprit-PW-2A20-2526-CivicPlus/assets/js/auth.js"></script>
 </body>
 
 </html>

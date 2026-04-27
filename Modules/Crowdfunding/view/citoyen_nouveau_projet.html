@@ -46,8 +46,8 @@
       <div class="container">
         <div class="section-title">
           <span>Crowdfunding</span>
-          <h2>Créer un nouveau projet</h2>
-          <p>Soumettez votre projet communautaire et définissez votre objectif de financement pour attirer le soutien local.</p>
+          <h2>Demander un nouveau projet</h2>
+          <p>Soumettez une demande de projet communautaire — un administrateur l'examinera et la validera.</p>
         </div>
 
         <div class="row justify-content-center">
@@ -55,13 +55,13 @@
             <div class="card rounded-4 shadow-lg border-0 overflow-hidden">
               <div class="card-body p-4 p-lg-5">
                 <div class="mb-4">
-                  <h2 class="h4 mb-1">Formulaire de Projet</h2>
-                  <p class="text-muted mb-0">Renseignez les détails de votre projet ci-dessous.</p>
+                  <h2 class="h4 mb-1">Demande de Projet</h2>
+                  <p class="text-muted mb-0">Renseignez les détails de votre demande ci-dessous.</p>
                 </div>
 
                 <div id="alertBox"></div>
 
-                <form action="../controller/ProjetCrowdfundingController.php" method="POST"
+                <form action="../Controller/ProjetCrowdfundingController.php?demande=1" method="POST"
                       id="formProjet" class="php-email-form"
                       style="background-color:#f8f9fa; border-radius:10px; padding:1.5rem;">
                   <div class="row gy-3">
@@ -78,6 +78,21 @@
                       <input type="text" class="form-control" name="titre" id="titre"
                              placeholder="Ex: Rénovation du parc municipal" required
                              style="color:#112f8d; background-color:#ffffff; font-weight:500;">
+                    </div>
+
+                    <div class="col-md-12">
+                      <label for="type_projet" class="form-label fw-bold">Type de projet <span class="text-danger">*</span></label>
+                      <select class="form-select" name="type_projet" id="type_projet" required
+                              style="color:#112f8d; background-color:#ffffff; font-weight:500;">
+                        <option value="" disabled selected>— Choisir un type —</option>
+                        <option value="infrastructure">🏗️ Infrastructure</option>
+                        <option value="sante">🏥 Santé</option>
+                        <option value="education">📚 Éducation</option>
+                        <option value="environnement">🌿 Environnement</option>
+                        <option value="culture">🎭 Culture</option>
+                        <option value="sport">⚽ Sport</option>
+                        <option value="autre">💡 Autre</option>
+                      </select>
                     </div>
 
                     <div class="col-md-12">
@@ -122,12 +137,19 @@
                              style="color:#112f8d; background-color:#ffffff; font-weight:500;">
                     </div>
 
+                    <div class="col-md-12">
+                      <label class="form-label fw-bold">Localisation sur la carte</label>
+                      <p class="text-muted small mb-2">Cliquez sur la carte pour placer le projet. Les coordonnées se remplissent automatiquement.</p>
+                      <div id="location-picker-map"
+                           style="height:320px; border-radius:12px; border:1px solid #dee2e6; z-index:0;"></div>
+                    </div>
+
                   </div>
 
                   <div class="text-end mt-4">
                     <button type="button" class="btn btn-secondary rounded-pill px-4 me-2"
                             onclick="history.back()">Annuler</button>
-                    <button type="submit" class="btn-getstarted rounded-pill px-4">Soumettre le projet</button>
+                    <button type="submit" class="btn-getstarted rounded-pill px-4">Envoyer la demande</button>
                   </div>
                 </form>
 
@@ -143,7 +165,10 @@
   <script src="../../../assets/vendor/aos/aos.js"></script>
   <script src="../../../assets/vendor/glightbox/js/glightbox.min.js"></script>
   <script src="../../../assets/vendor/swiper/swiper-bundle.min.js"></script>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script src="../../../assets/js/main.js"></script>
+  <script src="../../../assets/js/location-picker.js"></script>
   <script src="js/citoyen_projet.js"></script>
 
 </body>

@@ -12,12 +12,14 @@ class ProjetCrowdfunding {
     private $quartier;
     private $latitude;
     private $longitude;
+    private $type_projet;
 
     public function __construct(
         $id_projet = null, $num_cin = null, $titre = null, $description = null,
         $budget_cible = null, $montant_actuel = 0,
         $statut_projet = 'en_recherche_financement',
-        $ville = null, $quartier = null, $latitude = null, $longitude = null
+        $ville = null, $quartier = null, $latitude = null, $longitude = null,
+        $type_projet = 'autre'
     ) {
         $this->id_projet      = $id_projet;
         $this->num_cin        = $num_cin;
@@ -30,20 +32,22 @@ class ProjetCrowdfunding {
         $this->quartier       = $quartier;
         $this->latitude       = $latitude;
         $this->longitude      = $longitude;
+        $this->type_projet    = $type_projet;
     }
 
     // --- C : Ajouter un projet ---
     public function ajouterProjet($pdo) {
         try {
             $sql = "INSERT INTO projet_crowdfunding
-                    (num_cin, titre, description, budget_cible, montant_actuel,
+                    (num_cin, titre, type_projet, description, budget_cible, montant_actuel,
                      statut_projet, ville, quartier, latitude, longitude)
-                    VALUES (:num_cin, :titre, :description, :budget_cible, :montant_actuel,
+                    VALUES (:num_cin, :titre, :type_projet, :description, :budget_cible, :montant_actuel,
                             :statut_projet, :ville, :quartier, :latitude, :longitude)";
             $stmt = $pdo->prepare($sql);
             $stmt->execute([
                 'num_cin'        => $this->num_cin,
                 'titre'          => $this->titre,
+                'type_projet'    => $this->type_projet,
                 'description'    => $this->description,
                 'budget_cible'   => $this->budget_cible,
                 'montant_actuel' => $this->montant_actuel,
@@ -118,7 +122,7 @@ class ProjetCrowdfunding {
         }
     }
 
-    // Recalculer montant_actuel depuis les donations confirmées
+    // Recalculer montant_actuel depuis les donations confirmees
     public static function refreshRaised($pdo, $id_projet) {
         try {
             $stmt = $pdo->prepare(
@@ -126,7 +130,7 @@ class ProjetCrowdfunding {
                  SET montant_actuel = (
                      SELECT COALESCE(SUM(montant), 0)
                      FROM donation
-                     WHERE id_projet = :id AND statut_paiement = 'confirmé'
+                     WHERE id_projet = :id AND statut_paiement = 'confirme'
                  )
                  WHERE id_projet = :id2"
             );
@@ -135,73 +139,5 @@ class ProjetCrowdfunding {
         } catch (PDOException $e) {
             return false;
         }
-    }
-}
-?>
-
-    public function __construct() {
-        $this->db = Database::getInstance();
-    }
-
-    public function getAll(): array {
-        return $this->db
-            ->query('SELECT * FROM projet_crowdfunding ORDER BY id_projet DESC')
-            ->fetchAll();
-    }
-
-    public function getById(int $id): array|false {
-        $stmt = $this->db->prepare('SELECT * FROM projet_crowdfunding WHERE id_projet = ?');
-        $stmt->execute([$id]);
-        return $stmt->fetch();
-    }
-
-    public function add(array $d): bool {
-        $stmt = $this->db->prepare(
-            'INSERT INTO projet_crowdfunding
-             (num_cin, titre, description, budget_cible, montant_actuel, statut_projet, ville, quartier, latitude, longitude)
-             VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)'
-        );
-        return $stmt->execute([
-            $d['num_cin'], $d['titre'], $d['description'],
-            $d['budget_cible'], $d['montant_actuel'], $d['statut_projet'],
-            $d['ville'], $d['quartier'], $d['latitude'], $d['longitude']
-        ]);
-    }
-
-    public function update(int $id, array $d): bool {
-        $stmt = $this->db->prepare(
-            'UPDATE projet_crowdfunding SET
-             num_cin=?, titre=?, description=?, budget_cible=?, montant_actuel=?,
-             statut_projet=?, ville=?, quartier=?, latitude=?, longitude=?
-             WHERE id_projet=?'
-        );
-        return $stmt->execute([
-            $d['num_cin'], $d['titre'], $d['description'],
-            $d['budget_cible'], $d['montant_actuel'], $d['statut_projet'],
-            $d['ville'], $d['quartier'], $d['latitude'], $d['longitude'],
-            $id
-        ]);
-    }
-
-    public function delete(int $id): bool {
-        $stmt = $this->db->prepare('DELETE FROM projet_crowdfunding WHERE id_projet = ?');
-        return $stmt->execute([$id]);
-    }
-
-    /**
-     * Recalculate montant_actuel from confirmed donations for a given project.
-     * Call this whenever a donation is added, edited, or deleted.
-     */
-    public function refreshRaised(int $id_projet): bool {
-        $stmt = $this->db->prepare(
-            "UPDATE projet_crowdfunding
-             SET montant_actuel = (
-                 SELECT COALESCE(SUM(montant), 0)
-                 FROM donation
-                 WHERE id_projet = ? AND statut_paiement = 'confirmé'
-             )
-             WHERE id_projet = ?"
-        );
-        return $stmt->execute([$id_projet, $id_projet]);
     }
 }

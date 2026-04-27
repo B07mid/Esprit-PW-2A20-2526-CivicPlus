@@ -122,5 +122,10 @@
   <script>AOS.init();</script>
   <script src="../../assets/js/main.js"></script>
 
+<script src='/Esprit-PW-2A20-2526-CivicPlus/assets/js/auth.js?v=5'></script>
 </body>
 </html>
+
+
+
+

@@ -11,4 +11,10 @@ $categoriesExistantes = PointInteret::getCategoriesDistinctes($pdo);
 
 // On transforme le tableau PHP en texte JSON et on l'affiche
 echo json_encode($categoriesExistantes);
+<<<<<<< Updated upstream
 ?>
+=======
+?>
+
+
+>>>>>>> Stashed changes

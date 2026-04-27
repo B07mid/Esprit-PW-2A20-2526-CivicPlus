@@ -19,4 +19,10 @@ try {
     // En cas d'erreur de connexion, on arrête l'exécution et on affiche le message
     die("Erreur de connexion à la base de données : " . $e->getMessage());
 }
+<<<<<<< Updated upstream
 ?>
+=======
+?>
+
+
+>>>>>>> Stashed changes

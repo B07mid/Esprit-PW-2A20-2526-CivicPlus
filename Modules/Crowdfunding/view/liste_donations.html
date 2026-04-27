@@ -22,74 +22,16 @@
   <div class="admin-layout">
 
     <!-- Sidebar -->
-    <aside class="admin-sidebar">
-      <div class="brand">
-        <img src="../../../assets/img/RawShape.png" alt="CivicPlus Logo" class="brand-image" width="24" height="24">
-        <div>
-          <h1>CivicPlus</h1>
-          <small>BackOffice</small>
-        </div>
-      </div>
-      <ul class="menu-inner">
-        <li class="menu-item">
-          <a href="../../../admin.html" class="menu-link">
-            <i class="bi bi-house-door-fill"></i>
-            <div>
-              <p class="menu-text mb-0">Tableau de Bord</p>
-              <p class="menu-description mb-0">Vue d'ensemble</p>
-            </div>
-          </a>
-        </li>
-        <li class="menu-item">
-          <a href="../../E-Administration/view/liste_demandes.html" class="menu-link">
-            <i class="bi bi-building"></i>
-            <span class="menu-text">E-Administration</span>
-          </a>
-        </li>
-        <li class="menu-item">
-          <a href="#" class="menu-link">
-            <i class="bi bi-bus-front"></i>
-            <span class="menu-text">Smart Transport</span>
-          </a>
-        </li>
-        <li class="menu-item">
-          <a href="../../Signalement/view/liste_signalements.html" class="menu-link">
-            <i class="bi bi-flag-fill"></i>
-            <span class="menu-text">Signalements Urbains</span>
-          </a>
-        </li>
-        <li class="menu-item">
-          <a href="liste_projets.html" class="menu-link">
-            <i class="bi bi-currency-dollar"></i>
-            <span class="menu-text">Crowdfunding – Projets</span>
-          </a>
-        </li>
-        <li class="menu-item active">
-          <a href="liste_donations.html" class="menu-link">
-            <i class="bi bi-piggy-bank"></i>
-            <span class="menu-text">Crowdfunding – Donations</span>
-          </a>
-        </li>
-        <li class="menu-item">
-          <a href="#" class="menu-link">
-            <i class="bi bi-map-fill"></i>
-            <span class="menu-text">Geo-Services</span>
-          </a>
-        </li>
-        <li class="menu-item">
-          <a href="#" class="menu-link">
-            <i class="bi bi-life-preserver"></i>
-            <span class="menu-text">Support &amp; IA</span>
-          </a>
-        </li>
-      </ul>
-    </aside>
+    <aside class="admin-sidebar" id="admin-sidebar-container"></aside>
 
     <!-- Main content -->
     <main class="admin-content">
       <div class="admin-card">
         <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
-          <h2 class="mb-0">Liste des Donations</h2>
+          <div>
+            <h2 class="mb-1">Liste des Donations</h2>
+            <p class="text-muted mb-0">Gestion des financements participatifs</p>
+          </div>
           <a href="citoyen_nouvelle_donation.html" class="btn btn-primary">
             <i class="bi bi-plus-circle"></i> Nouvelle donation
           </a>
@@ -97,18 +39,18 @@
 
         <div id="flashBox"></div>
 
-        <div class="table-responsive">
-          <table class="table table-hover table-striped align-middle">
-            <thead class="table-light">
+        <div class="table-responsive rounded-4 shadow-sm border-0 overflow-hidden">
+          <table class="table table-hover mb-0 admin-table align-middle border-0">
+            <thead class="admin-table-head">
               <tr>
-                <th>ID</th>
-                <th>CIN</th>
-                <th>Projet</th>
-                <th>Montant ($)</th>
-                <th>Référence</th>
-                <th>Statut</th>
-                <th>Date</th>
-                <th>Actions</th>
+                <th class="border-0">ID</th>
+                <th class="border-0">CIN</th>
+                <th class="border-0">Projet</th>
+                <th class="border-0">Montant ($)</th>
+                <th class="border-0">Référence</th>
+                <th class="border-0">Statut</th>
+                <th class="border-0">Date</th>
+                <th class="border-0 text-end">Actions</th>
               </tr>
             </thead>
             <tbody id="donationsTableBody">
@@ -121,6 +63,21 @@
   </div>
 
   <script src="../../../assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
-  <script src="js/liste_donations.js"></script>
-</body>
+  <script src="js/liste_donations.js?v=2"></script>
+<script src='/Esprit-PW-2A20-2526-CivicPlus/assets/js/auth.js?v=5'></script>
+<script>
+fetch('../controller/ProjetCrowdfundingController.php?action=demandeCount')
+  .then(function(r){return r.json();}).then(function(d){
+    var n=d.count||0; if(!n) return;
+    ['sidebarCrowdBadge','sidebarProjetsBadge'].forEach(function(id){
+      var el=document.getElementById(id); if(el){el.textContent=n;el.classList.remove('d-none');}
+    });
+  }).catch(function(){});
+</script>
+  <script src="/Esprit-PW-2A20-2526-CivicPlus/assets/js/load_admin_sidebar.js?v=2"></script>
+  </body>
 </html>
+
+
+
+
