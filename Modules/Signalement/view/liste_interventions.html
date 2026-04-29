@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="fr" class="light-style layout-menu-fixed" dir="ltr" data-theme="theme-default" data-assets-path="../../../assets/" data-template="vertical-menu-template-free">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
+    <title>Interventions Techniques - CivicPlus BackOffice</title>
+    <link rel="icon" type="image/x-icon" href="../../../assets/img/favicon/RawShape.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap" rel="stylesheet" />
+    <link href="../../../assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../../../assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+    <link href="../../../assets/css/main.css" rel="stylesheet">
+    <link href="../../../assets/css/admin.css" rel="stylesheet">
+  </head>
+  <body class="index-page">
+    <div class="admin-layout">
+      <aside class="admin-sidebar">
+        <div class="brand">
+          <img src="../../../assets/img/RawShape.png" alt="CivicPlus Logo" class="brand-image" width="24" height="24">
+          <div>
+            <h1>CivicPlus</h1>
+            <small>BackOffice</small>
+          </div>
+        </div>
+        <ul class="menu-inner">
+          <li class="menu-item"><a href="../../../admin.html" class="menu-link"><i class="bi bi-house-door-fill"></i><div><p class="menu-text mb-0">Tableau de Bord</p></div></a></li>
+          <li class="menu-item"><a href="liste_signalements.html" class="menu-link"><i class="bi bi-flag-fill"></i><span class="menu-text">Signalements Urbains</span></a></li>
+          <li class="menu-item active"><a href="liste_interventions.html" class="menu-link"><i class="bi bi-tools"></i><span class="menu-text">Interventions Techniques</span></a></li>
+        </ul>
+      </aside>
+      <main class="admin-content">
+        <div class="admin-card">
+          <h2 class="mb-4">Suivi des Interventions Techniques</h2>
+          <div class="table-responsive">
+            <table class="table table-hover table-striped align-middle">
+              <thead class="table-light">
+                <tr>
+                  <th>ID Inter.</th>
+                  <th>Signalement</th>
+                  <th>Équipe</th>
+                  <th>Type</th>
+                  <th>Planifié le</th>
+                  <th>Statut</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="interventionsTableBody">
+                <!-- Rempli dynamiquement -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </main>
+    </div>
+
+    <!-- Modal pour Modifier l'Intervention -->
+    <div class="modal fade" id="interventionModal" tabindex="-1" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title">Modifier l'Intervention</h5>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body">
+            <form id="formIntervention">
+              <input type="hidden" id="inter_id_signalement" name="id_signalement">
+              <div class="mb-3">
+                <label class="form-label">Type d'intervention</label>
+                <input type="text" id="inter_type" name="type_intervention" class="form-control" required>
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Équipe responsable</label>
+                <input type="text" id="inter_equipe" name="equipe_responsable" class="form-control" required>
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Date de planification</label>
+                <input type="date" id="inter_date" name="date_planification" class="form-control" required>
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Statut de l'intervention</label>
+                <select id="inter_statut" name="statut_intervention" class="form-select">
+                  <option value="en_attente">En attente</option>
+                  <option value="planifie">Planifiée</option>
+                  <option value="en_cours">En cours</option>
+                  <option value="termine">Terminée</option>
+                </select>
+              </div>
+              <div class="mb-3">
+                <label class="form-label">Commentaires techniques</label>
+                <textarea id="inter_comm" name="commentaires_techniques" class="form-control" rows="3"></textarea>
+              </div>
+              <button type="submit" class="btn w-100" style="background-color: #f68d56; color: white; border: none; font-weight: 500;">Sauvegarder les modifications</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    <script src="../../../assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="js/liste_interventions.js"></script>
+  </body>
+</html>

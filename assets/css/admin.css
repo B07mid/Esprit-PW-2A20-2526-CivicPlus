@@ -2,6 +2,7 @@
   min-height: 100vh;
   background: var(--background-color);
 }
+
 .admin-sidebar {
   width: 280px;
   min-height: 100vh;
@@ -11,8 +12,11 @@
   top: 0;
   left: 0;
   padding-bottom: 2rem;
-  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
 }
+
 .admin-sidebar .brand {
   padding: 1.5rem 1.25rem;
   border-bottom: 1px solid rgba(0, 0, 0, 0.08);
@@ -20,16 +24,19 @@
   align-items: center;
   gap: 0.75rem;
 }
+
 .admin-sidebar .brand h1 {
   margin: 0;
   font-size: 1.25rem;
   font-weight: 700;
   color: var(--heading-color);
 }
+
 .admin-sidebar .brand small {
   display: block;
   color: #6c757d;
 }
+
 .brand-image {
   width: 1.5rem;
   height: 1.5rem;
@@ -37,18 +44,48 @@
   object-fit: contain;
   flex-shrink: 0;
 }
+
 .brand-icon {
   font-size: 1.5rem;
   color: var(--accent-color);
 }
+
 .menu-inner {
   list-style: none;
   margin: 0;
   padding: 0.75rem 0.75rem 0;
+  overflow-y: auto;
+  flex-grow: 1;
 }
-.menu-item + .menu-item {
+
+/* Custom scrollbar for webkit browsers */
+.admin-sidebar .menu-inner::-webkit-scrollbar {
+  width: 8px;
+}
+
+.admin-sidebar .menu-inner::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.admin-sidebar .menu-inner::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+  border: 2px solid transparent;
+  background-clip: content-box;
+}
+
+.admin-sidebar .menu-link .bi-chevron-right {
+  transition: transform 0.3s ease-in-out;
+}
+
+.admin-sidebar .menu-link[aria-expanded="true"] .bi-chevron-right {
+  transform: rotate(90deg);
+}
+
+.menu-item+.menu-item {
   margin-top: 0.25rem;
 }
+
 .menu-link {
   display: flex;
   align-items: center;
@@ -58,27 +95,33 @@
   border-radius: 0.85rem;
   transition: 0.3s ease;
 }
+
 .menu-link:hover,
 .menu-item.active .menu-link {
   background: rgba(246, 141, 86, 0.14);
   color: var(--accent-color);
 }
+
 .menu-link i {
   font-size: 1.25rem;
 }
+
 .menu-text {
   margin: 0;
   font-weight: 600;
 }
+
 .menu-description {
   margin: 0;
   font-size: 0.85rem;
   color: #6c757d;
 }
+
 .admin-content {
   margin-left: 280px;
   padding: 2rem 2rem 4rem;
 }
+
 .admin-card {
   border: none;
   border-radius: 1rem;
@@ -86,50 +129,171 @@
   background: var(--surface-color);
   box-shadow: 0 8px 30px rgba(0, 0, 0, 0.05);
 }
+
 .admin-table thead.admin-table-head {
   background: var(--heading-color);
   color: var(--contrast-color);
 }
+
 .admin-table thead.admin-table-head th {
   border-color: rgba(255, 255, 255, 0.1);
   font-weight: 700;
 }
+
 .admin-table tbody tr:nth-child(odd) {
   background: var(--background-color);
 }
+
 .admin-table tbody tr {
   color: var(--default-color);
 }
+
 .admin-table tbody td {
   border-color: rgba(0, 0, 0, 0.08);
 }
+
 .admin-content .btn-success,
 .admin-content .btn-danger {
   color: var(--contrast-color);
   border-color: transparent;
 }
+
 .admin-content .btn-success {
   background-color: var(--heading-color);
 }
+
 .admin-content .btn-success:hover,
 .admin-content .btn-success:focus {
   background-color: color-mix(in srgb, var(--heading-color), transparent 15%);
 }
+
 .admin-content .btn-danger {
   background-color: var(--accent-color);
 }
+
 .admin-content .btn-danger:hover,
 .admin-content .btn-danger:focus {
   background-color: color-mix(in srgb, var(--accent-color), transparent 15%);
 }
+
 @media (max-width: 991.98px) {
   .admin-sidebar {
     position: static;
     width: 100%;
     box-shadow: none;
   }
+
   .admin-content {
     margin-left: 0;
     padding-top: 1rem;
   }
+}
+
+/* ── Sidebar overflow fix ──────────────────────────────────────────────── */
+.admin-sidebar {
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+/* ── Transport stat cards row ─────────────────────────────────────────── */
+.transport-stats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+}
+
+.transport-stat-card {
+  flex: 1 1 160px;
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  background: var(--background-color);
+  border-radius: 0.85rem;
+  padding: 1rem 1.25rem;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, .05);
+  min-width: 130px;
+}
+
+.transport-stat-icon {
+  width: 44px;
+  height: 44px;
+  flex-shrink: 0;
+  border-radius: 0.65rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1.25rem;
+}
+
+.transport-stat-content small {
+  font-size: 0.78rem;
+  color: #6c757d;
+  display: block;
+}
+
+.transport-stat-content h4 {
+  margin: 0;
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--heading-color);
+  line-height: 1.1;
+}
+
+.bg-soft-primary {
+  background: rgba(13, 110, 253, .12);
+  color: #0d6efd;
+}
+
+.bg-soft-success {
+  background: rgba(25, 135, 84, .12);
+  color: #198754;
+}
+
+.bg-soft-warning {
+  background: rgba(255, 193, 7, .15);
+  color: #c79f00;
+}
+
+.bg-soft-danger {
+  background: rgba(220, 53, 69, .12);
+  color: #dc3545;
+}
+
+.bg-soft-info {
+  background: rgba(13, 202, 240, .12);
+  color: #0dcaf0;
+}
+
+.bg-soft-purple {
+  background: rgba(111, 66, 193, .12);
+  color: #6f42c1;
+}
+
+/* ── Table card wrapper ───────────────────────────────────────────────── */
+.table-card {
+  background: var(--background-color);
+  border-radius: 0.85rem;
+  overflow: hidden;
+}
+
+.toolbar-card {
+  background: var(--background-color);
+  border-radius: 0.85rem;
+  padding: 1rem 1.25rem;
+  margin-bottom: 1rem;
+}
+
+/* ── Active menu link ─────────────────────────────────────────────────── */
+.menu-link.active {
+  background: rgba(246, 141, 86, .18);
+  color: var(--accent-color);
+  font-weight: 600;
+}
+
+/* ── Page subtitle ────────────────────────────────────────────────────── */
+.page-subtitle {
+  color: #6c757d;
+  margin: 0;
+  font-size: 0.9rem;
 }
