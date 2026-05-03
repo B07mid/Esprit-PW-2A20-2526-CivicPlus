@@ -11,7 +11,9 @@
   top: 0;
   left: 0;
   padding-bottom: 2rem;
-  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
 }
 .admin-sidebar .brand {
   padding: 1.5rem 1.25rem;
@@ -45,6 +47,32 @@
   list-style: none;
   margin: 0;
   padding: 0.75rem 0.75rem 0;
+  overflow-y: auto;
+  flex-grow: 1;
+}
+
+/* Custom scrollbar for webkit browsers */
+.admin-sidebar .menu-inner::-webkit-scrollbar {
+  width: 8px;
+}
+
+.admin-sidebar .menu-inner::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.admin-sidebar .menu-inner::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: 10px;
+  border: 2px solid transparent;
+  background-clip: content-box;
+}
+
+.admin-sidebar .menu-link .bi-chevron-right {
+  transition: transform 0.3s ease-in-out;
+}
+
+.admin-sidebar .menu-link[aria-expanded="true"] .bi-chevron-right {
+  transform: rotate(90deg);
 }
 .menu-item + .menu-item {
   margin-top: 0.25rem;
@@ -59,7 +87,8 @@
   transition: 0.3s ease;
 }
 .menu-link:hover,
-.menu-item.active .menu-link {
+.menu-link.active,
+.menu-item.active > .menu-link {
   background: rgba(246, 141, 86, 0.14);
   color: var(--accent-color);
 }
@@ -75,6 +104,33 @@
   font-size: 0.85rem;
   color: #6c757d;
 }
+.sidebar-notification-badge {
+  margin-left: auto;
+  min-width: 24px;
+  height: 24px;
+  padding: 0 0.4rem;
+  border-radius: 999px;
+  background: #dc3545;
+  color: #fff;
+  border: 2px solid #fff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.7rem;
+  font-weight: 800;
+  line-height: 1;
+  text-align: center;
+  box-shadow: 0 6px 14px rgba(220, 53, 69, 0.22);
+}
+.sidebar-notification-badge:not(.d-none) {
+  display: inline-flex !important;
+}
+.menu-link.has-submenu .sidebar-notification-badge {
+  margin-left: auto;
+}
+.menu-link.has-submenu .toggle-icon {
+  margin-left: 0;
+}
 .admin-content {
   margin-left: 280px;
   padding: 2rem 2rem 4rem;
@@ -85,6 +141,79 @@
   padding: 1.75rem;
   background: var(--surface-color);
   box-shadow: 0 8px 30px rgba(0, 0, 0, 0.05);
+}
+.admin-lite-panel {
+  border: 1px solid rgba(17, 47, 141, 0.08);
+  border-radius: 14px;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(248, 250, 252, 0.96));
+  padding: 14px;
+  margin: 0 0 18px;
+}
+.admin-lite-stats {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+}
+.admin-lite-stat {
+  min-height: 72px;
+  border-radius: 12px;
+  background: #fff;
+  border: 1px solid rgba(0, 0, 0, 0.06);
+  padding: 12px 14px;
+}
+.admin-lite-stat span {
+  display: block;
+  color: #6c757d;
+  font-size: 0.78rem;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+.admin-lite-stat strong {
+  color: var(--heading-color);
+  font-size: 1.45rem;
+  line-height: 1;
+}
+.admin-lite-stat:nth-child(3) strong {
+  color: #dc3545;
+}
+.admin-lite-stat.muted strong {
+  color: #198754;
+}
+.admin-lite-controls {
+  display: grid;
+  grid-template-columns: minmax(220px, 1fr) minmax(170px, 220px) 44px;
+  gap: 10px;
+  margin-top: 12px;
+}
+.admin-lite-search {
+  position: relative;
+}
+.admin-lite-search i {
+  position: absolute;
+  top: 50%;
+  left: 14px;
+  transform: translateY(-50%);
+  color: #6c757d;
+  pointer-events: none;
+}
+.admin-lite-search .form-control {
+  min-height: 44px;
+  border-radius: 12px;
+  padding-left: 40px;
+}
+.admin-lite-sort,
+.admin-lite-direction {
+  min-height: 44px;
+  border-radius: 12px;
+}
+.admin-lite-inline-sort {
+  display: flex;
+  gap: 10px;
+  justify-content: flex-end;
+  margin-top: 12px;
+}
+.admin-lite-inline-sort .admin-lite-sort {
+  max-width: 240px;
 }
 .admin-table thead.admin-table-head {
   background: var(--heading-color);
@@ -102,6 +231,16 @@
 }
 .admin-table tbody td {
   border-color: rgba(0, 0, 0, 0.08);
+  padding: 12px 15px !important;
+}
+.admin-table th {
+  padding: 15px !important;
+  white-space: nowrap;
+}
+.table-card {
+  overflow-x: auto;
+  border-radius: 12px;
+  border: 1px solid rgba(0,0,0,0.05);
 }
 .admin-content .btn-success,
 .admin-content .btn-danger {
@@ -131,5 +270,15 @@
   .admin-content {
     margin-left: 0;
     padding-top: 1rem;
+  }
+  .admin-lite-stats {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+  .admin-lite-controls {
+    grid-template-columns: 1fr;
+  }
+  .admin-lite-inline-sort {
+    justify-content: flex-start;
+    flex-wrap: wrap;
   }
 }

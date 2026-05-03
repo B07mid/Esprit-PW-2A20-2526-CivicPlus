@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <title>Assistance - CivicPlus</title>
+
+  <link href="../../../assets/img/RawShape.png" rel="icon">
+  <link href="../../../assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="../../../assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="../../../assets/css/main.css?v=20260502-3" rel="stylesheet">
+  <link href="../../../assets/css/civicbot.css?v=20260503-2" rel="stylesheet">
+  <link href="../../../assets/css/assistance.css?v=20260502-1" rel="stylesheet">
+</head>
+
+<body class="index-page">
+  <div id="header-container" class="sticky-top" style="top: 0; z-index: 1030;"></div>
+
+  <main class="main assistance-page">
+    <section class="assistance-hero">
+      <div class="container">
+        <div class="assistance-hero-grid">
+          <div>
+            <span class="assistance-kicker">Centre d'assistance</span>
+            <h1>Besoin d'aide sur CivicPlus ?</h1>
+            <p>Choisissez un contact humain pour un probleme precis, ou ouvrez CivicBot pour une aide rapide sur vos services et votre espace.</p>
+          </div>
+          <div class="assistance-hero-actions">
+            <button type="button" class="assistance-choice is-primary" data-assistance-mode="human">
+              <i class="bi bi-headset"></i>
+              <span>Contacter un humain</span>
+            </button>
+            <button type="button" class="assistance-choice" data-civicbot-open>
+              <i class="bi bi-robot"></i>
+              <span>Parler a CivicBot</span>
+            </button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="container">
+        <div class="assistance-layout">
+          <section class="assistance-panel" id="human-assistance-panel">
+            <div class="assistance-panel-header">
+              <div>
+                <span class="assistance-kicker">Support humain</span>
+                <h2>Envoyer une demande</h2>
+              </div>
+              <span class="assistance-status-pill">Visible seulement par vous et l'administration</span>
+            </div>
+
+            <form id="assistance-ticket-form" class="assistance-form">
+              <div class="row g-3">
+                <div class="col-md-7">
+                  <label for="assistance-subject" class="form-label">Sujet</label>
+                  <input type="text" class="form-control" id="assistance-subject" maxlength="160" placeholder="Ex: Je ne vois pas mon signalement" required>
+                </div>
+                <div class="col-md-5">
+                  <label for="assistance-category" class="form-label">Categorie</label>
+                  <select class="form-select" id="assistance-category" required>
+                    <option value="general">General</option>
+                    <option value="compte">Compte</option>
+                    <option value="signalement">Signalement</option>
+                    <option value="administration">E-Administration</option>
+                    <option value="transport">Transport</option>
+                    <option value="crowdfunding">Crowdfunding</option>
+                    <option value="technique">Bug technique</option>
+                  </select>
+                </div>
+                <div class="col-12">
+                  <label for="assistance-description" class="form-label">Description</label>
+                  <textarea class="form-control" id="assistance-description" rows="5" maxlength="3000" placeholder="Expliquez le probleme, la page concernee et ce que vous attendiez." required></textarea>
+                </div>
+              </div>
+              <div class="assistance-form-actions">
+                <p id="assistance-form-message" class="assistance-form-message" aria-live="polite"></p>
+                <button type="submit" class="btn btn-primary">
+                  <i class="bi bi-send me-2"></i>Envoyer
+                </button>
+              </div>
+            </form>
+          </section>
+
+          <aside class="assistance-panel assistance-side-panel">
+            <span class="assistance-kicker">Aide instantanee</span>
+            <h2>CivicBot</h2>
+            <p>CivicBot peut vous orienter dans le site, expliquer vos actions recentes et resumer ce qui est visible dans votre espace.</p>
+            <button type="button" class="btn btn-outline-primary w-100" data-civicbot-open>
+              <i class="bi bi-chat-dots me-2"></i>Ouvrir CivicBot
+            </button>
+          </aside>
+        </div>
+      </div>
+    </section>
+
+    <section class="section pt-0">
+      <div class="container">
+        <div class="assistance-panel">
+          <div class="assistance-panel-header">
+            <div>
+              <span class="assistance-kicker">Historique</span>
+              <h2>Vos anciennes demandes</h2>
+            </div>
+            <button type="button" class="btn btn-sm btn-outline-secondary" id="assistance-refresh">
+              <i class="bi bi-arrow-clockwise me-1"></i>Actualiser
+            </button>
+          </div>
+
+          <ul class="nav nav-tabs assistance-tabs" id="assistance-tabs" role="tablist">
+            <li class="nav-item" role="presentation">
+              <button class="nav-link active" id="human-tab" data-bs-toggle="tab" data-bs-target="#human-history" type="button" role="tab">Humain</button>
+            </li>
+            <li class="nav-item" role="presentation">
+              <button class="nav-link" id="robot-tab" data-bs-toggle="tab" data-bs-target="#robot-history" type="button" role="tab">Robot</button>
+            </li>
+          </ul>
+
+          <div class="tab-content pt-3">
+            <div class="tab-pane fade show active" id="human-history" role="tabpanel">
+              <div id="assistance-ticket-history" class="assistance-history"></div>
+            </div>
+            <div class="tab-pane fade" id="robot-history" role="tabpanel">
+              <div id="assistance-robot-history" class="assistance-history"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <div id="footer-container"></div>
+
+  <script src="../../../assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="../../../assets/js/load_header.js?v=20260502-2"></script>
+  <script src="../../../assets/js/auth.js?v=20260503-1"></script>
+  <script src="../../../assets/js/load_footer.js?v=20260502-1"></script>
+  <script src="../../../assets/js/civicbot.js?v=20260502-1"></script>
+  <script src="../view/js/assistance.js?v=20260502-1"></script>
+</body>
+
+</html>

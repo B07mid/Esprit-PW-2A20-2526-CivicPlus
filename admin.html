@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 <html
-  lang="en"
+  lang="fr"
   class="light-style layout-menu-fixed"
   dir="ltr"
   data-theme="theme-default"
@@ -40,8 +40,9 @@
     <link href="assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
 
     <!-- Main CSS File -->
-    <link href="assets/css/main.css" rel="stylesheet">
-    <link href="assets/css/admin.css" rel="stylesheet">
+    <link href="assets/css/main.css?v=20260502-3" rel="stylesheet">
+    <link href="assets/css/admin.css?v=20260502-1" rel="stylesheet">
+    <link href="assets/css/civicbot.css?v=20260503-2" rel="stylesheet">
 
     <!-- Page CSS -->
   </head>
@@ -49,70 +50,24 @@
   <body class="index-page">
     <!-- Layout wrapper -->
     <div class="admin-layout">
-      <aside class="admin-sidebar">
-        <div class="brand">
-          <img src="assets/img/RawShape.png" alt="CivicPlus Logo" class="brand-image" width="24" height="24">
-          <div>
-            <h1>CivicPlus</h1>
-            <small>BackOffice</small>
-          </div>
-        </div>
-
-        <ul class="menu-inner">
-          <li class="menu-item active">
-            <a href="index.html" class="menu-link">
-              <i class="bi bi-house-door-fill"></i>
-              <div>
-                <p class="menu-text mb-0">Tableau de Bord</p>
-                <p class="menu-description mb-0">Vue d'ensemble</p>
-              </div>
-            </a>
-          </li>
-          <li class="menu-item">
-            <a href="Modules/E-Administration/view/liste_demandes.html" class="menu-link">
-              <i class="bi bi-building"></i>
-              <span class="menu-text">E-Administration</span>
-            </a>
-          </li>
-          <li class="menu-item">
-            <a href="#" class="menu-link">
-              <i class="bi bi-bus-front"></i>
-              <span class="menu-text">Smart Transport</span>
-            </a>
-          </li>
-          <li class="menu-item">
-            <a href="Modules/Signalement/view/liste_signalements.html" class="menu-link">
-              <i class="bi bi-flag-fill"></i>
-              <span class="menu-text">Signalements Urbains</span>
-            </a>
-          </li>
-          <li class="menu-item">
-            <a href="Modules/Crowdfunding/view/liste_projets.html" class="menu-link">
-              <i class="bi bi-currency-dollar"></i>
-              <span class="menu-text">Crowdfunding</span>
-            </a>
-          </li>
-          <li class="menu-item">
-            <a href="#" class="menu-link">
-              <i class="bi bi-map-fill"></i>
-              <span class="menu-text">Geo-Services</span>
-            </a>
-          </li>
-          <li class="menu-item">
-            <a href="#" class="menu-link">
-              <i class="bi bi-life-preserver"></i>
-              <span class="menu-text">Support & IA</span>
-            </a>
-          </li>
-        </ul>
-      </aside>
+      <aside class="admin-sidebar" id="admin-sidebar-container"></aside>
 
       <main class="admin-content">
         <div class="admin-card">
           <h2 class="mb-3">Tableau de Bord</h2>
           <p class="text-muted">Utilisez le menu pour accéder aux sections principales de l'administration.</p>
+          <button type="button" class="btn btn-primary mt-2" data-civicbot-open>
+            <i class="bi bi-robot me-2"></i>Ouvrir CivicBot
+          </button>
         </div>
       </main>
     </div>
-  </body>
+
+    <!-- Scripts (Requis pour l'ouverture des sous-menus) -->
+    <script src="assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+    <script src="/civicplus/assets/js/load_admin_sidebar.js?v=20260502-4"></script>
+    <script src="assets/js/civicbot.js?v=20260502-1"></script>
+</body>
 </html>
+
+

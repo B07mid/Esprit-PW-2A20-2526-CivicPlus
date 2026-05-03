@@ -1,7 +1,7 @@
 <?php
 // On inclut le Modèle et la connexion à la BDD
-require_once '../Model/DemandeDocument.php';
-require_once '../config/config.php';
+require_once __DIR__ . '/../model/DemandeDocument.php';
+require_once __DIR__ . '/../config/config.php';
 
 class DemandeController {
     
@@ -84,3 +84,5 @@ if (basename($_SERVER['PHP_SELF']) == 'DemandeController.php') {
     }
 }
 ?>
+
+

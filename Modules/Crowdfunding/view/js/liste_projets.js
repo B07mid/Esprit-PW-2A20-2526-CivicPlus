@@ -10,6 +10,8 @@ document.addEventListener('DOMContentLoaded', function () {
     document.getElementById('btnSave').addEventListener('click', sauvegarderProjet);
 });
 
+/** Récupère tous les projets depuis l'API et les affiche sous forme de lignes dans le tableau backoffice.
+ *  Calcule la barre de progression (budget collecté / cible) et génère les liens Google Maps. */
 function chargerProjets() {
     fetch('../controller/ProjetCrowdfundingController.php?action=getAll')
         .then(r => r.json())
@@ -25,90 +27,55 @@ function chargerProjets() {
             empty.classList.add('d-none');
 
             projets.forEach(p => {
-                const goal   = Math.max(parseFloat(p.budget_cible), 0.01);
-                const raised = parseFloat(p.montant_actuel);
-                const pct    = Math.min(100, Math.round((raised / goal) * 100));
+                const goal     = Math.max(parseFloat(p.budget_cible), 0.01);
+                const raised   = parseFloat(p.montant_actuel) || 0;
+                const pct      = Math.min(100, Math.round((raised / goal) * 100));
                 const barColor = pct >= 100 ? 'bg-success' : pct >= 50 ? 'bg-warning' : 'bg-danger';
 
-                const col = document.createElement('div');
-                col.className = 'col-lg-4 col-md-6';
-                col.innerHTML = `
-                    <div class="card h-100 shadow-sm border-0">
-                        <div class="card-body d-flex flex-column p-4">
-                            <span class="badge bg-secondary mb-2 align-self-start">#${p.id_projet}</span>
-                            <h5 class="card-title fw-bold mb-1">${p.titre}</h5>
-                            <p class="text-muted small mb-2">${p.ville}, ${p.quartier}</p>
-                            <p class="card-text flex-grow-1" style="font-size:.9rem;">
-                                ${p.description.length > 120 ? p.description.substring(0, 120) + '…' : p.description}
-                            </p>
+                const hasCoordsVal = p.latitude && p.longitude;
+                const mapsUrl = hasCoordsVal
+                    ? `https://www.google.com/maps?q=${p.latitude},${p.longitude}`
+                    : `https://www.google.com/maps/search/?api=1&query=${encodeURIComponent(`${p.quartier}, ${p.ville}, Tunisie`)}`;
 
-                            <!-- Progress bar -->
-                            <div class="mt-3">
-                                <div class="d-flex justify-content-between small mb-1">
-                                    <span>Collecté : <strong>$${raised.toFixed(2)}</strong></span>
-                                    <span>Objectif : <strong>$${goal.toFixed(2)}</strong></span>
-                                </div>
-                                <div class="progress" style="height:10px;">
-                                    <div class="progress-bar ${barColor}" role="progressbar"
-                                         style="width:${pct}%"
-                                         aria-valuenow="${pct}" aria-valuemin="0" aria-valuemax="100">
-                                    </div>
-                                </div>
-                                <div class="text-end small mt-1 text-muted">${pct}% financé</div>
-                            </div>
-
-                            <!-- Status badge -->
-                            <div class="mt-2">
-                                <span class="badge ${statutBadge(p.statut_projet)}">${p.statut_projet}</span>
-                            </div>
-
-                            <!-- Action buttons -->
-                            <div class="d-flex gap-2 mt-3">
-                                <button class="btn btn-outline-danger btn-sm flex-fill btn-like"
-                                        data-id="${p.id_projet}">
-                                    <i class="bi bi-heart"></i> Like
-                                </button>
-                                <button class="btn btn-outline-secondary btn-sm flex-fill"
-                                        data-bs-toggle="collapse"
-                                        data-bs-target="#comment-${p.id_projet}">
-                                    <i class="bi bi-chat"></i> Commenter
-                                </button>
-                                <button class="btn btn-outline-primary btn-sm"
-                                        onclick='ouvrirEdit(${JSON.stringify(p)})'>
-                                    <i class="bi bi-pencil"></i>
-                                </button>
-                                <button class="btn btn-outline-danger btn-sm"
-                                        onclick="supprimerProjet(${p.id_projet})">
-                                    <i class="bi bi-trash"></i>
-                                </button>
-                            </div>
-
-                            <!-- Comment collapse -->
-                            <div class="collapse mt-3" id="comment-${p.id_projet}">
-                                <textarea class="form-control form-control-sm" rows="2"
-                                          placeholder="Écrire un commentaire…"></textarea>
-                                <button class="btn btn-primary btn-sm mt-2 w-100">Publier</button>
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td>#${p.id_projet}</td>
+                    <td>
+                        <div class="fw-bold">${p.titre}</div>
+                        <div class="text-muted small">${p.description.length > 80 ? p.description.substring(0, 80) + '…' : p.description}</div>
+                    </td>
+                    <td>
+                        <a href="${mapsUrl}" target="_blank" rel="noopener noreferrer"
+                           class="text-decoration-none">
+                            <i class="bi bi-geo-alt-fill text-primary me-1"></i>${p.ville}
+                        </a><br>
+                        <a href="${mapsUrl}" target="_blank" rel="noopener noreferrer"
+                           class="text-decoration-none text-primary small">${p.quartier}</a>
+                    </td>
+                    <td>${goal.toFixed(2)}</td>
+                    <td>${raised.toFixed(2)}</td>
+                    <td style="min-width:120px">
+                        <div class="progress" style="height:8px;">
+                            <div class="progress-bar ${barColor}" role="progressbar"
+                                 style="width:${pct}%"
+                                 aria-valuenow="${pct}" aria-valuemin="0" aria-valuemax="100">
                             </div>
                         </div>
-                    </div>
+                        <div class="small text-muted mt-1">${pct}%</div>
+                    </td>
+                    <td><span class="badge ${statutBadge(p.statut_projet)}">${p.statut_projet}</span></td>
+                    <td>
+                        <button class="btn btn-sm btn-outline-primary me-1"
+                                onclick='ouvrirEdit(${JSON.stringify(p)})'>
+                            <i class="bi bi-pencil"></i>
+                        </button>
+                        <button class="btn btn-sm btn-outline-danger"
+                                onclick="supprimerProjet(${p.id_projet})">
+                            <i class="bi bi-trash"></i>
+                        </button>
+                    </td>
                 `;
-                container.appendChild(col);
-            });
-
-            // Like button toggle
-            document.querySelectorAll('.btn-like').forEach(btn => {
-                btn.addEventListener('click', function () {
-                    const icon = this.querySelector('i');
-                    if (icon.classList.contains('bi-heart')) {
-                        icon.classList.replace('bi-heart', 'bi-heart-fill');
-                        this.classList.replace('btn-outline-danger', 'btn-danger');
-                        this.innerHTML = '<i class="bi bi-heart-fill"></i> Aimé';
-                    } else {
-                        icon.classList.replace('bi-heart-fill', 'bi-heart');
-                        this.classList.replace('btn-danger', 'btn-outline-danger');
-                        this.innerHTML = '<i class="bi bi-heart"></i> Like';
-                    }
-                });
+                container.appendChild(tr);
             });
         })
         .catch(err => {
@@ -118,6 +85,8 @@ function chargerProjets() {
         });
 }
 
+/** Retourne la classe CSS Bootstrap correspondant au statut d'un projet
+ *  (ex: 'financé' → 'bg-success', 'annulé' → 'bg-danger'). */
 function statutBadge(statut) {
     const map = {
         'en_recherche_financement': 'bg-info text-dark',
@@ -129,6 +98,8 @@ function statutBadge(statut) {
     return map[statut] || 'bg-secondary';
 }
 
+/** Ouvre le modal d'édition et pré-remplit tous ses champs avec les données du projet sélectionné.
+ *  Appelé depuis le bouton 'crayon' de chaque ligne du tableau. */
 function ouvrirEdit(p) {
     document.getElementById('edit_id_projet').value  = p.id_projet;
     document.getElementById('edit_titre').value      = p.titre;
@@ -140,16 +111,31 @@ function ouvrirEdit(p) {
     new bootstrap.Modal(document.getElementById('editModal')).show();
 }
 
+/** Collecte les valeurs du modal d'édition et envoie un POST à l'API pour mettre à jour le projet.
+ *  Ferme le modal, affiche un flash de confirmation et recharge le tableau en cas de succès. */
 function sauvegarderProjet() {
+    const titre = document.getElementById('edit_titre').value.trim();
+    const description = document.getElementById('edit_description').value.trim();
+    const budget = parseFloat(document.getElementById('edit_budget').value);
+    const ville = document.getElementById('edit_ville').value.trim();
+    const quartier = document.getElementById('edit_quartier').value.trim();
+    const statut = document.getElementById('edit_statut').value;
+
+    if (titre.length < 3) { showFlash('Le titre doit contenir au moins 3 caracteres.', 'warning'); return; }
+    if (description.length < 10) { showFlash('La description doit contenir au moins 10 caracteres.', 'warning'); return; }
+    if (!Number.isFinite(budget) || budget <= 0) { showFlash('Le budget doit etre positif.', 'warning'); return; }
+    if (ville.length < 2 || quartier.length < 2) { showFlash('La ville et le quartier sont obligatoires.', 'warning'); return; }
+    if (!statut) { showFlash('Le statut est obligatoire.', 'warning'); return; }
+
     const formData = new FormData();
     formData.append('action',        'update');
     formData.append('id_projet',     document.getElementById('edit_id_projet').value);
-    formData.append('titre',         document.getElementById('edit_titre').value);
-    formData.append('description',   document.getElementById('edit_description').value);
-    formData.append('budget_cible',  document.getElementById('edit_budget').value);
-    formData.append('ville',         document.getElementById('edit_ville').value);
-    formData.append('quartier',      document.getElementById('edit_quartier').value);
-    formData.append('statut_projet', document.getElementById('edit_statut').value);
+    formData.append('titre',         titre);
+    formData.append('description',   description);
+    formData.append('budget_cible',  budget);
+    formData.append('ville',         ville);
+    formData.append('quartier',      quartier);
+    formData.append('statut_projet', statut);
 
     fetch('../controller/ProjetCrowdfundingController.php', { method: 'POST', body: formData })
         .then(r => r.json())
@@ -165,6 +151,8 @@ function sauvegarderProjet() {
         .catch(err => console.error(err));
 }
 
+/** Demande confirmation puis envoie une requête DELETE à l'API pour supprimer le projet.
+ *  Recharge le tableau si la suppression réussit. */
 function supprimerProjet(id) {
     if (!confirm('Voulez-vous vraiment supprimer ce projet ?')) return;
     fetch(`../controller/ProjetCrowdfundingController.php?action=delete&id=${id}`)
@@ -177,6 +165,9 @@ function supprimerProjet(id) {
         });
 }
 
+/** Affiche une alerte Bootstrap temporaire (4 secondes) dans la zone #flashBox.
+ *  @param {string} msg  - Texte du message
+ *  @param {string} type - Type Bootstrap : 'success', 'danger', 'warning', etc. */
 function showFlash(msg, type) {
     const box = document.getElementById('flashBox');
     if (box) {

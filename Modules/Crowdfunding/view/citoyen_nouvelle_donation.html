@@ -16,30 +16,12 @@
   <link href="../../../assets/vendor/aos/aos.css" rel="stylesheet" />
   <link href="../../../assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet" />
   <link href="../../../assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet" />
-  <link href="../../../assets/css/main.css" rel="stylesheet" />
+  <link href="../../../assets/css/main.css?v=20260502-3" rel="stylesheet" />
 </head>
 
 <body class="index-page">
 
-  <header id="header" class="header d-flex align-items-center sticky-top">
-    <div class="container-fluid container-xl position-relative d-flex align-items-center">
-      <a href="../../../index.html" class="logo d-flex align-items-center me-auto">
-        <img src="../../../assets/img/logo.png" alt="CivicPlus Logo" />
-        <h1 class="sitename">CivicPlus</h1>
-      </a>
-      <nav id="navmenu" class="navmenu">
-        <ul>
-          <li><a href="../../../index.html#hero">Home</a></li>
-          <li><a href="../../../index.html#about">Concept</a></li>
-          <li><a href="../../../index.html#services" class="active">Services</a></li>
-          <li><a href="../../../index.html#team">Team</a></li>
-          <li><a href="../../../index.html#contact">Contact</a></li>
-        </ul>
-        <i class="mobile-nav-toggle d-xl-none bi bi-list"></i>
-      </nav>
-      <a class="btn-getstarted" href="../../../crowdfunding.php">Crowdfunding</a>
-    </div>
-  </header>
+  <div id="header-container" class="sticky-top" style="top: 0; z-index: 1030;"></div>
 
   <main id="main">
     <section class="section contact">
@@ -61,24 +43,23 @@
 
                 <div id="alertBox"></div>
 
-                <form action="../controller/DonationController.php" method="POST"
+                <form action="../controller/DonationController.php?citoyen=1" method="POST"
                       id="formDonation" class="php-email-form"
                       style="background-color:#f8f9fa; border-radius:10px; padding:1.5rem;">
                   <div class="row gy-3">
 
                     <div class="col-md-12">
-                      <label for="num_cin" class="form-label fw-bold">Numéro CIN <span class="text-danger">*</span></label>
-                      <input type="number" class="form-control" name="num_cin" id="num_cin"
-                             placeholder="Ex: 12345678" required
-                             style="color:#112f8d; background-color:#ffffff; font-weight:500;">
+                      <label class="form-label fw-bold">Numéro CIN <span class="text-danger">*</span></label>
+                      <div id="cin_display" class="form-control"
+                           style="background-color:#e9ecef; color:#6c757d; font-family:monospace; cursor:default;">Chargement...</div>
+                      <input type="hidden" name="num_cin" id="num_cin">
                     </div>
 
                     <div class="col-md-12">
-                      <label for="id_projet" class="form-label fw-bold">ID du Projet <span class="text-danger">*</span></label>
-                      <input type="number" class="form-control" name="id_projet" id="id_projet"
-                             min="1" placeholder="Ex: 7" required
-                             style="color:#112f8d; background-color:#ffffff; font-weight:500;">
-                      <div class="form-text">Consultez la <a href="liste_projets.html">liste des projets</a> pour trouver l'ID.</div>
+                      <label class="form-label fw-bold">Projet <span class="text-danger">*</span></label>
+                      <div id="projet_display" class="form-control"
+                           style="background-color:#e9ecef; color:#6c757d; cursor:default;">Chargement...</div>
+                      <input type="hidden" name="id_projet" id="id_projet">
                     </div>
 
                     <div class="col-md-6">
@@ -89,21 +70,23 @@
                     </div>
 
                     <div class="col-md-6">
-                      <label for="statut_paiement" class="form-label fw-bold">Statut de paiement <span class="text-danger">*</span></label>
-                      <select class="form-select" name="statut_paiement" id="statut_paiement" required
+                      <label for="methode_paiement" class="form-label fw-bold">Méthode de paiement <span class="text-danger">*</span></label>
+                      <select class="form-select" name="methode_paiement" id="methode_paiement" required
                               style="color:#112f8d; background-color:#ffffff; font-weight:500;">
-                        <option value="" disabled selected>— Choisir un statut —</option>
-                        <option value="en_attente">En attente</option>
-                        <option value="confirmé">Confirmé</option>
-                        <option value="annulé">Annulé</option>
+                        <option value="" disabled selected>— Choisir une méthode —</option>
+                        <option value="carte_bancaire">Carte bancaire</option>
+                        <option value="virement">Virement bancaire</option>
+                        <option value="mobile_money">Paiement mobile</option>
+                        <option value="especes">Espèces</option>
                       </select>
+                      <input type="hidden" name="statut_paiement" value="en_attente">
                     </div>
 
                     <div class="col-md-12">
-                      <label for="reference_transaction" class="form-label fw-bold">Référence de transaction</label>
-                      <input type="text" class="form-control" name="reference_transaction" id="reference_transaction"
-                             maxlength="100" placeholder="Ex: TXN-20260412-001"
-                             style="color:#112f8d; background-color:#ffffff; font-weight:500;">
+                      <label class="form-label fw-bold">Référence de transaction</label>
+                      <div id="reference_display" class="form-control"
+                           style="background-color:#e9ecef; color:#6c757d; font-family:monospace; cursor:default;"></div>
+                      <input type="hidden" name="reference_transaction" id="reference_transaction">
                     </div>
 
                   </div>
@@ -128,7 +111,12 @@
   <script src="../../../assets/vendor/glightbox/js/glightbox.min.js"></script>
   <script src="../../../assets/vendor/swiper/swiper-bundle.min.js"></script>
   <script src="../../../assets/js/main.js"></script>
+  <script src="../../../assets/js/load_header.js?v=20260502-2"></script>
+  <script src="../../../assets/js/form-validation.js?v=1"></script>
   <script src="js/citoyen_donation.js"></script>
 
+
+  <div id="footer-container"></div>
+  <script src="/civicplus/assets/js/load_footer.js?v=20260502-1"></script>
 </body>
 </html>

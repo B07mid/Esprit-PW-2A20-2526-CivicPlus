@@ -3,15 +3,19 @@ require_once '../model/ProjetCrowdfunding.php';
 require_once '../config/config.php';
 
 class ProjetCrowdfundingController {
+    private array $typesProjet = ['infrastructure', 'sante', 'education', 'environnement', 'culture', 'sport', 'autre'];
+    private array $statutsProjet = ['en_recherche_financement', 'financé', 'en_cours', 'terminé', 'annulé'];
 
-    // R : Tous les projets (JSON)
+    // Retourne la liste complète de tous les projets crowdfunding en format JSON.
+    // Réponse utilisée par les pages admin et citoyen pour afficher les projets.
     public function getAllAction($pdo) {
         header('Content-Type: application/json');
         echo json_encode(ProjetCrowdfunding::getAllProjets($pdo));
         exit();
     }
 
-    // R : Un seul projet (JSON)
+    // Retourne les données d'un seul projet en JSON, identifié par le paramètre GET 'id'.
+    // Utilisé pour pré-remplir le formulaire de donation avec le nom du projet.
     public function getByIdAction($pdo) {
         if (isset($_GET['id'])) {
             header('Content-Type: application/json');
@@ -20,9 +24,57 @@ class ProjetCrowdfundingController {
         }
     }
 
-    // C : Ajouter un projet (form POST → redirect)
+    public function demandeCountAction($pdo) {
+        header('Content-Type: application/json');
+        echo json_encode(['count' => ProjetCrowdfunding::countDemandes($pdo)]);
+        exit();
+    }
+
+    private function isValidProjetInput(array $data): bool {
+        $cin = trim($data['num_cin'] ?? '');
+        $titre = trim($data['titre'] ?? '');
+        $type = trim($data['type_projet'] ?? 'autre');
+        $description = trim($data['description'] ?? '');
+        $budget = filter_var($data['budget_cible'] ?? null, FILTER_VALIDATE_FLOAT);
+        $ville = trim($data['ville'] ?? '');
+        $quartier = trim($data['quartier'] ?? '');
+        $latitude = trim($data['latitude'] ?? '');
+        $longitude = trim($data['longitude'] ?? '');
+
+        if (!preg_match('/^\d{8}$/', $cin)) return false;
+        if (strlen($titre) < 3 || !in_array($type, $this->typesProjet, true)) return false;
+        if (strlen($description) < 10 || $budget === false || $budget <= 0) return false;
+        if (strlen($ville) < 2 || strlen($quartier) < 2) return false;
+        if ($latitude !== '' && (!is_numeric($latitude) || $latitude < -90 || $latitude > 90)) return false;
+        if ($longitude !== '' && (!is_numeric($longitude) || $longitude < -180 || $longitude > 180)) return false;
+        return true;
+    }
+
+    private function isValidProjetUpdate(array $data): bool {
+        $statut = trim($data['statut_projet'] ?? '');
+        return intval($data['id_projet'] ?? 0) > 0
+            && strlen(trim($data['titre'] ?? '')) >= 3
+            && strlen(trim($data['description'] ?? '')) >= 10
+            && filter_var($data['budget_cible'] ?? null, FILTER_VALIDATE_FLOAT) !== false
+            && floatval($data['budget_cible']) > 0
+            && strlen(trim($data['ville'] ?? '')) >= 2
+            && strlen(trim($data['quartier'] ?? '')) >= 2
+            && in_array($statut, $this->statutsProjet, true);
+    }
+
+    // Traite le formulaire POST de création d'un nouveau projet.
+    // Sanitize les entrées, instancie le modèle et redirige vers la liste en cas de succès.
     public function addAction($pdo) {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $redirect = isset($_GET['demande'])
+                ? '../view/citoyen_nouveau_projet.html'
+                : '../view/liste_projets.html';
+
+            if (!$this->isValidProjetInput($_POST)) {
+                header('Location: ' . $redirect . '?error=validation');
+                exit();
+            }
+
             $nouveau = new ProjetCrowdfunding(
                 null,
                 intval($_POST['num_cin']),
@@ -34,18 +86,26 @@ class ProjetCrowdfundingController {
                 htmlspecialchars(trim($_POST['ville'])),
                 htmlspecialchars(trim($_POST['quartier'])),
                 !empty($_POST['latitude'])  ? floatval($_POST['latitude'])  : null,
-                !empty($_POST['longitude']) ? floatval($_POST['longitude']) : null
+                !empty($_POST['longitude']) ? floatval($_POST['longitude']) : null,
+                htmlspecialchars(trim($_POST['type_projet']))
             );
             if ($nouveau->ajouterProjet($pdo)) {
-                header('Location: ../view/liste_projets.html?success=1');
+                header('Location: ' . $redirect . '?success=1');
                 exit();
             }
         }
     }
 
-    // U : Modifier statut/titre/etc. (JSON)
+    // Met à jour les champs d'un projet existant via un POST JSON.
+    // Appelé depuis le modal d'édition de la page liste_projets.html.
     public function updateAction($pdo) {
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            if (!$this->isValidProjetUpdate($_POST)) {
+                header('Content-Type: application/json');
+                echo json_encode(['success' => false]);
+                exit();
+            }
+
             $modifie = new ProjetCrowdfunding(
                 intval($_POST['id_projet']),
                 null,
@@ -64,7 +124,8 @@ class ProjetCrowdfundingController {
         }
     }
 
-    // D : Supprimer un projet (JSON)
+    // Supprime un projet via son ID passé en GET et retourne le résultat en JSON.
+    // Appelé depuis le bouton Supprimer de la liste des projets en backoffice.
     public function deleteAction($pdo) {
         if (isset($_GET['id'])) {
             $succes = ProjetCrowdfunding::supprimerProjet($pdo, intval($_GET['id']));
@@ -82,9 +143,10 @@ if (basename($_SERVER['PHP_SELF']) == 'ProjetCrowdfundingController.php') {
     $controller = new ProjetCrowdfundingController();
 
     if (isset($_GET['action'])) {
-        if ($_GET['action'] === 'getAll')  $controller->getAllAction($pdo);
-        if ($_GET['action'] === 'getById') $controller->getByIdAction($pdo);
-        if ($_GET['action'] === 'delete')  $controller->deleteAction($pdo);
+        if ($_GET['action'] === 'getAll')       $controller->getAllAction($pdo);
+        if ($_GET['action'] === 'getById')      $controller->getByIdAction($pdo);
+        if ($_GET['action'] === 'delete')       $controller->deleteAction($pdo);
+        if ($_GET['action'] === 'demandeCount') $controller->demandeCountAction($pdo);
     } elseif ($_SERVER['REQUEST_METHOD'] === 'POST') {
         if (isset($_POST['action']) && $_POST['action'] === 'update') {
             $controller->updateAction($pdo);
@@ -94,110 +156,3 @@ if (basename($_SERVER['PHP_SELF']) == 'ProjetCrowdfundingController.php') {
     }
 }
 ?>
-
-    public function __construct() {
-        $this->model = new ProjetCrowdfunding();
-    }
-
-    public function list(): void {
-        $projets = $this->model->getAll();
-        require __DIR__ . '/../view/projet/list.php';
-    }
-
-    public function add(): void {
-        $errors = [];
-        $old    = [];
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $old    = $this->collect();
-            $errors = $this->validate($old);
-            if (empty($errors)) {
-                try {
-                    $this->model->add($old);
-                    header('Location: index.php?action=list&flash=added');
-                    exit;
-                } catch (PDOException $e) {
-                    if ($e->getCode() === '23000') {
-                        $errors[] = 'CIN ' . htmlspecialchars($old['num_cin']) . ' does not exist in the citizen registry. Please enter a valid CIN.';
-                    } else {
-                        $errors[] = 'A database error occurred. Please try again.';
-                    }
-                }
-            }
-        }
-        require __DIR__ . '/../view/projet/add.php';
-    }
-
-    public function edit(): void {
-        $id     = intval($_GET['id'] ?? 0);
-        $errors = [];
-
-        $projet = $this->model->getById($id);
-        if (!$projet) {
-            header('Location: index.php?action=list');
-            exit;
-        }
-
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $old    = $this->collect();
-            $errors = $this->validate($old);
-            if (empty($errors)) {
-                try {
-                    $this->model->update($id, $old);
-                    header('Location: index.php?action=list&flash=updated');
-                    exit;
-                } catch (PDOException $e) {
-                    if ($e->getCode() === '23000') {
-                        $errors[] = 'CIN ' . htmlspecialchars($old['num_cin']) . ' does not exist in the citizen registry. Please enter a valid CIN.';
-                    } else {
-                        $errors[] = 'A database error occurred. Please try again.';
-                    }
-                }
-            }
-            // repopulate form with submitted values on error
-            $projet = array_merge($projet, $old);
-        }
-
-        require __DIR__ . '/../view/projet/edit.php';
-    }
-
-    public function delete(): void {
-        $id = intval($_GET['id'] ?? 0);
-        if ($id > 0) {
-            $this->model->delete($id);
-        }
-        header('Location: index.php?action=list&flash=deleted');
-        exit;
-    }
-
-    // ── Private helpers ──────────────────────────────────────────────────────
-
-    private function collect(): array {
-        $allowed_statuts = ['en_recherche_financement', 'financé', 'en_cours', 'terminé', 'annulé'];
-        $statut = trim($_POST['statut_projet'] ?? '');
-
-        return [
-            'num_cin'       => intval($_POST['num_cin'] ?? 0),
-            'titre'         => trim($_POST['projTitle'] ?? ''),
-            'description'   => trim($_POST['projDesc'] ?? ''),
-            'budget_cible'  => filter_var($_POST['projBudget'] ?? '', FILTER_VALIDATE_FLOAT),
-            'montant_actuel'=> filter_var($_POST['projRaised'] ?? '0', FILTER_VALIDATE_FLOAT) ?: 0.0,
-            'statut_projet' => in_array($statut, $allowed_statuts, true) ? $statut : '',
-            'ville'         => trim($_POST['projCity'] ?? ''),
-            'quartier'      => trim($_POST['projNeighborhood'] ?? ''),
-            'latitude'      => filter_var($_POST['latitude'] ?? '0', FILTER_VALIDATE_FLOAT) ?: 0.0,
-            'longitude'     => filter_var($_POST['longitude'] ?? '0', FILTER_VALIDATE_FLOAT) ?: 0.0,
-        ];
-    }
-
-    private function validate(array $d): array {
-        $errors = [];
-        if ($d['num_cin'] <= 0)                             $errors[] = 'Le numéro CIN est obligatoire.';
-        if ($d['titre'] === '')                             $errors[] = 'Le titre est obligatoire.';
-        if ($d['budget_cible'] === false || $d['budget_cible'] <= 0)
-                                                            $errors[] = 'Le budget cible doit être un nombre positif.';
-        if ($d['statut_projet'] === '')                     $errors[] = 'Le statut du projet est invalide.';
-        if ($d['ville'] === '')                             $errors[] = 'La ville est obligatoire.';
-        if ($d['quartier'] === '')                          $errors[] = 'Le quartier est obligatoire.';
-        return $errors;
-    }
-}
