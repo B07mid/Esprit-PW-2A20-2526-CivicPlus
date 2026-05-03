@@ -1,0 +1,308 @@
+.civicbot-shell {
+  position: fixed;
+  right: 24px;
+  bottom: 84px;
+  z-index: 1085;
+  font-family: var(--default-font, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif);
+  color: #16224f;
+}
+
+.civicbot-launcher {
+  width: 66px;
+  height: 66px;
+  border: 0;
+  border-radius: 50%;
+  background: #ffffff;
+  box-shadow: 0 18px 42px rgba(17, 47, 141, 0.28);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+  cursor: pointer;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.civicbot-launcher:hover,
+.civicbot-launcher:focus {
+  transform: translateY(-2px);
+  box-shadow: 0 22px 48px rgba(17, 47, 141, 0.35);
+}
+
+.civicbot-launcher img {
+  width: 52px;
+  height: 52px;
+  object-fit: contain;
+}
+
+.civicbot-launcher-badge {
+  position: absolute;
+  right: -2px;
+  top: -2px;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  border: 3px solid #ffffff;
+  background: #16a34a;
+}
+
+.civicbot-panel {
+  position: absolute;
+  right: 0;
+  bottom: 84px;
+  width: min(390px, calc(100vw - 32px));
+  height: min(620px, calc(100vh - 190px));
+  padding: 0;
+  background: #ffffff;
+  border: 1px solid rgba(17, 47, 141, 0.12);
+  border-radius: 8px;
+  box-shadow: 0 24px 70px rgba(17, 47, 141, 0.28);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(14px);
+  pointer-events: none;
+  transition: opacity 0.2s ease, transform 0.2s ease, visibility 0.2s ease;
+}
+
+.civicbot-shell.is-open .civicbot-panel {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+  pointer-events: auto;
+}
+
+.civicbot-header {
+  min-height: 78px;
+  padding: 14px;
+  background: #112f8d;
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.civicbot-avatar {
+  width: 48px;
+  height: 48px;
+  border-radius: 8px;
+  background: #ffffff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: 0 0 auto;
+}
+
+.civicbot-avatar img {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+}
+
+.civicbot-title {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.civicbot-title strong {
+  display: block;
+  color: #ffffff;
+  font-size: 1rem;
+  line-height: 1.2;
+}
+
+.civicbot-title span {
+  display: block;
+  color: rgba(255, 255, 255, 0.78);
+  font-size: 0.78rem;
+  line-height: 1.25;
+  margin-top: 2px;
+}
+
+.civicbot-close {
+  width: 36px;
+  height: 36px;
+  border: 0;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.12);
+  color: #ffffff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.civicbot-close:hover,
+.civicbot-close:focus {
+  background: rgba(255, 255, 255, 0.22);
+}
+
+.civicbot-messages {
+  flex: 1 1 auto;
+  padding: 16px;
+  overflow-y: auto;
+  background: #eef4f8;
+}
+
+.civicbot-message {
+  display: flex;
+  margin-bottom: 12px;
+}
+
+.civicbot-message.user {
+  justify-content: flex-end;
+}
+
+.civicbot-bubble {
+  max-width: 82%;
+  border-radius: 8px;
+  padding: 10px 12px;
+  background: #ffffff;
+  color: #23335f;
+  line-height: 1.45;
+  font-size: 0.92rem;
+  box-shadow: 0 8px 20px rgba(17, 47, 141, 0.08);
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+.civicbot-message.user .civicbot-bubble {
+  background: #f68d56;
+  color: #ffffff;
+}
+
+.civicbot-message.system .civicbot-bubble {
+  background: #fff7ed;
+  color: #7c2d12;
+  border: 1px solid rgba(246, 141, 86, 0.28);
+}
+
+.civicbot-options {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  padding: 0 16px 14px;
+  background: #eef4f8;
+}
+
+.civicbot-option {
+  border: 1px solid rgba(17, 47, 141, 0.16);
+  border-radius: 8px;
+  background: #ffffff;
+  color: #112f8d;
+  min-height: 36px;
+  padding: 0 10px;
+  font-weight: 700;
+  font-size: 0.82rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  cursor: pointer;
+}
+
+.civicbot-option:hover,
+.civicbot-option:focus {
+  border-color: #f68d56;
+  color: #d65f24;
+}
+
+.civicbot-form {
+  padding: 12px;
+  border-top: 1px solid rgba(17, 47, 141, 0.1);
+  background: #ffffff;
+  display: flex;
+  align-items: flex-end;
+  gap: 8px;
+}
+
+.civicbot-input {
+  flex: 1 1 auto;
+  min-height: 42px;
+  max-height: 112px;
+  resize: none;
+  border: 1px solid rgba(17, 47, 141, 0.16);
+  border-radius: 8px;
+  padding: 10px 12px;
+  outline: none;
+  color: #16224f;
+  font: inherit;
+  line-height: 1.35;
+}
+
+.civicbot-input:focus {
+  border-color: #112f8d;
+  box-shadow: 0 0 0 3px rgba(17, 47, 141, 0.12);
+}
+
+.civicbot-send {
+  width: 42px;
+  height: 42px;
+  border: 0;
+  border-radius: 8px;
+  background: #112f8d;
+  color: #ffffff;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+.civicbot-send:hover,
+.civicbot-send:focus {
+  background: #0c2470;
+}
+
+.civicbot-send:disabled,
+.civicbot-option:disabled {
+  opacity: 0.55;
+  cursor: wait;
+}
+
+.civicbot-typing {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.civicbot-typing span {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: #5b6b9f;
+  animation: civicbotPulse 1s ease-in-out infinite;
+}
+
+.civicbot-typing span:nth-child(2) {
+  animation-delay: 0.14s;
+}
+
+.civicbot-typing span:nth-child(3) {
+  animation-delay: 0.28s;
+}
+
+@keyframes civicbotPulse {
+  0%, 80%, 100% {
+    transform: translateY(0);
+    opacity: 0.45;
+  }
+
+  40% {
+    transform: translateY(-4px);
+    opacity: 1;
+  }
+}
+
+@media (max-width: 575.98px) {
+  .civicbot-shell {
+    right: 16px;
+    bottom: 76px;
+  }
+
+  .civicbot-panel {
+    right: -8px;
+    bottom: 78px;
+    width: calc(100vw - 16px);
+    height: min(610px, calc(100vh - 170px));
+  }
+}

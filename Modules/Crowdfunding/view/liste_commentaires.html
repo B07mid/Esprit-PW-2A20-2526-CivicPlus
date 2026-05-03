@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="fr" class="light-style layout-menu-fixed" dir="ltr"
+      data-theme="theme-default" data-assets-path="../../../assets/">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+  <title>Commentaires – CivicPlus BackOffice</title>
+
+  <link rel="icon" type="image/x-icon" href="../../../assets/img/RawShape.png" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700&display=swap" rel="stylesheet" />
+
+  <link href="../../../assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="../../../assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="../../../assets/css/main.css?v=20260502-3" rel="stylesheet">
+  <link href="../../../assets/css/admin.css?v=20260502-1" rel="stylesheet">
+</head>
+
+<body class="index-page">
+  <div class="admin-layout">
+
+    <!-- Sidebar -->
+    <aside class="admin-sidebar" id="admin-sidebar-container"></aside>
+
+    <!-- Main content -->
+    <main class="admin-content">
+      <div class="admin-card">
+        <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-2">
+          <div>
+            <h2 class="mb-1">Commentaires</h2>
+            <p class="text-muted mb-0">Modération des commentaires sur les projets</p>
+          </div>
+        </div>
+
+        <div id="flashBox"></div>
+
+        <div class="table-responsive rounded-4 shadow-sm border-0 overflow-hidden">
+          <table class="table table-hover mb-0 admin-table align-middle border-0">
+            <thead class="admin-table-head">
+              <tr>
+                <th class="border-0">ID</th>
+                <th class="border-0">Auteur</th>
+                <th class="border-0">Projet</th>
+                <th class="border-0">Commentaire</th>
+                <th class="border-0">Date</th>
+                <th class="border-0">Statut</th>
+                <th class="border-0 text-center">Actions</th>
+              </tr>
+            </thead>
+            <tbody id="commentairesTableBody">
+              <!-- Rempli dynamiquement par liste_commentaires.js -->
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script src="../../../assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+
+  <!-- Edit modal -->
+  <div class="modal fade" id="editModal" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title"><i class="bi bi-pencil me-2"></i>Modifier le commentaire</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <input type="hidden" id="edit_id">
+          <div class="mb-3">
+            <label class="form-label fw-bold">Contenu</label>
+            <textarea class="form-control" id="edit_contenu" rows="5"></textarea>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+          <button class="btn btn-primary" id="btnSaveEdit">
+            <i class="bi bi-check-lg me-1"></i>Sauvegarder
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="js/liste_commentaires.js?v=2"></script>
+  <script src="../../../assets/js/auth.js?v=20260503-1"></script>
+  <script src="/civicplus/assets/js/load_admin_sidebar.js?v=20260502-4"></script>
+</body>
+</html>
+
+

@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="fr" class="light-style layout-menu-fixed" dir="ltr" data-theme="theme-default">
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gestion Assistance - CivicPlus</title>
+
+  <link rel="icon" type="image/x-icon" href="../../../assets/img/favicon/RawShape.png">
+  <link href="../../../assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="../../../assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="../../../assets/css/main.css?v=20260502-3" rel="stylesheet">
+  <link href="../../../assets/css/admin.css?v=20260502-1" rel="stylesheet">
+  <link href="../../../assets/css/assistance.css?v=20260502-1" rel="stylesheet">
+</head>
+
+<body class="index-page">
+  <div class="admin-layout">
+    <aside class="admin-sidebar" id="admin-sidebar-container"></aside>
+
+    <main class="admin-content">
+      <div class="admin-card">
+        <div class="d-flex flex-wrap align-items-start justify-content-between gap-3 mb-3">
+          <div>
+            <h2 class="mb-1">Gestion Assistance</h2>
+            <p class="text-muted mb-0">Demandes humaines, moderation et historique CivicBot.</p>
+          </div>
+          <button type="button" class="btn btn-outline-secondary" id="admin-assistance-refresh">
+            <i class="bi bi-arrow-clockwise me-1"></i>Actualiser
+          </button>
+        </div>
+
+        <div class="admin-lite-panel">
+          <div class="admin-lite-stats">
+            <div class="admin-lite-stat">
+              <span>Demandes ouvertes</span>
+              <strong id="assistance-open-count">0</strong>
+            </div>
+            <div class="admin-lite-stat">
+              <span>Signalees</span>
+              <strong id="assistance-flagged-count">0</strong>
+            </div>
+            <div class="admin-lite-stat muted">
+              <span>Chats robot</span>
+              <strong id="assistance-robot-count">0</strong>
+            </div>
+            <div class="admin-lite-stat muted">
+              <span>Mode</span>
+              <strong>IA + Admin</strong>
+            </div>
+          </div>
+        </div>
+
+        <ul class="nav nav-tabs assistance-tabs" role="tablist">
+          <li class="nav-item" role="presentation">
+            <button class="nav-link active" data-bs-toggle="tab" data-bs-target="#admin-human-tab" type="button" role="tab">
+              Par admin
+            </button>
+          </li>
+          <li class="nav-item" role="presentation">
+            <button class="nav-link" data-bs-toggle="tab" data-bs-target="#admin-robot-tab" type="button" role="tab">
+              Par robot
+            </button>
+          </li>
+        </ul>
+
+        <div class="tab-content pt-3">
+          <section class="tab-pane fade show active" id="admin-human-tab" role="tabpanel">
+            <div class="table-responsive">
+              <table class="table admin-table align-middle mb-0">
+                <thead class="admin-table-head">
+                  <tr>
+                    <th>Utilisateur</th>
+                    <th>Demande</th>
+                    <th>Etat</th>
+                    <th>Reponse admin</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="admin-assistance-ticket-body">
+                  <tr><td colspan="5" class="text-center text-muted py-4">Chargement...</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+
+          <section class="tab-pane fade" id="admin-robot-tab" role="tabpanel">
+            <div class="table-responsive">
+              <table class="table admin-table align-middle mb-0">
+                <thead class="admin-table-head">
+                  <tr>
+                    <th>Utilisateur</th>
+                    <th>Message</th>
+                    <th>Reponse CivicBot</th>
+                    <th>Source</th>
+                    <th>Date</th>
+                  </tr>
+                </thead>
+                <tbody id="admin-assistance-robot-body">
+                  <tr><td colspan="5" class="text-center text-muted py-4">Chargement...</td></tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+        </div>
+      </div>
+    </main>
+  </div>
+
+  <script src="../../../assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="../../../assets/js/load_admin_sidebar.js?v=20260502-4"></script>
+  <script src="js/admin_assistance.js?v=20260502-1"></script>
+</body>
+
+</html>
