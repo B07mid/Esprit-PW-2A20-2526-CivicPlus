@@ -11,8 +11,11 @@ This project was engineered by **Team NOVA** as part of the CivicPlus Smart City
 ## 🚀 Key Features
 
 **"Zahma" Traffic Alerts:** Real-time, crowdsourced road condition tracking to help citizens avoid urban congestion.
+
 **Smart Itineraries:** A dynamic, step-by-step routing engine to guide users to their destinations efficiently.
+
 **After-Hours "Garde" Locator:** Dedicated mapping to easily find essential services (pharmacies, clinics, shops) operating during nights and weekends.
+
 **Dynamic POI Mapping:** An interactive, centralized map displaying critical Points of Interest and municipal facilities across the city.
 
 ## 🛠️ Technology Stack
