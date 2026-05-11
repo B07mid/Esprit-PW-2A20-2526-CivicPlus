@@ -1,0 +1,1562 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Carte Interactive - Geo-Services</title>
+
+  <!-- Favicons -->
+  <link href="../../../assets/img/RawShape.png" rel="icon">
+  <link href="../../../assets/img/RawShape.png" rel="apple-touch-icon">
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com" rel="preconnect">
+  <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+
+  <!-- Vendor CSS -->
+  <link href="../../../assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="../../../assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="../../../assets/css/main.css?v=20260502-3" rel="stylesheet">
+
+  <style>
+    .index-page main {
+      padding: 0;
+      margin: 0;
+    }
+
+    #map-container {
+      position: relative;
+      height: calc(100vh - 90px);
+      /* Full height minus header approx */
+      width: 100vw;
+      max-width: 100%;
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+    }
+
+    #map {
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      width: 100%;
+      height: 100%;
+      border-radius: 12px;
+    }
+
+    .theme-switch-wrapper {
+      position: absolute;
+      top: 15px;
+      right: 15px;
+      z-index: 10;
+      background: white;
+      padding: 10px;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+      transition: all 0.3s ease;
+    }
+
+    .theme-switch-wrapper.dark {
+      background: #2b2b2b;
+      color: #fff;
+    }
+
+    .legend {
+      position: absolute;
+      bottom: 30px;
+      left: 15px;
+      z-index: 1000;
+      background: rgba(255, 255, 255, 0.9);
+      padding: 10px 15px;
+      border-radius: 8px;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+      font-size: 14px;
+    }
+
+    .legend-item {
+      display: flex;
+      align-items: center;
+      margin-bottom: 5px;
+    }
+
+    .legend-color {
+      width: 15px;
+      height: 15px;
+      border-radius: 50%;
+      margin-right: 8px;
+    }
+
+    #place-details-card {
+      position: relative;
+      width: 100%;
+      max-width: 100%;
+      background: rgba(255, 255, 255, 0.95);
+      border: 1px solid rgba(0, 0, 0, 0.06);
+      border-radius: 18px;
+      box-shadow: 0 10px 24px rgba(0, 0, 0, 0.12);
+      overflow: hidden;
+      display: none;
+      margin-bottom: 16px;
+    }
+
+    #place-details-carousel {
+      width: 100%;
+      height: 200px;
+      overflow: hidden;
+      display: none;
+    }
+
+    #place-details-carousel .carousel-item img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+      display: block;
+    }
+
+    .place-details-body {
+      padding: 16px 18px 18px;
+    }
+
+    .place-details-close {
+      position: absolute;
+      top: 10px;
+      right: 12px;
+      border: none;
+      background: rgba(255, 255, 255, 0.85);
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      cursor: pointer;
+      font-size: 18px;
+      line-height: 32px;
+      text-align: center;
+      box-shadow: 0 6px 14px rgba(0, 0, 0, 0.12);
+      z-index: 10;
+    }
+
+    .place-details-meta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 8px;
+    }
+
+    .place-details-rating {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      color: #f6c343;
+      font-weight: 600;
+      flex-wrap: wrap;
+    }
+
+    .place-details-rating i {
+      color: #f6c343;
+    }
+
+    .place-details-rating .rating-value {
+      color: #333;
+      font-weight: 600;
+      font-size: 13px;
+    }
+
+    .place-details-status {
+      font-size: 12px;
+      font-weight: 600;
+      padding: 4px 10px;
+      border-radius: 999px;
+    }
+
+    .place-details-status.status-open {
+      background: rgba(46, 213, 115, 0.15);
+      color: #2ed573;
+    }
+
+    .place-details-status.status-closed {
+      background: rgba(255, 77, 79, 0.15);
+      color: #ff4d4f;
+    }
+
+    .place-details-address {
+      color: #4b5563;
+      font-size: 14px;
+      margin-bottom: 12px;
+    }
+
+    .place-details-actions {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      margin: 10px 0 14px;
+    }
+
+    .place-details-actions .btn {
+      flex: 1;
+      font-weight: 600;
+      border-radius: 999px;
+    }
+
+    .place-details-reviews {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: grid;
+      gap: 10px;
+      max-height: 140px;
+      overflow-y: auto;
+      padding-right: 6px;
+    }
+
+    .place-details-reviews li {
+      background: rgba(255, 255, 255, 0.7);
+      border: 1px solid rgba(0, 0, 0, 0.05);
+      border-radius: 12px;
+      padding: 10px 12px;
+    }
+
+    .place-details-reviews .review-author {
+      font-weight: 600;
+      font-size: 13px;
+      color: #111827;
+      margin-bottom: 4px;
+    }
+
+    .place-details-reviews .review-text {
+      font-size: 13px;
+      color: #4b5563;
+      margin: 0;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+    
+    .travel-mode-btn {
+      border: none;
+      background: transparent;
+      color: #64748b;
+      transition: all 0.2s ease;
+      border-radius: 12px !important;
+      padding: 8px 0;
+    }
+    .travel-mode-btn:hover {
+      background: rgba(13, 110, 253, 0.08);
+      color: #0d6efd;
+    }
+    .travel-mode-btn.active {
+      background-color: #0d6efd;
+      color: white;
+      box-shadow: 0 4px 12px rgba(13, 110, 253, 0.3);
+    }
+
+    @keyframes pulse-opacity {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+    .animate-pulse {
+      animation: pulse-opacity 1.5s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+    }
+    .directions-glow {
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      background: linear-gradient(90deg, #0d6efd, #0dcaf0, #0d6efd);
+      background-size: 200% 100%;
+      animation: gradientMove 2s linear infinite;
+    }
+    @keyframes gradientMove {
+      0% { background-position: 100% 0; }
+      100% { background-position: -100% 0; }
+    }
+
+    @media (max-width: 768px) {
+      #place-details-card {
+        margin-bottom: 12px;
+      }
+    }
+
+    .poi-marker {
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    /* Glassmorphism Sidebar & Search */
+    .glass-sidebar {
+      position: absolute;
+      top: 20px;
+      left: 20px;
+      width: 420px;
+      max-height: calc(100vh - 140px);
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.96) 0%, rgba(248, 250, 252, 0.96) 100%);
+      border: 1px solid rgba(15, 23, 42, 0.08);
+      border-radius: 24px;
+      z-index: 1001;
+      padding: 18px;
+      display: none;
+      overflow-y: auto;
+      overflow-x: hidden;
+      box-shadow: 0 20px 45px rgba(15, 23, 42, 0.18);
+      transition: all 0.4s ease;
+    }
+
+    .glass-sidebar::-webkit-scrollbar {
+      width: 6px;
+    }
+    .glass-sidebar::-webkit-scrollbar-track {
+      background: transparent;
+    }
+    .glass-sidebar::-webkit-scrollbar-thumb {
+      background: rgba(148, 163, 184, 0.4);
+      border-radius: 10px;
+    }
+    .glass-sidebar::-webkit-scrollbar-thumb:hover {
+      background: rgba(148, 163, 184, 0.6);
+    }
+
+    .sidebar-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 14px;
+    }
+
+    .sidebar-kicker {
+      display: block;
+      font-size: 11px;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: #94a3b8;
+      font-weight: 600;
+    }
+
+    .sidebar-title {
+      margin: 2px 0 0;
+      font-size: 18px;
+      font-weight: 700;
+      color: #0f172a;
+    }
+
+    .sidebar-close {
+      border: none;
+      background: rgba(15, 23, 42, 0.08);
+      color: #0f172a;
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      transition: transform 0.2s ease, background 0.2s ease;
+    }
+
+    .sidebar-close:hover {
+      transform: scale(1.05);
+      background: rgba(15, 23, 42, 0.16);
+    }
+
+    #results-content {
+      max-height: 340px;
+      overflow-y: auto;
+      padding-right: 6px;
+    }
+
+    .results-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 13px;
+      font-weight: 600;
+      color: #475569;
+      margin: 6px 0 10px;
+    }
+
+    .results-count {
+      font-weight: 600;
+      color: #94a3b8;
+    }
+
+    .search-wrapper {
+        position: absolute;
+        top: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 1000;
+        width: 400px;
+    }
+    
+    .glass-search {
+        background: rgba(255, 255, 255, 0.7);
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.5);
+        border-radius: 30px;
+        padding: 10px 25px;
+        display: flex;
+        align-items: center;
+        box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+    }
+
+    .glass-search input {
+        border: none;
+        background: transparent;
+        width: 100%;
+        margin-left: 10px;
+        font-weight: 500;
+    }
+    
+    .glass-search input:focus {
+        outline: none;
+    }
+
+    .place-card {
+      display: grid;
+      grid-template-columns: 96px 1fr;
+      gap: 12px;
+      background: rgba(255, 255, 255, 0.92);
+      border-radius: 18px;
+      margin-bottom: 14px;
+      padding: 10px;
+      border: 1px solid rgba(148, 163, 184, 0.2);
+      box-shadow: 0 10px 20px rgba(15, 23, 42, 0.08);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .place-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 16px 28px rgba(15, 23, 42, 0.12);
+    }
+
+    .place-card-media {
+      width: 96px;
+      height: 96px;
+      border-radius: 14px;
+      overflow: hidden;
+      background: #f1f5f9;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .place-card-media img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .place-card-fallback {
+      color: #94a3b8;
+      font-size: 22px;
+    }
+
+    .place-card-body {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .place-card-title {
+      font-weight: 700;
+      font-size: 14px;
+      color: #0f172a;
+      margin: 0;
+    }
+
+    .place-card-address {
+      font-size: 12px;
+      color: #64748b;
+      margin: 0;
+    }
+
+    .place-card-meta {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 12px;
+      color: #475569;
+    }
+
+    .place-card-rating {
+      display: flex;
+      align-items: center;
+      gap: 4px;
+      color: #f6c343;
+    }
+
+    .place-card-rating i {
+      font-size: 12px;
+    }
+
+    .rating-muted {
+      color: #94a3b8;
+      font-size: 12px;
+      font-weight: 600;
+    }
+
+    .place-card-distance {
+      font-weight: 600;
+      color: #2563eb;
+    }
+
+    .place-card-status {
+      font-size: 11px;
+      font-weight: 600;
+      padding: 2px 8px;
+      border-radius: 999px;
+    }
+
+    .place-card-status.status-open {
+      background: rgba(34, 197, 94, 0.15);
+      color: #22c55e;
+    }
+
+    .place-card-status.status-closed {
+      background: rgba(239, 68, 68, 0.15);
+      color: #ef4444;
+    }
+
+    .place-card-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 4px;
+    }
+
+    .place-card-actions .btn {
+      flex: 1;
+      border-radius: 999px;
+      font-weight: 600;
+    }
+
+    body.dark .glass-sidebar,
+    body.dark-mode .glass-sidebar,
+    [data-theme="dark"] .glass-sidebar {
+      background: linear-gradient(180deg, rgba(15, 23, 42, 0.96) 0%, rgba(17, 24, 39, 0.96) 100%);
+      color: #e2e8f0;
+      border-color: rgba(148, 163, 184, 0.2);
+    }
+
+    body.dark #place-details-card,
+    body.dark-mode #place-details-card,
+    [data-theme="dark"] #place-details-card {
+      background: rgba(15, 23, 42, 0.96);
+      border-color: rgba(148, 163, 184, 0.2);
+    }
+
+    body.dark .place-details-address,
+    body.dark-mode .place-details-address,
+    [data-theme="dark"] .place-details-address {
+      color: #cbd5f5;
+    }
+
+    body.dark .place-card,
+    body.dark-mode .place-card,
+    [data-theme="dark"] .place-card {
+      background: rgba(30, 41, 59, 0.85);
+      border-color: rgba(148, 163, 184, 0.2);
+    }
+
+    body.dark .place-card-title,
+    body.dark-mode .place-card-title,
+    [data-theme="dark"] .place-card-title {
+      color: #e2e8f0;
+    }
+
+    body.dark .place-card-address,
+    body.dark-mode .place-card-address,
+    [data-theme="dark"] .place-card-address {
+      color: #cbd5f5;
+    }
+
+    body.dark .place-details-reviews li,
+    body.dark-mode .place-details-reviews li,
+    [data-theme="dark"] .place-details-reviews li {
+      background: rgba(30, 41, 59, 0.7);
+      border-color: rgba(148, 163, 184, 0.2);
+    }
+
+    /* Fix Dark Mode Buttons & Inputs */
+    body.dark .place-details-actions .btn-dark,
+    body.dark-mode .place-details-actions .btn-dark,
+    [data-theme="dark"] .place-details-actions .btn-dark {
+      background: rgba(255, 255, 255, 0.1);
+      color: #fff;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+    body.dark .place-details-actions .btn-dark:hover,
+    body.dark-mode .place-details-actions .btn-dark:hover,
+    [data-theme="dark"] .place-details-actions .btn-dark:hover {
+      background: rgba(255, 255, 255, 0.2);
+    }
+
+    body.dark .place-details-actions .btn-outline-dark,
+    body.dark-mode .place-details-actions .btn-outline-dark,
+    [data-theme="dark"] .place-details-actions .btn-outline-dark {
+      color: #e2e8f0;
+      border-color: rgba(255, 255, 255, 0.3);
+    }
+    body.dark .place-details-actions .btn-outline-dark:hover,
+    body.dark-mode .place-details-actions .btn-outline-dark:hover,
+    [data-theme="dark"] .place-details-actions .btn-outline-dark:hover {
+      background: rgba(255, 255, 255, 0.1);
+      color: #fff;
+    }
+
+    body.dark .place-details-close,
+    body.dark-mode .place-details-close,
+    [data-theme="dark"] .place-details-close {
+      background: rgba(15, 23, 42, 0.85);
+      color: #fff;
+    }
+
+    body.dark .glass-search,
+    body.dark-mode .glass-search,
+    [data-theme="dark"] .glass-search {
+      background: rgba(15, 23, 42, 0.8);
+      border-color: rgba(255, 255, 255, 0.1);
+    }
+    body.dark .glass-search input,
+    body.dark-mode .glass-search input,
+    [data-theme="dark"] .glass-search input {
+      color: #fff;
+    }
+    body.dark .glass-search input::placeholder,
+    body.dark-mode .glass-search input::placeholder,
+    [data-theme="dark"] .glass-search input::placeholder {
+      color: #94a3b8;
+    }
+    body.dark .glass-search .btn-dark,
+    body.dark-mode .glass-search .btn-dark,
+    [data-theme="dark"] .glass-search .btn-dark {
+      background: rgba(255, 255, 255, 0.1);
+      color: #fff;
+      border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+    body.dark .glass-search .btn-dark:hover,
+    body.dark-mode .glass-search .btn-dark:hover,
+    [data-theme="dark"] .glass-search .btn-dark:hover {
+      background: rgba(255, 255, 255, 0.2);
+    }
+
+    body.dark #place-details-extended h6,
+    body.dark-mode #place-details-extended h6,
+    [data-theme="dark"] #place-details-extended h6 {
+      color: #e2e8f0;
+    }
+    body.dark #place-details-hours-week,
+    body.dark-mode #place-details-hours-week,
+    [data-theme="dark"] #place-details-hours-week {
+      color: #cbd5f5 !important;
+    }
+
+    /* Animation for Zahma options */
+    .zahma-options-animated {
+      overflow: hidden;
+      max-height: 0;
+      opacity: 0;
+      transition: max-height 0.4s ease, opacity 0.4s ease, margin-top 0.4s ease;
+      display: flex;
+      margin-top: 0;
+    }
+    .zahma-options-animated.show {
+      max-height: 100px;
+      opacity: 1;
+      margin-top: 0.5rem !important;
+    }
+
+    /* === Garde Sidebar === */
+    #garde-sidebar {
+      position: fixed;
+      top: 0;
+      right: 0;
+      width: 340px;
+      height: 100vh;
+      background: linear-gradient(160deg, #0f172a 0%, #1e293b 100%);
+      color: #f1f5f9;
+      z-index: 2000;
+      display: flex;
+      flex-direction: column;
+      transform: translateX(110%);
+      transition: transform 0.42s cubic-bezier(0.4, 0, 0.2, 1);
+      box-shadow: -8px 0 32px rgba(0,0,0,0.45);
+      border-left: 1px solid rgba(255,255,255,0.07);
+    }
+    #garde-sidebar.open {
+      transform: translateX(0);
+    }
+    #garde-sidebar .garde-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 20px 20px 16px;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+      background: rgba(255,255,255,0.04);
+    }
+    #garde-sidebar .garde-header h5 {
+      margin: 0;
+      font-size: 15px;
+      font-weight: 700;
+      letter-spacing: 0.3px;
+      color: #fff;
+    }
+    #garde-sidebar .garde-header span.badge-live {
+      background: #22c55e;
+      color: #fff;
+      font-size: 10px;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 20px;
+      animation: pulse-live 1.8s infinite;
+    }
+    @keyframes pulse-live {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.5; }
+    }
+    #garde-list {
+      list-style: none;
+      padding: 14px 16px;
+      margin: 0;
+      overflow-y: auto;
+      flex: 1;
+    }
+    #garde-list .garde-item {
+      background: rgba(255,255,255,0.06);
+      border: 1px solid rgba(255,255,255,0.09);
+      border-radius: 12px;
+      padding: 14px;
+      margin-bottom: 12px;
+      transition: background 0.2s;
+    }
+    #garde-list .garde-item:hover {
+      background: rgba(255,255,255,0.11);
+    }
+    #garde-list .garde-item .garde-name {
+      font-size: 14px;
+      font-weight: 700;
+      color: #f1f5f9;
+      margin-bottom: 3px;
+    }
+    #garde-list .garde-item .garde-address {
+      font-size: 12px;
+      color: #94a3b8;
+      margin-bottom: 8px;
+    }
+    #garde-list .garde-item .garde-verified {
+      font-size: 11px;
+      color: #4ade80;
+      font-weight: 600;
+    }
+    #garde-list .garde-empty {
+      text-align: center;
+      color: #64748b;
+      font-size: 13px;
+      padding: 40px 10px;
+      line-height: 1.8;
+    }
+    #btn-close-garde {
+      background: rgba(255,255,255,0.1);
+      border: none;
+      color: #fff;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      cursor: pointer;
+      font-size: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s;
+    }
+    #btn-close-garde:hover {
+      background: rgba(255,255,255,0.2);
+    }
+    #btn-toggle-garde {
+      position: fixed;
+      bottom: 24px;
+      right: 120px;
+      z-index: 1100;
+      background: linear-gradient(135deg, #0f172a, #1e40af);
+      color: #fff;
+      border: none;
+      padding: 11px 18px;
+      border-radius: 24px;
+      font-size: 13px;
+      font-weight: 600;
+      cursor: pointer;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.35);
+      transition: transform 0.2s, box-shadow 0.2s;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    #btn-toggle-garde:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 24px rgba(0,0,0,0.45);
+    }
+    /* Declare garde icon button */
+    #btn-declare-garde:hover:not(:disabled) {
+      background: #0dcaf0 !important;
+      color: #fff !important;
+      transform: scale(1.15);
+    }
+    #btn-declare-garde:disabled {
+      opacity: 0.75;
+      cursor: not-allowed;
+    }
+    /* Garde badge in POI card */
+    #garde-badge {
+      font-size: 11px;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 20px;
+      background: #22c55e;
+      color: #fff;
+      display: none;
+      margin-top: 6px;
+    }
+
+    /* Geo-Services 2026 polish layer */
+    :root {
+      --geo-blue: var(--heading-color);
+      --geo-blue-deep: var(--default-color);
+      --geo-accent: var(--accent-color);
+      --geo-bg: var(--background-color);
+      --geo-surface: var(--surface-color);
+      --geo-white: var(--contrast-color);
+    }
+
+    #map-container {
+      background: var(--geo-bg);
+    }
+
+    #map {
+      border-radius: 0;
+    }
+
+    #map-container::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      z-index: 1;
+      background:
+        linear-gradient(90deg, rgba(17, 47, 141, 0.16), transparent 26%, transparent 74%, rgba(32, 53, 120, 0.14)),
+        linear-gradient(180deg, rgba(229, 238, 245, 0.24), transparent 22%, transparent 72%, rgba(17, 47, 141, 0.12));
+    }
+
+    #map-container > *:not(#map) {
+      z-index: 3;
+    }
+
+    .geo-scan-line {
+      position: absolute;
+      inset: auto 0 0;
+      height: 4px;
+      pointer-events: none;
+      background: linear-gradient(90deg, transparent, var(--geo-accent), transparent);
+      opacity: 0.85;
+      animation: geoScan 4s ease-in-out infinite;
+    }
+
+    @keyframes geoScan {
+      0%, 100% { transform: translateX(-100%); opacity: 0; }
+      18%, 82% { opacity: 0.9; }
+      50% { transform: translateX(100%); }
+    }
+
+    .glass-sidebar {
+      background: linear-gradient(180deg, rgba(255, 255, 255, 0.95) 0%, color-mix(in srgb, var(--geo-bg), #ffffff 72%) 100%);
+      backdrop-filter: blur(18px);
+      border: 1px solid rgba(17, 47, 141, 0.12);
+      border-radius: 8px;
+      box-shadow: 0 22px 48px rgba(17, 47, 141, 0.18);
+      transform: translateX(-12px);
+      opacity: 0;
+      transition: opacity 0.35s ease, transform 0.35s ease;
+    }
+
+    .glass-sidebar.is-visible {
+      opacity: 1;
+      transform: translateX(0);
+    }
+
+    .sidebar-close {
+      border-radius: 8px;
+    }
+
+    .search-wrapper {
+      width: min(620px, calc(100vw - 40px));
+    }
+
+    .glass-search {
+      background: rgba(255, 255, 255, 0.9);
+      backdrop-filter: blur(16px);
+      border: 1px solid rgba(17, 47, 141, 0.12);
+      border-radius: 999px;
+      padding: 9px 10px 9px 18px;
+      box-shadow: 0 18px 36px rgba(17, 47, 141, 0.16);
+      transition: transform 0.25s ease, box-shadow 0.25s ease;
+    }
+
+    .glass-search:focus-within {
+      transform: translateY(-2px);
+      box-shadow: 0 22px 44px rgba(17, 47, 141, 0.2);
+    }
+
+    .glass-search .btn {
+      width: 34px;
+      height: 34px;
+      background: var(--geo-accent);
+      border: 0;
+      color: var(--geo-white);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .geo-quick-actions {
+      display: flex;
+      gap: 8px;
+      margin-top: 10px;
+      overflow-x: auto;
+      padding-bottom: 4px;
+    }
+
+    .geo-chip {
+      flex: 0 0 auto;
+      border: 1px solid rgba(17, 47, 141, 0.12);
+      background: rgba(255, 255, 255, 0.92);
+      color: var(--geo-blue);
+      border-radius: 999px;
+      padding: 7px 12px;
+      font-size: 12px;
+      font-weight: 700;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      box-shadow: 0 10px 22px rgba(17, 47, 141, 0.1);
+      transition: transform 0.2s ease, background 0.2s ease, color 0.2s ease;
+      white-space: nowrap;
+    }
+
+    .geo-chip:hover,
+    .geo-chip.active {
+      transform: translateY(-2px);
+      background: var(--geo-blue);
+      color: var(--geo-white);
+    }
+
+    .geo-floating-controls {
+      position: absolute;
+      right: 18px;
+      top: 92px;
+      display: grid;
+      gap: 8px;
+    }
+
+    .geo-control-btn {
+      width: 42px;
+      height: 42px;
+      border-radius: 8px;
+      border: 1px solid rgba(17, 47, 141, 0.12);
+      background: rgba(255, 255, 255, 0.92);
+      color: var(--geo-blue);
+      box-shadow: 0 12px 24px rgba(17, 47, 141, 0.16);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.2s ease, background 0.2s ease, color 0.2s ease;
+    }
+
+    .geo-control-btn:hover {
+      transform: translateY(-2px);
+      background: var(--geo-accent);
+      color: var(--geo-white);
+    }
+
+    .geo-control-btn.geo-add-poi {
+      background: var(--geo-accent);
+      color: var(--geo-white);
+    }
+
+    .geo-insights {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      margin: 12px 0 14px;
+    }
+
+    .geo-insight {
+      min-height: 72px;
+      border-radius: 8px;
+      padding: 10px;
+      background: color-mix(in srgb, var(--geo-bg), #ffffff 72%);
+      border: 1px solid rgba(17, 47, 141, 0.1);
+      box-shadow: 0 10px 22px rgba(17, 47, 141, 0.08);
+    }
+
+    .geo-insight span {
+      display: block;
+      color: color-mix(in srgb, var(--geo-blue-deep), transparent 30%);
+      font-size: 11px;
+      font-weight: 700;
+      text-transform: uppercase;
+    }
+
+    .geo-insight strong {
+      color: var(--geo-blue);
+      display: block;
+      font-size: 20px;
+      line-height: 1.2;
+      margin-top: 4px;
+    }
+
+    .place-card {
+      border-radius: 8px;
+      border: 1px solid rgba(17, 47, 141, 0.1);
+      box-shadow: 0 10px 20px rgba(17, 47, 141, 0.08);
+      cursor: pointer;
+      animation: geoCardIn 0.38s ease both;
+    }
+
+    .place-card:hover {
+      box-shadow: 0 16px 28px rgba(17, 47, 141, 0.14);
+      border-color: color-mix(in srgb, var(--geo-accent), transparent 55%);
+    }
+
+    @keyframes geoCardIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .place-card-media {
+      border-radius: 8px;
+    }
+
+    .place-card-media.official-poi {
+      background:
+        radial-gradient(circle at 30% 20%, rgba(246, 141, 86, 0.28), transparent 34%),
+        linear-gradient(135deg, var(--geo-blue), var(--geo-blue-deep));
+      color: var(--geo-white);
+      font-size: 28px;
+    }
+
+    .place-card-distance {
+      color: var(--geo-blue);
+    }
+
+    .travel-mode-btn:hover {
+      background: color-mix(in srgb, var(--geo-accent), transparent 88%);
+      color: var(--geo-blue);
+    }
+
+    .travel-mode-btn.active {
+      background-color: var(--geo-blue);
+      box-shadow: 0 4px 12px rgba(17, 47, 141, 0.28);
+    }
+
+    .directions-glow {
+      background: linear-gradient(90deg, var(--geo-blue), var(--geo-accent), var(--geo-blue));
+      background-size: 200% 100%;
+    }
+
+    .geo-local-summary {
+      position: absolute;
+      left: 20px;
+      bottom: 24px;
+      width: 360px;
+      max-width: calc(100vw - 40px);
+      background: rgba(255, 255, 255, 0.92);
+      backdrop-filter: blur(16px);
+      border: 1px solid rgba(17, 47, 141, 0.12);
+      border-radius: 8px;
+      box-shadow: 0 18px 38px rgba(17, 47, 141, 0.16);
+      padding: 14px;
+      display: grid;
+      gap: 10px;
+    }
+
+    .geo-local-summary header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+    }
+
+    .geo-local-summary h6 {
+      margin: 0;
+      font-weight: 800;
+      font-size: 14px;
+    }
+
+    .geo-local-summary p {
+      margin: 0;
+      color: color-mix(in srgb, var(--geo-blue-deep), transparent 28%);
+      font-size: 12px;
+    }
+
+    .geo-local-summary.is-hidden {
+      opacity: 0;
+      transform: translateY(16px);
+      pointer-events: none;
+    }
+
+    .geo-local-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      flex-shrink: 0;
+    }
+
+    .geo-local-hide {
+      width: 34px;
+      height: 34px;
+      border-radius: 999px;
+      border: 1px solid rgba(17, 47, 141, 0.12);
+      background: rgba(255, 255, 255, 0.86);
+      color: var(--geo-blue);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.2s ease, background 0.2s ease, color 0.2s ease;
+    }
+
+    .geo-local-hide:hover {
+      transform: translateY(-2px);
+      background: var(--geo-accent);
+      color: var(--geo-white);
+    }
+
+    .geo-local-restore {
+      position: absolute;
+      left: 20px;
+      bottom: 24px;
+      border: 1px solid rgba(17, 47, 141, 0.12);
+      background: rgba(255, 255, 255, 0.92);
+      color: var(--geo-blue);
+      border-radius: 999px;
+      box-shadow: 0 14px 30px rgba(17, 47, 141, 0.14);
+      padding: 9px 13px;
+      display: none;
+      align-items: center;
+      gap: 7px;
+      font-size: 12px;
+      font-weight: 800;
+      backdrop-filter: blur(16px);
+      transition: transform 0.2s ease, background 0.2s ease, color 0.2s ease;
+    }
+
+    .geo-local-restore:hover {
+      transform: translateY(-2px);
+      background: var(--geo-blue);
+      color: var(--geo-white);
+    }
+
+    .geo-local-restore.is-visible {
+      display: inline-flex;
+    }
+
+    .geo-local-bars {
+      display: grid;
+      gap: 7px;
+    }
+
+    .geo-local-bar {
+      display: grid;
+      grid-template-columns: 90px 1fr 30px;
+      gap: 8px;
+      align-items: center;
+      font-size: 11px;
+      font-weight: 700;
+      color: var(--geo-blue);
+    }
+
+    .geo-local-bar-track {
+      height: 7px;
+      border-radius: 999px;
+      background: color-mix(in srgb, var(--geo-blue), transparent 88%);
+      overflow: hidden;
+    }
+
+    .geo-local-bar-fill {
+      display: block;
+      height: 100%;
+      border-radius: inherit;
+      background: var(--geo-accent);
+      width: 0;
+      transition: width 0.7s ease;
+    }
+
+    #btn-toggle-garde {
+      background: linear-gradient(135deg, var(--geo-blue), var(--geo-blue-deep));
+    }
+
+    .geo-toast {
+      position: absolute;
+      right: 18px;
+      bottom: 86px;
+      max-width: 320px;
+      background: var(--geo-blue);
+      color: var(--geo-white);
+      border-radius: 8px;
+      box-shadow: 0 18px 36px rgba(17, 47, 141, 0.22);
+      padding: 11px 14px;
+      font-size: 13px;
+      font-weight: 700;
+      transform: translateY(18px);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.28s ease, transform 0.28s ease;
+    }
+
+    .geo-toast.show {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    body.dark-mode .glass-search,
+    html.dark-mode .glass-search,
+    [data-bs-theme="dark"] .glass-search {
+      background: rgba(15, 23, 42, 0.92);
+      border-color: rgba(246, 141, 86, 0.24);
+      box-shadow: 0 18px 40px rgba(0, 0, 0, 0.34);
+    }
+
+    body.dark-mode .glass-search input,
+    html.dark-mode .glass-search input,
+    [data-bs-theme="dark"] .glass-search input {
+      color: #f8fafc;
+    }
+
+    body.dark-mode .geo-chip,
+    html.dark-mode .geo-chip,
+    [data-bs-theme="dark"] .geo-chip,
+    body.dark-mode .geo-control-btn,
+    html.dark-mode .geo-control-btn,
+    [data-bs-theme="dark"] .geo-control-btn,
+    body.dark-mode .geo-local-restore,
+    html.dark-mode .geo-local-restore,
+    [data-bs-theme="dark"] .geo-local-restore {
+      background: rgba(15, 23, 42, 0.9);
+      border-color: rgba(246, 141, 86, 0.22);
+      color: #f8fafc;
+      box-shadow: 0 14px 32px rgba(0, 0, 0, 0.3);
+    }
+
+    body.dark-mode .geo-chip:hover,
+    body.dark-mode .geo-chip.active,
+    html.dark-mode .geo-chip:hover,
+    html.dark-mode .geo-chip.active,
+    [data-bs-theme="dark"] .geo-chip:hover,
+    [data-bs-theme="dark"] .geo-chip.active,
+    body.dark-mode .geo-control-btn:hover,
+    html.dark-mode .geo-control-btn:hover,
+    [data-bs-theme="dark"] .geo-control-btn:hover {
+      background: var(--geo-accent);
+      color: var(--geo-white);
+    }
+
+    body.dark-mode .geo-control-btn.geo-add-poi,
+    html.dark-mode .geo-control-btn.geo-add-poi,
+    [data-bs-theme="dark"] .geo-control-btn.geo-add-poi {
+      background: var(--geo-accent);
+      color: var(--geo-white);
+      border-color: rgba(255, 255, 255, 0.16);
+    }
+
+    body.dark-mode .geo-local-summary,
+    html.dark-mode .geo-local-summary,
+    [data-bs-theme="dark"] .geo-local-summary {
+      background: rgba(15, 23, 42, 0.92);
+      border-color: rgba(246, 141, 86, 0.22);
+      color: #f8fafc;
+    }
+
+    body.dark-mode .geo-local-summary h6,
+    html.dark-mode .geo-local-summary h6,
+    [data-bs-theme="dark"] .geo-local-summary h6,
+    body.dark-mode .geo-local-bar,
+    html.dark-mode .geo-local-bar,
+    [data-bs-theme="dark"] .geo-local-bar {
+      color: #f8fafc;
+    }
+
+    body.dark-mode .geo-local-summary p,
+    html.dark-mode .geo-local-summary p,
+    [data-bs-theme="dark"] .geo-local-summary p {
+      color: #cbd5e1;
+    }
+
+    @media (max-width: 992px) {
+      .glass-sidebar {
+        width: calc(100vw - 24px);
+        left: 12px;
+        top: 96px;
+        max-height: calc(100vh - 180px);
+      }
+
+      .geo-local-summary {
+        display: none;
+      }
+
+      .geo-local-restore {
+        display: none !important;
+      }
+
+      .geo-floating-controls {
+        top: auto;
+        right: 12px;
+        bottom: 84px;
+      }
+    }
+
+    @media (max-width: 640px) {
+      #map-container {
+        height: calc(100vh - 76px);
+      }
+
+      .search-wrapper {
+        top: 12px;
+        width: calc(100vw - 24px);
+      }
+
+      .geo-chip {
+        padding: 7px 10px;
+      }
+
+      .place-card {
+        grid-template-columns: 76px 1fr;
+      }
+
+      .place-card-media {
+        width: 76px;
+        height: 76px;
+      }
+
+      .geo-insights {
+        grid-template-columns: 1fr;
+      }
+
+      #btn-toggle-garde {
+        right: 12px;
+        bottom: 22px;
+      }
+    }
+
+  </style>
+</head>
+
+<body class="index-page">
+
+  <!-- === DÉBUT DU HEADER DYNAMIQUE CIVICPLUS === -->
+  <div id="header-container" class="sticky-top" style="top: 0; z-index: 1030;"></div>
+  <!-- === FIN DU HEADER DYNAMIQUE === -->
+
+  <main class="main p-0 m-0">
+    <!-- Suppression des conteneurs Bootstrap et des animations AOS qui causaient le bug de rendu -->
+    <div id="map-container">
+      <!-- Search Bar -->
+      <div class="search-wrapper">
+          <form id="search-form" class="glass-search">
+              <i class="bi bi-search text-warning"></i>
+              <input type="text" id="search-input" placeholder="Rechercher mairie, pharmacie, bus, ecole...">
+              <button type="submit" class="btn btn-sm btn-dark rounded-circle"><i class="bi bi-arrow-right"></i></button>
+          </form>
+          <div class="geo-quick-actions" aria-label="Recherches rapides">
+            <button type="button" class="geo-chip" data-query="administration publique proche de moi"><i class="bi bi-building"></i> Administrations</button>
+            <button type="button" class="geo-chip" data-query="pharmacie hopital clinique proche de moi"><i class="bi bi-heart-pulse"></i> Sante</button>
+            <button type="button" class="geo-chip" data-query="station bus metro train proche de moi"><i class="bi bi-bus-front"></i> Transport</button>
+            <button type="button" class="geo-chip" data-query="ecole universite bibliotheque proche de moi"><i class="bi bi-mortarboard"></i> Education</button>
+            <button type="button" class="geo-chip" data-local-filter="all"><i class="bi bi-patch-check"></i> POI officiels</button>
+          </div>
+      </div>
+
+      <div class="geo-floating-controls" aria-label="Outils carte">
+        <button type="button" class="geo-control-btn" id="geo-locate-btn" title="Me localiser"><i class="bi bi-crosshair"></i></button>
+        <button type="button" class="geo-control-btn" id="geo-fit-btn" title="Voir tous les POI"><i class="bi bi-bounding-box-circles"></i></button>
+        <button type="button" class="geo-control-btn" id="geo-clear-route-btn" title="Effacer l'itineraire"><i class="bi bi-sign-turn-slight-right"></i></button>
+        <a class="geo-control-btn geo-add-poi" href="Ajouter_POI.html" title="Ajouter un POI"><i class="bi bi-plus-lg"></i></a>
+      </div>
+
+      <!-- Results Sidebar -->
+      <div id="sidebar-results" class="glass-sidebar">
+          <div class="sidebar-header">
+              <div>
+                <span class="sidebar-kicker">Explorer</span>
+                <h5 class="sidebar-title">Geo-Services</h5>
+              </div>
+              <button type="button" class="sidebar-close" onclick="document.getElementById('sidebar-results').style.display='none'">
+                <i class="bi bi-x-lg"></i>
+              </button>
+          </div>
+          <div class="geo-insights" aria-label="Indicateurs Geo-Services">
+            <div class="geo-insight">
+              <span>POI officiels</span>
+              <strong id="geo-total-pois">--</strong>
+            </div>
+            <div class="geo-insight">
+              <span>Plus proche</span>
+              <strong id="geo-nearest-poi">--</strong>
+            </div>
+            <div class="geo-insight">
+              <span>Categories</span>
+              <strong id="geo-category-count">--</strong>
+            </div>
+          </div>
+          <div id="place-details-card">
+            <button type="button" class="place-details-close" id="place-details-close" aria-label="Fermer">&times;</button>
+            
+            <div id="place-details-carousel" class="carousel slide" data-bs-ride="carousel">
+              <div class="carousel-inner" id="place-details-carousel-inner"></div>
+              <button class="carousel-control-prev" type="button" data-bs-target="#place-details-carousel" data-bs-slide="prev">
+                <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Previous</span>
+              </button>
+              <button class="carousel-control-next" type="button" data-bs-target="#place-details-carousel" data-bs-slide="next">
+                <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                <span class="visually-hidden">Next</span>
+              </button>
+            </div>
+
+            <div class="place-details-body">
+              <h3 id="place-details-title" class="h6 mb-2"></h3>
+              <div class="place-details-meta" style="align-items: center; gap: 6px;">
+                <div id="place-details-rating" class="place-details-rating"></div>
+                <span id="place-details-status" class="place-details-status"></span>
+                <!-- Garde icon: visible only when nearby -->
+                <button type="button" id="btn-declare-garde" style="display:none; background:none; border:1.5px solid #0dcaf0; color:#0dcaf0; border-radius:50%; width:26px; height:26px; align-items:center; justify-content:center; font-size:12px; cursor:pointer; flex-shrink:0; transition:background 0.2s, color 0.2s; padding:0; line-height:1;" title="Déclarer ce lieu de garde">
+                  <i class="bi bi-shield-check" aria-hidden="true"></i>
+                </button>
+                <span id="garde-badge" style="display:none; font-size:10px; color:#fff; font-weight:700; white-space:nowrap; background:#16a34a; padding:2px 8px; border-radius:12px;">De garde</span>
+              </div>
+              <p id="place-details-hours-today" class="place-details-address mb-1" style="display: none;"><i class="bi bi-clock"></i> <span></span></p>
+              <p id="place-details-phone" class="place-details-address mb-2" style="display: none;"><i class="bi bi-telephone"></i> <span></span></p>
+
+              <div class="place-details-actions d-flex flex-wrap gap-2">
+                <button type="button" class="btn btn-dark btn-sm flex-grow-1" id="place-details-route"><i class="bi bi-geo-alt me-2"></i>Directions</button>
+                <button type="button" class="btn btn-outline-dark btn-sm flex-grow-1" id="place-details-more">Afficher infos</button>
+              </div>
+
+              <div id="zahma-section" class="mt-2" style="display: none;">
+                <button type="button" class="btn btn-outline-warning btn-sm w-100 fw-bold text-dark" id="btn-report-zahma" style="border-radius: 8px;">
+                  <i class="bi bi-flag-fill me-2"></i>Signaler la Zahma
+                </button>
+                <div id="zahma-options" class="zahma-options-animated gap-1">
+                  <button id="btn-fluide" class="btn btn-success btn-sm flex-grow-1" style="font-size: 11px; font-weight: 600; border-radius: 6px;"><i class="bi bi-speedometer2 me-2"></i>Fluide</button>
+                  <button id="btn-lent" class="btn btn-warning btn-sm flex-grow-1 text-dark" style="font-size: 11px; font-weight: 600; border-radius: 6px;"><i class="bi bi-list-ol me-2"></i>File</button>
+                  <button id="btn-bloque" class="btn btn-danger btn-sm flex-grow-1" style="font-size: 11px; font-weight: 600; border-radius: 6px;">⛔ Zahma</button>
+                </div>
+                <div id="zahma-badge-container" class="mt-2 text-center" style="display: none;"></div>
+              </div>
+
+              <div id="place-details-extended" style="display: none; margin-top: 15px; border-top: 1px solid rgba(0,0,0,0.1); padding-top: 15px;">
+                <p id="place-details-address" class="place-details-address mb-3"><i class="bi bi-geo-alt"></i> <span></span></p>
+                <p id="place-details-website" class="mb-3" style="font-size: 13px; display: none;"></p>
+                
+                <h6 class="mb-2" style="font-size: 14px; font-weight: 600;">Horaires d'ouverture</h6>
+                <ul id="place-details-hours-week" class="list-unstyled mb-3" style="font-size: 13px; color: #4b5563;"></ul>
+                
+                <h6 class="mb-2" style="font-size: 14px; font-weight: 600;">Avis</h6>
+                <ul id="place-details-reviews" class="place-details-reviews"></ul>
+              </div>
+            </div>
+          </div>
+
+          <div id="directions-panel" style="display: none; padding: 15px;">
+            <div class="d-flex justify-content-between align-items-center mb-3">
+              <h5 class="mb-0" style="font-size: 16px; font-weight: 700;">Itinéraire</h5>
+              <button type="button" class="btn-close" id="directions-close" aria-label="Fermer"></button>
+            </div>
+            <div class="d-flex justify-content-between mb-3 bg-light rounded p-2" style="border: 1px solid rgba(0,0,0,0.04);">
+              <button class="btn btn-sm active w-100 mx-1 travel-mode-btn" data-mode="DRIVING" title="Voiture"><i class="bi bi-car-front-fill"></i></button>
+              <button class="btn btn-sm w-100 mx-1 travel-mode-btn" data-mode="WALKING" title="À pied"><i class="bi bi-person-walking"></i></button>
+              <button class="btn btn-sm w-100 mx-1 travel-mode-btn" data-mode="BICYCLING" title="Vélo"><i class="bi bi-bicycle"></i></button>
+              <button class="btn btn-sm w-100 mx-1 travel-mode-btn" data-mode="TRANSIT" title="Transport"><i class="bi bi-bus-front-fill"></i></button>
+            </div>
+            
+            <div id="directions-loading" class="text-center py-4" style="display: none; background: rgba(255,255,255,0.6); border-radius: 16px;">
+               <div class="spinner-border text-primary border-3" role="status" style="width: 1.5rem; height: 1.5rem;">
+                 <span class="visually-hidden">Calcul en cours...</span>
+               </div>
+               <p class="text-muted small mt-2 mb-0 fw-semibold animate-pulse">Calcul de l'itinéraire...</p>
+            </div>
+
+            <div id="directions-info" class="p-3 bg-white border rounded shadow-sm position-relative overflow-hidden" style="display: none; border-radius: 16px !important;">
+              <div class="directions-glow"></div>
+              <p class="mb-1 fw-bold text-dark" id="directions-duration" style="font-size: 24px; letter-spacing: -0.5px;">-- min</p>
+              <p class="mb-0 text-muted fw-semibold" id="directions-distance" style="font-size: 14px;">-- km</p>
+            </div>
+          </div>
+          <div class="results-header">
+            <span>Resultats</span>
+            <span id="results-count" class="results-count"></span>
+          </div>
+          <div id="results-content"></div>
+      </div>
+
+      <div id="map"></div>
+      <section class="geo-local-summary" aria-label="Resume des points officiels">
+        <header>
+          <div>
+            <h6>Points officiels CivicPlus</h6>
+            <p id="geo-local-subtitle">Chargement des lieux certifies...</p>
+          </div>
+          <div class="geo-local-actions">
+            <button type="button" class="btn btn-sm btn-outline-primary rounded-pill" id="geo-open-officials">Voir</button>
+            <button type="button" class="geo-local-hide" id="geo-hide-officials" title="Masquer le resume"><i class="bi bi-x-lg"></i></button>
+          </div>
+        </header>
+        <div class="geo-local-bars" id="geo-local-bars"></div>
+      </section>
+      <button type="button" class="geo-local-restore" id="geo-show-officials">
+        <i class="bi bi-patch-check"></i> POI officiels
+      </button>
+      <div id="geo-toast" class="geo-toast" role="status" aria-live="polite"></div>
+      <div class="geo-scan-line"></div>
+
+
+
+
+    </div>
+  </main>
+
+  <!-- === Garde Sidebar (droit, position fixed) === -->
+  <div id="garde-sidebar">
+    <div class="garde-header">
+      <div>
+        <h5><i class="bi bi-shield-check me-2"></i>Services de Garde Actifs</h5>
+        <span id="garde-count-badge" style="font-size: 11px; color: #94a3b8;">Chargement...</span>
+      </div>
+      <div class="d-flex align-items-center gap-2">
+        <span class="badge-live">LIVE</span>
+        <button id="btn-close-garde" title="Fermer">&times;</button>
+      </div>
+    </div>
+    <div id="garde-loading" style="text-align:center; padding: 40px 20px; display:none;">
+      <div class="spinner-border text-info" style="width:1.5rem;height:1.5rem;" role="status"></div>
+      <p style="color:#64748b; font-size:12px; margin-top:10px;">Chargement...</p>
+    </div>
+    <ul id="garde-list"></ul>
+  </div>
+
+  <!-- Bouton toggle garde (fixed, bottom-right) -->
+  <button id="btn-toggle-garde"><i class="bi bi-moon-stars me-2" aria-hidden="true"></i>Gardes Proches</button>
+
+  <div id="footer-container"></div>
+
+  <script src="../../../assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="js/map.js?v=13"></script>
+  <script src="../../../assets/js/load_header.js?v=20260510-notification-more-delete-popup"></script>
+  <script src="../../../assets/js/auth.js?v=20260511-authfix"></script>
+  <script src="../../../assets/js/load_footer.js?v=20260502-1"></script>
+</body>
+
+</html>
+
