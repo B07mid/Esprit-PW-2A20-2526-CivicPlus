@@ -1,0 +1,124 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <title>Donations - CivicPlus</title>
+  <link href="../../../assets/img/RawShape.png" rel="icon">
+  <link href="../../../assets/img/RawShape.png" rel="apple-touch-icon">
+  <link href="https://fonts.googleapis.com" rel="preconnect">
+  <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900;1,100;1,300;1,400;1,500;1,700;1,900&family=Raleway:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap" rel="stylesheet">
+  <link href="../../../assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="../../../assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="../../../assets/vendor/aos/aos.css" rel="stylesheet">
+  <link href="../../../assets/css/main.css?v=20260502-3" rel="stylesheet">
+</head>
+
+<body class="index-page">
+
+  <div id="header-container" class="sticky-top" style="top: 0; z-index: 1030;"></div>
+
+  <main id="main">
+    <section class="section contact">
+      <div class="container">
+        <div class="section-title">
+          <span>Donations</span>
+          <h2>Add a Donation</h2>
+          <p>Fill in the details below to register a new donation.</p>
+        </div>
+
+        <div class="row justify-content-center mb-5">
+          <div class="col-lg-8">
+            <div class="card rounded-4 shadow-lg border-0 overflow-hidden">
+              <div class="card-body p-4 p-lg-5">
+                <form method="post" action="../controller/DonationController.php?citoyen=1" id="donationForm" enctype="multipart/form-data" novalidate style="background-color: #f8f9fa; border-radius: 10px; padding: 1.5rem;">
+                  <div class="row gy-3">
+                    <div class="col-md-6">
+                      <label for="num_cin" class="form-label fw-bold text-secondary">CIN Number <span class="text-danger">*</span></label>
+                      <input type="text" class="form-control rounded-3" id="num_cin" name="num_cin" inputmode="numeric" pattern="[0-9]{8}" maxlength="8" placeholder="e.g. 12345678" required style="border-color: #e0e0e0;">
+                    </div>
+                    <div class="col-md-6">
+                      <label for="id_projet" class="form-label fw-bold text-secondary">Project ID <span class="text-danger">*</span></label>
+                      <input type="number" class="form-control rounded-3" id="id_projet" name="id_projet" min="1" step="1" placeholder="e.g. 1" required style="border-color: #e0e0e0;">
+                    </div>
+                    <div class="col-md-6">
+                      <label for="montant" class="form-label fw-bold text-secondary">Amount ($) <span class="text-danger">*</span></label>
+                      <input type="number" class="form-control rounded-3" id="montant" name="montant" min="0.01" step="any" placeholder="e.g. 100.00" required style="border-color: #e0e0e0;">
+                    </div>
+                    <div class="col-md-6">
+                      <label for="methode_paiement" class="form-label fw-bold text-secondary">Payment Method <span class="text-danger">*</span></label>
+                      <select class="form-select rounded-3" id="methode_paiement" name="methode_paiement" required style="border-color: #e0e0e0;">
+                        <option value="" disabled selected>Select a method</option>
+                        <option value="flouci">Flouci</option>
+                        <option value="credit_card">Credit card</option>
+                      </select>
+                      <input type="hidden" name="statut_paiement" value="en_attente">
+                    </div>
+                    <div class="col-md-6">
+                      <label for="flouci_transaction_id" class="form-label fw-bold text-secondary">Flouci transaction ID</label>
+                      <input type="text" class="form-control rounded-3" id="flouci_transaction_id" name="flouci_transaction_id" placeholder="Required for Flouci" style="border-color: #e0e0e0;">
+                    </div>
+                    <div class="col-md-6">
+                      <label for="preuve_paiement_image" class="form-label fw-bold text-secondary">Payment proof image</label>
+                      <input type="file" class="form-control rounded-3" id="preuve_paiement_image" name="preuve_paiement_image" accept="image/*" style="border-color: #e0e0e0;">
+                    </div>
+                    <div class="col-md-12">
+                      <label for="reference_transaction" class="form-label fw-bold text-secondary">Transaction Reference</label>
+                      <input type="text" class="form-control rounded-3" id="reference_transaction" name="reference_transaction" maxlength="100" placeholder="e.g. TXN-20260412-001" style="border-color: #e0e0e0;">
+                    </div>
+                    <div class="col-12 d-flex justify-content-end gap-2 mt-4">
+                      <button type="reset" class="btn btn-secondary rounded-pill px-4 fw-bold">Clear</button>
+                      <button type="submit" class="btn rounded-pill px-4 fw-bold" style="background-color: var(--accent-color); color: var(--contrast-color);">Add Donation</button>
+                    </div>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="section-title mt-5">
+          <h2>All Donations</h2>
+          <p>The live back-office list is available at <a href="liste_donations.html" style="color: var(--accent-color);">liste_donations.html</a>.</p>
+        </div>
+
+        <div class="table-responsive rounded-4 shadow-sm border-0 overflow-hidden mt-4">
+          <table class="table table-hover mb-0 align-middle border-0" style="background-color: #fff;">
+            <thead style="background-color: var(--heading-color); color: var(--contrast-color);">
+              <tr>
+                <th class="border-0 text-white">#</th>
+                <th class="border-0 text-white">CIN</th>
+                <th class="border-0 text-white">Project ID</th>
+                <th class="border-0 text-white">Amount ($)</th>
+                <th class="border-0 text-white">Payment Method</th>
+                <th class="border-0 text-white">Reference</th>
+                <th class="border-0 text-white">Date</th>
+                <th class="border-0 text-white">Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td colspan="8" class="text-center text-muted py-4">No data â€” use the PHP-driven list page for live records.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+      </div>
+    </section>
+  </main>
+
+  <div id="footer-container"></div>
+
+  <script src="../../../assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="../../../assets/vendor/aos/aos.js"></script>
+  <script src="../../../assets/js/main.js"></script>
+  <script src="../../../assets/js/load_header.js?v=20260510-notification-more-delete-popup"></script>
+  <script src="../../../assets/js/form-validation.js?v=1"></script>
+<script src="../../../assets/js/auth.js?v=20260511-authfix"></script>
+  <script src="/civicplus/assets/js/load_footer.js?v=20260502-1"></script>
+</body>
+</html>
+

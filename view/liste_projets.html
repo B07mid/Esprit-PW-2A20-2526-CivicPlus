@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="fr" class="light-style layout-menu-fixed" dir="ltr"
+      data-theme="theme-default" data-assets-path="../../../assets/">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no" />
+  <title>Projets Crowdfunding – CivicPlus BackOffice</title>
+
+  <link rel="icon" type="image/x-icon" href="../../../assets/img/RawShape.png" />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700&display=swap" rel="stylesheet" />
+
+  <link href="../../../assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="../../../assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="../../../assets/css/main.css?v=20260502-3" rel="stylesheet">
+  <link href="../../../assets/css/admin.css?v=20260511-dashboard-chat3" rel="stylesheet">
+</head>
+
+<body class="index-page">
+  <div class="admin-layout">
+
+    <!-- Sidebar -->
+    <aside class="admin-sidebar" id="admin-sidebar-container"></aside>
+
+    <!-- Main content -->
+    <main class="admin-content">
+      <div class="admin-card">
+        <div class="d-flex justify-content-between align-items-center mb-4 flex-wrap gap-3">
+          <div>
+            <h2 class="mb-1">Projets Crowdfunding</h2>
+            <p class="text-muted mb-0">Validation admin, financement et suivi des projets citoyens.</p>
+          </div>
+          <a href="citoyen_nouveau_projet.html" class="btn btn-primary">
+            <i class="bi bi-plus-circle"></i> Nouveau projet
+          </a>
+        </div>
+
+        <div id="flashBox"></div>
+
+        <div class="admin-lite-stats mb-4">
+          <div class="admin-lite-stat"><span>Total projets</span><strong id="statProjectsTotal">0</strong></div>
+          <div class="admin-lite-stat"><span>En attente</span><strong id="statProjectsPending">0</strong></div>
+          <div class="admin-lite-stat muted"><span>Approuves</span><strong id="statProjectsApproved">0</strong></div>
+          <div class="admin-lite-stat"><span>Rejetes</span><strong id="statProjectsRejected">0</strong></div>
+        </div>
+
+        <ul class="nav nav-pills gap-2 mb-3" role="tablist">
+          <li class="nav-item" role="presentation"><button class="nav-link active" data-bs-toggle="pill" data-bs-target="#projects-pending" type="button">En attente</button></li>
+          <li class="nav-item" role="presentation"><button class="nav-link" data-bs-toggle="pill" data-bs-target="#projects-approved" type="button">Approuves</button></li>
+          <li class="nav-item" role="presentation"><button class="nav-link" data-bs-toggle="pill" data-bs-target="#projects-rejected" type="button">Rejetes</button></li>
+        </ul>
+
+        <div class="tab-content">
+          <div class="tab-pane fade show active" id="projects-pending">
+            <div class="table-card"><div class="table-responsive"><table class="table table-hover align-middle admin-table mb-0">
+              <thead class="admin-table-head"><tr><th>ID</th><th>Image</th><th>Titre</th><th>Citoyen</th><th>Ville / Quartier</th><th>Objectif ($)</th><th>Collecte ($)</th><th>Progression</th><th>Statut</th><th>Email</th><th>Actions</th></tr></thead>
+              <tbody id="projetsPendingBody"></tbody>
+            </table></div></div>
+          </div>
+          <div class="tab-pane fade" id="projects-approved">
+            <div class="table-card"><div class="table-responsive"><table class="table table-hover align-middle admin-table mb-0">
+              <thead class="admin-table-head"><tr><th>ID</th><th>Image</th><th>Titre</th><th>Citoyen</th><th>Ville / Quartier</th><th>Objectif ($)</th><th>Collecte ($)</th><th>Progression</th><th>Statut</th><th>Email</th><th>Actions</th></tr></thead>
+              <tbody id="projetsApprovedBody"></tbody>
+            </table></div></div>
+          </div>
+          <div class="tab-pane fade" id="projects-rejected">
+            <div class="table-card"><div class="table-responsive"><table class="table table-hover align-middle admin-table mb-0">
+              <thead class="admin-table-head"><tr><th>ID</th><th>Image</th><th>Titre</th><th>Citoyen</th><th>Ville / Quartier</th><th>Objectif ($)</th><th>Collecte ($)</th><th>Progression</th><th>Statut</th><th>Email</th><th>Actions</th></tr></thead>
+              <tbody id="projetsRejectedBody"></tbody>
+            </table></div></div>
+          </div>
+        </div>
+
+        <div id="emptyMsg" class="alert alert-info d-none mt-3">Aucun projet trouve.</div>
+      </div>
+    </main>
+  </div>
+
+  <!-- Edit modal -->
+  <div class="modal fade" id="editModal" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Modifier le projet</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <div class="modal-body">
+          <input type="hidden" id="edit_id_projet">
+          <div class="mb-3">
+            <label class="form-label fw-bold">Titre</label>
+            <input type="text" class="form-control" id="edit_titre" minlength="3" maxlength="120" required>
+          </div>
+          <div class="mb-3">
+            <label class="form-label fw-bold">Description</label>
+            <textarea class="form-control" id="edit_description" rows="3" minlength="10" maxlength="1000" required></textarea>
+          </div>
+          <div class="mb-3">
+            <label class="form-label fw-bold">Objectif ($)</label>
+            <input type="number" class="form-control" id="edit_budget" step="any" min="1" required>
+          </div>
+          <div class="mb-3">
+            <label class="form-label fw-bold">Image du projet</label>
+            <input type="file" class="form-control" id="edit_image_projet" accept="image/png,image/jpeg,image/webp,image/gif">
+            <div class="form-text">Laissez vide pour conserver l'image actuelle.</div>
+          </div>
+          <div class="mb-3">
+            <label class="form-label fw-bold">Ville</label>
+            <input type="text" class="form-control" id="edit_ville" minlength="2" maxlength="80" required>
+          </div>
+          <div class="mb-3">
+            <label class="form-label fw-bold">Quartier</label>
+            <input type="text" class="form-control" id="edit_quartier" minlength="2" maxlength="80" required>
+          </div>
+          <div class="mb-3">
+            <label class="form-label fw-bold">Statut</label>
+            <select class="form-select" id="edit_statut" required>
+              <option value="en_cours">En cours</option>
+              <option value="termine">Termine</option>
+            </select>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button class="btn btn-secondary" data-bs-dismiss="modal">Annuler</button>
+          <button class="btn btn-primary" id="btnSave">Sauvegarder</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="../../../assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="js/liste_projets.js?v=20260511-profile-links"></script>
+  <script src="../../../assets/js/load_admin_sidebar.js?v=20260511-dashboard-chat3"></script>
+</body>
+</html>

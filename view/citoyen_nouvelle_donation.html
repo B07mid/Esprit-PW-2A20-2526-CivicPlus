@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Faire une Donation – CivicPlus</title>
+  <link rel="icon" type="image/png" href="../../../assets/img/RawShape.png" />
+
+  <link href="https://fonts.googleapis.com" rel="preconnect" />
+  <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900&family=Raleway:ital,wght@0,100;0,300;0,400;0,500;0,600;0,700;0,800;0,900&family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700&display=swap" rel="stylesheet" />
+
+  <link href="../../../assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="../../../assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet" />
+  <link href="../../../assets/vendor/aos/aos.css" rel="stylesheet" />
+  <link href="../../../assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet" />
+  <link href="../../../assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet" />
+  <link href="../../../assets/css/main.css?v=20260502-3" rel="stylesheet" />
+  <style>
+    .credit-card-widget {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-around;
+      background: #1f2937;
+      padding: 1rem;
+      border: 1px solid rgba(255,255,255,.3);
+      border-radius: 8px;
+      box-shadow: 0 8px 20px rgba(17,24,39,.18);
+      max-width: 320px;
+      margin: 0 auto;
+    }
+    .credit-card-top,
+    .credit-card-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: .75rem;
+    }
+    .credit-card-top { margin-bottom: .75rem; }
+    .credit-card-top input { margin-bottom: .75rem; flex-grow: 1; }
+    .credit-card-fields {
+      display: flex;
+      flex-direction: column;
+      gap: .75rem;
+    }
+    .credit-card-widget input {
+      width: 100%;
+      height: 40px;
+      border: 0;
+      outline: 0;
+      background: #1f2937;
+      color: #fff;
+      font-size: .875rem;
+      font-weight: 600;
+      caret-color: #f97316;
+      padding-left: .5rem;
+    }
+    .credit-card-widget input::placeholder { color: rgba(255,255,255,.7); }
+    .card-brand-mark {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      width: 56px;
+      height: 36px;
+      background: #1f2937;
+      border: 1px solid rgba(255,255,255,.2);
+      border-radius: 6px;
+      flex: 0 0 56px;
+    }
+    .credit-card-row input { min-width: 0; }
+    .payment-panel[hidden] { display: none !important; }
+    .saved-card-choice {
+      border: 1px solid #d8dee8;
+      border-radius: 12px;
+      padding: .85rem 1rem;
+      background: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      cursor: pointer;
+    }
+    .saved-card-choice input { width: auto; height: auto; }
+    .saved-card-choice strong { color: #111827; }
+    .saved-card-choice span { color: #6b7280; font-size: .9rem; }
+  </style>
+</head>
+
+<body class="index-page">
+
+  <div id="header-container" class="sticky-top" style="top: 0; z-index: 1030;"></div>
+
+  <main id="main">
+    <section class="section contact">
+      <div class="container">
+        <div class="section-title">
+          <span>Crowdfunding</span>
+          <h2>Faire une donation</h2>
+          <p>Soutenez un projet communautaire dans votre quartier en effectuant une donation sécurisée.</p>
+        </div>
+
+        <div class="row justify-content-center">
+          <div class="col-12 col-xl-7">
+            <div class="card rounded-4 shadow-lg border-0 overflow-hidden">
+              <div class="card-body p-4 p-lg-5">
+                <div class="mb-4">
+                  <h2 class="h4 mb-1">Formulaire de Donation</h2>
+                  <p class="text-muted mb-0">Renseignez les détails de votre donation ci-dessous.</p>
+                </div>
+
+                <div id="alertBox"></div>
+
+                <form action="../controller/DonationController.php?citoyen=1" method="POST" enctype="multipart/form-data"
+                      id="formDonation" class="php-email-form"
+                      style="background-color:#f8f9fa; border-radius:10px; padding:1.5rem;">
+                  <div class="row gy-3">
+
+                    <div class="col-md-12">
+                      <label class="form-label fw-bold">Numéro CIN <span class="text-danger">*</span></label>
+                      <div id="cin_display" class="form-control"
+                           style="background-color:#e9ecef; color:#6c757d; font-family:monospace; cursor:default;">Chargement...</div>
+                      <input type="hidden" name="num_cin" id="num_cin">
+                    </div>
+
+                    <div class="col-md-12">
+                      <label class="form-label fw-bold">Projet <span class="text-danger">*</span></label>
+                      <div id="projet_display" class="form-control"
+                           style="background-color:#e9ecef; color:#6c757d; cursor:default;">Chargement...</div>
+                      <input type="hidden" name="id_projet" id="id_projet">
+                    </div>
+
+                    <div class="col-md-6">
+                      <label for="montant" class="form-label fw-bold">Montant ($) <span class="text-danger">*</span></label>
+                      <input type="number" class="form-control" name="montant" id="montant"
+                             min="0.01" step="any" placeholder="Ex: 100.00" required
+                             style="color:#112f8d; background-color:#ffffff; font-weight:500;">
+                    </div>
+
+                    <div class="col-md-6">
+                      <label for="methode_paiement" class="form-label fw-bold">Méthode de paiement <span class="text-danger">*</span></label>
+                      <select class="form-select" name="methode_paiement" id="methode_paiement" required
+                              style="color:#112f8d; background-color:#ffffff; font-weight:500;">
+                        <option value="" disabled selected>Choisir une méthode</option>
+                        <option value="flouci">Flouci</option>
+                        <option value="credit_card">Credit card</option>
+                      </select>
+                      <input type="hidden" name="statut_paiement" value="en_attente">
+                    </div>
+
+                    <div class="col-12 payment-panel" id="flouciPanel" hidden>
+                      <div class="border rounded-3 p-3 bg-white">
+                        <div class="row gy-3 align-items-center">
+                          <div class="col-md-5 text-center">
+                            <img src="../../../assets/img/qr.jpeg" alt="QR code Flouci" class="img-fluid rounded border p-2 bg-white" style="width:100%; max-width:300px;">
+                          </div>
+                          <div class="col-md-7">
+                            <label for="flouci_transaction_id" class="form-label fw-bold">Flouci transaction ID <span class="text-danger">*</span></label>
+                            <input type="text" class="form-control mb-3" name="flouci_transaction_id" id="flouci_transaction_id"
+                                   placeholder="Ex: FLOUCI-123456" style="color:#112f8d; background-color:#ffffff; font-weight:500;">
+
+                            <label for="preuve_paiement_image" class="form-label fw-bold">Image preuve de paiement <span class="text-muted">(optionnel)</span></label>
+                            <input type="file" class="form-control" name="preuve_paiement_image" id="preuve_paiement_image" accept="image/*">
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="col-12 payment-panel" id="creditCardPanel" hidden>
+                      <input type="hidden" name="saved_payment_card_id" id="saved_payment_card_id">
+                      <div id="savedCardsPanel" class="border rounded-3 p-3 bg-white mb-3 d-none">
+                        <div class="d-flex justify-content-between align-items-center flex-wrap gap-2 mb-2">
+                          <strong>Cartes enregistrées</strong>
+                          <button type="button" class="btn btn-sm btn-outline-secondary" id="useNewCardBtn">Nouvelle carte</button>
+                        </div>
+                        <div id="savedCardsList" class="d-grid gap-2"></div>
+                      </div>
+                      <div class="credit-card-widget">
+                        <div class="credit-card-top">
+                          <input type="text" name="cardName" id="cardName" placeholder="Full Name" autocomplete="cc-name" />
+                          <div class="card-brand-mark" aria-label="Credit card">
+                            <svg class="text-white fill-current" xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 48 48" role="img">
+                              <path fill="#ff9800" d="M32 10A14 14 0 1 0 32 38A14 14 0 1 0 32 10Z"></path>
+                              <path fill="#d50000" d="M16 10A14 14 0 1 0 16 38A14 14 0 1 0 16 10Z"></path>
+                              <path fill="#ff3d00" d="M18,24c0,4.755,2.376,8.95,6,11.48c3.624-2.53,6-6.725,6-11.48s-2.376-8.95-6-11.48 C20.376,15.05,18,19.245,18,24z"></path>
+                            </svg>
+                          </div>
+                        </div>
+                        <div class="credit-card-fields">
+                          <input type="text" name="cardNumber" id="cardNumber" placeholder="0000 0000 0000 0000" inputmode="numeric" autocomplete="cc-number" maxlength="19" />
+                          <div class="credit-card-row">
+                            <input type="text" name="expiryDate" id="expiryDate" placeholder="00/00" autocomplete="cc-exp" maxlength="5" />
+                            <input type="text" name="cvv" id="cvv" placeholder="CVV" inputmode="numeric" autocomplete="cc-csc" maxlength="4" pattern="[0-9]{3,4}" />
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div class="col-md-12">
+                      <label class="form-label fw-bold">Référence de transaction</label>
+                      <div id="reference_display" class="form-control"
+                           style="background-color:#e9ecef; color:#6c757d; font-family:monospace; cursor:default;"></div>
+                      <input type="hidden" name="reference_transaction" id="reference_transaction">
+                    </div>
+
+                  </div>
+
+                  <div class="text-end mt-4">
+                    <button type="button" class="btn btn-secondary rounded-pill px-4 me-2"
+                            onclick="history.back()">Annuler</button>
+                    <button type="submit" class="btn-getstarted rounded-pill px-4">Confirmer la donation</button>
+                  </div>
+                </form>
+
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <script src="../../../assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="../../../assets/vendor/aos/aos.js"></script>
+  <script src="../../../assets/vendor/glightbox/js/glightbox.min.js"></script>
+  <script src="../../../assets/vendor/swiper/swiper-bundle.min.js"></script>
+  <script src="../../../assets/js/main.js"></script>
+  <script src="../../../assets/js/load_header.js?v=20260510-notification-more-delete-popup"></script>
+  <script src="../../../assets/js/form-validation.js?v=1"></script>
+  <script src="js/citoyen_donation.js?v=20260508-saved-cards-2"></script>
+
+
+  <div id="footer-container"></div>
+  <script src="/civicplus/assets/js/load_footer.js?v=20260502-1"></script>
+
+  <div class="modal fade" id="saveCardModal" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2 class="modal-title h5">Enregistrer cette carte ?</h2>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Fermer"></button>
+        </div>
+        <div class="modal-body">
+          <p class="mb-0">CivicPlus enregistrera uniquement le nom, la date d'expiration, la marque et les 4 derniers chiffres. Le CVV et le numéro complet ne seront pas stockés.</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-secondary" id="skipSaveCardBtn">Non, continuer</button>
+          <button type="button" class="btn btn-primary" id="confirmSaveCardBtn">Oui, enregistrer</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>

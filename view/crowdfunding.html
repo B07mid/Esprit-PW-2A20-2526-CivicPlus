@@ -1,0 +1,95 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="utf-8">
+  <meta content="width=device-width, initial-scale=1.0" name="viewport">
+  <title>Projects - eNno Bootstrap Template</title>
+  <link href="../../../assets/img/RawShape.png" rel="icon">
+  <link href="../../../assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+  <link href="../../../assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet">
+  <link href="../../../assets/css/main.css?v=20260502-3" rel="stylesheet">
+</head>
+
+<body class="index-page">
+
+
+  <div id="header-container" class="sticky-top" style="top: 0; z-index: 1030;"></div>
+
+  <main>
+    <!-- Page Title -->
+    <div>
+      <h1>Projects</h1>
+      <nav>
+        <ol>
+          <li><a href="index.html">Home</a></li>
+          <li>Projects</li>
+        </ol>
+      </nav>
+    </div>
+
+    <!-- ADD A PROJECT FORM -->
+    <section id="add-project">
+      <h2>Add a Project</h2>
+      <p>Fill in the details below to publish a new project and set your funding goal.</p>
+
+      <form method="post" action="../controller/ProjetCrowdfundingController.php?demande=1" enctype="multipart/form-data">
+
+        <label for="projTitle">Project Title *</label><br>
+        <input type="text" id="projTitle" name="titre" minlength="3" maxlength="120" placeholder="e.g. Community Sports Arena" required><br><br>
+
+        <label for="projType">Project Type *</label><br>
+        <select id="projType" name="type_projet" required>
+          <option value="" disabled selected>â€” Select a type â€”</option>
+          <option value="sport">Sport</option>
+          <option value="infrastructure">Infrastructure</option>
+          <option value="education">Education</option>
+          <option value="sante">Health</option>
+          <option value="environnement">Environment</option>
+          <option value="culture">Culture</option>
+          <option value="autre">Other</option>
+        </select><br><br>
+
+        <label for="num_cin">CIN Number *</label><br>
+        <input type="text" id="num_cin" name="num_cin" inputmode="numeric" pattern="[0-9]{8}" maxlength="8" placeholder="e.g. 12345678" required><br><br>
+
+        <label for="projCity">City *</label><br>
+        <input type="text" id="projCity" name="ville" minlength="2" maxlength="80" placeholder="e.g. Algiers" required><br><br>
+
+        <label for="projNeighborhood">Neighborhood *</label><br>
+        <input type="text" id="projNeighborhood" name="quartier" minlength="2" maxlength="80" placeholder="e.g. Bab El Oued" required><br><br>
+
+        <label for="projDesc">Description *</label><br>
+        <textarea id="projDesc" name="description" rows="5" cols="50" minlength="10" maxlength="1000"
+          placeholder="Describe the project goals, expected impactâ€¦" required></textarea><br><br>
+
+        <label for="projBudget">Budget Goal ($) *</label><br>
+        <input type="number" id="projBudget" name="budget_cible" min="1" step="any"
+          placeholder="e.g. 50000" required><br><br>
+
+        <label for="projRaised">Amount Raised So Far ($)</label><br>
+        <input type="number" id="projRaised" name="projRaised" min="0" step="any"
+          placeholder="0 (optional)"><br><br>
+
+        <label for="image_projet">Project Photo *</label><br>
+        <input type="file" id="image_projet" name="image_projet" accept="image/png,image/jpeg,image/webp,image/gif" required><br>
+        <small>PNG, JPG, WEBP or GIF, max 5 MB</small><br><br>
+
+        <button type="reset">Clear</button>
+        <button type="submit">Add Project</button>
+
+      </form>
+    </section>
+
+  </main>
+
+  <div id="footer-container"></div>
+
+<script src="../../../assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+<script src="../../../assets/js/load_header.js?v=20260510-notification-more-delete-popup"></script>
+<script src="../../../assets/js/form-validation.js?v=1"></script>
+<script src="../../../assets/js/auth.js?v=20260511-authfix"></script>
+  <script src="/civicplus/assets/js/load_footer.js?v=20260502-1"></script>
+</body>
+</html>
+

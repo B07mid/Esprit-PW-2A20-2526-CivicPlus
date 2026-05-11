@@ -1,0 +1,746 @@
+<!DOCTYPE html>
+<html lang="fr">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Explorer les Projets - CivicPlus</title>
+  <link rel="icon" type="image/png" href="../../../assets/img/RawShape.png" />
+
+  <link href="https://fonts.googleapis.com" rel="preconnect" />
+  <link href="https://fonts.gstatic.com" rel="preconnect" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,100;0,300;0,400;0,500;0,700;0,900&family=Raleway:ital,wght@0,100;0,300;0,400;0,500;0,600;0,700;0,800;0,900&family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700&display=swap" rel="stylesheet" />
+
+  <link href="../../../assets/vendor/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+  <link href="../../../assets/vendor/bootstrap-icons/bootstrap-icons.css" rel="stylesheet" />
+  <link href="../../../assets/vendor/aos/aos.css" rel="stylesheet" />
+  <link href="../../../assets/vendor/glightbox/css/glightbox.min.css" rel="stylesheet" />
+  <link href="../../../assets/vendor/swiper/swiper-bundle.min.css" rel="stylesheet" />
+  <link href="../../../assets/css/main.css?v=20260511-project-sections" rel="stylesheet" />
+  <style>
+    .cf-popup-backdrop {
+      position: fixed;
+      inset: 0;
+      z-index: 1085;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 1rem;
+      background: rgba(15, 23, 42, .45);
+    }
+
+    .cf-popup-card {
+      width: min(100%, 380px);
+      border-radius: 8px;
+      background: #fff;
+      box-shadow: 0 20px 60px rgba(15, 23, 42, .22);
+      padding: 1.25rem;
+      text-align: center;
+    }
+
+    .cf-popup-icon {
+      width: 44px;
+      height: 44px;
+      margin: 0 auto .75rem;
+      border-radius: 50%;
+      display: grid;
+      place-items: center;
+      color: #dc3545;
+      background: #fff0f1;
+      font-size: 1.35rem;
+    }
+
+    .cf-popup-card h5 {
+      margin-bottom: .4rem;
+      color: #112f8d;
+      font-weight: 800;
+    }
+
+    .cf-popup-card p {
+      margin-bottom: 1rem;
+      color: #667085;
+      font-size: .95rem;
+    }
+
+    .cf-popup-card .cf-place-detail {
+      margin-bottom: .5rem;
+      color: #111827;
+      font-weight: 800;
+    }
+
+    .cf-popup-card .cf-place-coordinates {
+      margin-bottom: 1rem;
+      color: #667085;
+      font-size: .84rem;
+    }
+
+    .cf-popup-actions {
+      display: flex;
+      gap: .5rem;
+      justify-content: center;
+    }
+
+    .cf-location-link {
+      border: 0;
+      padding: 0;
+      color: rgba(255, 255, 255, .75);
+      background: transparent;
+      font: inherit;
+      text-align: left;
+      cursor: pointer;
+    }
+
+    .cf-location-link:hover,
+    .cf-location-link:focus {
+      color: #fff;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+      outline: 0;
+    }
+
+    .modal-media-wrap {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 94px;
+      gap: 12px;
+      align-items: stretch;
+    }
+
+    .modal-main-media img {
+      width: 100%;
+      height: 260px;
+      object-fit: cover;
+      background: #f1f5f9;
+    }
+
+    .modal-album-strip {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      max-height: 260px;
+      overflow-y: auto;
+      padding-right: 2px;
+    }
+
+    .modal-album-thumb {
+      width: 82px;
+      height: 62px;
+      border: 2px solid transparent;
+      border-radius: 8px;
+      padding: 0;
+      overflow: hidden;
+      background: #eef2f7;
+    }
+
+    .modal-album-thumb.active {
+      border-color: #112f8d;
+    }
+
+    .modal-album-thumb img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .cf-update-item {
+      border: 1px solid #e7ecf5;
+      background: #f8fafc;
+      color: #1f2937;
+      border-radius: 8px;
+      padding: .7rem .85rem;
+      text-align: left;
+      width: 100%;
+    }
+
+    .cf-update-title {
+      color: #112f8d;
+    }
+
+    .cf-update-item:hover,
+    .cf-update-item:focus {
+      border-color: #112f8d;
+      background: #f0f4ff;
+    }
+
+    #modalUpdatesSection {
+      border: 1px solid #e4eaf4;
+      border-radius: 8px;
+      padding: 14px;
+      background: #fff;
+    }
+
+    #modalUpdatesSection h6 {
+      color: #112f8d;
+      margin-bottom: 10px !important;
+    }
+
+    #modalUpdateCount {
+      background: #eef3ff;
+      color: #112f8d;
+    }
+
+    #modalUpdatesList {
+      margin-bottom: 0 !important;
+    }
+
+    .cf-updates-empty {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-height: 74px;
+      border: 1px dashed #cfd8ea;
+      border-radius: 8px;
+      padding: 14px 16px;
+      background: #f8fafc;
+      color: #5f6b7a;
+    }
+
+    .cf-updates-empty i {
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+      display: grid;
+      place-items: center;
+      color: #112f8d;
+      background: #eef3ff;
+      font-size: 1.15rem;
+      flex: 0 0 auto;
+    }
+
+    .cf-updates-empty strong,
+    .cf-updates-empty span {
+      display: block;
+    }
+
+    .cf-updates-empty strong {
+      color: #112f8d;
+      line-height: 1.1;
+    }
+
+    .cf-updates-empty span {
+      margin-top: 3px;
+      font-size: .86rem;
+    }
+
+    body.dark-mode #modalUpdatesSection,
+    html.dark-mode body #modalUpdatesSection {
+      background: #151f33;
+      border-color: rgba(255, 255, 255, .12);
+      color: #e8eefb;
+    }
+
+    body.dark-mode #modalUpdatesSection h6,
+    html.dark-mode body #modalUpdatesSection h6,
+    body.dark-mode .cf-update-title,
+    html.dark-mode body .cf-update-title,
+    body.dark-mode .cf-updates-empty strong,
+    html.dark-mode body .cf-updates-empty strong {
+      color: #f8fafc;
+    }
+
+    body.dark-mode #modalUpdateCount,
+    html.dark-mode body #modalUpdateCount,
+    body.dark-mode .cf-updates-empty i,
+    html.dark-mode body .cf-updates-empty i {
+      background: rgba(246, 141, 86, .16);
+      color: #ffb17d;
+    }
+
+    body.dark-mode .cf-update-item,
+    html.dark-mode body .cf-update-item,
+    body.dark-mode .cf-updates-empty,
+    html.dark-mode body .cf-updates-empty,
+    body.dark-mode #updateFormWrapper,
+    html.dark-mode body #updateFormWrapper {
+      background: #0f172a !important;
+      border-color: rgba(255, 255, 255, .12) !important;
+      color: #dbeafe;
+    }
+
+    body.dark-mode .cf-update-item:hover,
+    body.dark-mode .cf-update-item:focus,
+    html.dark-mode body .cf-update-item:hover,
+    html.dark-mode body .cf-update-item:focus {
+      background: #18243a !important;
+      border-color: rgba(246, 141, 86, .5) !important;
+    }
+
+    body.dark-mode #modalSelectedUpdateText,
+    html.dark-mode body #modalSelectedUpdateText,
+    body.dark-mode .cf-update-item .text-muted,
+    html.dark-mode body .cf-update-item .text-muted,
+    body.dark-mode .cf-updates-empty span,
+    html.dark-mode body .cf-updates-empty span {
+      color: #cbd5e1 !important;
+    }
+
+    .crowdfunding-page #projetsContainer.list-view {
+      max-width: 980px;
+      margin-left: auto;
+      margin-right: auto;
+      gap: 14px;
+    }
+
+    .crowdfunding-page #projetsContainer.list-view .projet-card {
+      display: grid !important;
+      grid-template-columns: 240px minmax(0, 1fr);
+      height: 182px;
+      min-height: 182px;
+      max-height: 182px;
+      border-radius: 8px !important;
+      overflow: hidden;
+      cursor: pointer;
+    }
+
+    .crowdfunding-page #projetsContainer.list-view .projet-card-image-wrap {
+      width: 240px !important;
+      min-width: 240px !important;
+      height: 182px !important;
+      min-height: 182px !important;
+      max-height: 182px !important;
+      aspect-ratio: auto !important;
+    }
+
+    .crowdfunding-page #projetsContainer.list-view .projet-card-image {
+      width: 100% !important;
+      height: 100% !important;
+      max-height: none !important;
+      object-fit: cover;
+    }
+
+    .crowdfunding-page #projetsContainer.list-view .card-header-band {
+      display: none;
+    }
+
+    .crowdfunding-page #projetsContainer.list-view .card-body {
+      display: grid !important;
+      grid-template-columns: minmax(0, 1fr) 320px;
+      grid-template-areas: "main side";
+      align-items: center;
+      gap: 22px;
+      height: 182px;
+      padding: 18px 24px !important;
+      min-width: 0;
+    }
+
+    .crowdfunding-page #projetsContainer.list-view .project-main-info {
+      grid-area: main;
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    .crowdfunding-page #projetsContainer.list-view .project-side-panel {
+      grid-area: side;
+      min-width: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 14px;
+      padding-right: 46px;
+    }
+
+    .crowdfunding-page #projetsContainer.list-view .project-type-chip-wrap {
+      margin: 0 !important;
+      min-width: 0;
+      line-height: 1;
+    }
+
+    .project-type-chip {
+      display: inline-flex;
+      align-items: center;
+      max-width: 100%;
+      min-height: 26px;
+      padding: 5px 10px;
+      border-radius: 999px;
+      background: #f0f4ff;
+      color: #112f8d;
+      font-size: .75rem;
+      font-weight: 800;
+      line-height: 1;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .crowdfunding-page #projetsContainer.list-view .project-card-title {
+      display: block;
+      max-width: none;
+      margin: 0 !important;
+      font-size: 1rem;
+      line-height: 1.22;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .crowdfunding-page #projetsContainer.list-view .project-card-owner {
+      display: none !important;
+    }
+
+    .crowdfunding-page #projetsContainer.list-view .project-card-location {
+      display: none !important;
+    }
+
+    .crowdfunding-page #projetsContainer.list-view .card-text,
+    .crowdfunding-page #projetsContainer.list-view .card-click-hint {
+      display: none !important;
+    }
+
+    .crowdfunding-page #projetsContainer.list-view .proj-progress {
+      width: 100%;
+      margin: 0 !important;
+    }
+
+    .crowdfunding-page #projetsContainer.list-view .proj-actions {
+      margin: 0 !important;
+      flex-direction: row !important;
+      justify-content: flex-end !important;
+      gap: 10px;
+      order: -1;
+    }
+
+    .crowdfunding-page #projetsContainer.list-view .proj-actions > div {
+      display: flex !important;
+    }
+
+    .crowdfunding-page #projetsContainer.list-view .project-save-ribbon {
+      top: 12px;
+      right: 14px;
+      width: 30px;
+      height: 40px;
+      padding-top: 7px;
+    }
+
+    .crowdfunding-page #projetsContainer.list-view .project-save-ribbon .bi {
+      font-size: .96rem;
+    }
+
+    @media (max-width: 420px) {
+      .cf-popup-actions {
+        flex-direction: column-reverse;
+      }
+      .modal-media-wrap {
+        grid-template-columns: 1fr;
+      }
+      .modal-album-strip {
+        max-height: none;
+        flex-direction: row;
+        overflow-x: auto;
+        overflow-y: hidden;
+      }
+    }
+
+    @media (max-width: 767.98px) {
+      .crowdfunding-page #projetsContainer.list-view .projet-card {
+        grid-template-columns: 1fr;
+        height: auto;
+        max-height: none;
+      }
+      .crowdfunding-page #projetsContainer.list-view .projet-card-image-wrap {
+        width: 100% !important;
+        height: 180px !important;
+        max-height: 180px !important;
+      }
+      .crowdfunding-page #projetsContainer.list-view .card-body {
+        grid-template-columns: 1fr;
+        grid-template-areas: "main" "side";
+      }
+      .crowdfunding-page #projetsContainer.list-view .project-side-panel {
+        padding-right: 0;
+      }
+      .crowdfunding-page #projetsContainer.list-view .proj-progress {
+        width: 100%;
+      }
+      .crowdfunding-page #projetsContainer.list-view .proj-actions {
+        flex-direction: row;
+        justify-content: space-between;
+      }
+    }
+  </style>
+</head>
+
+<body class="index-page crowdfunding-page">
+
+  <div id="header-container" class="sticky-top" style="top: 0; z-index: 1030;"></div>
+
+  <main id="main">
+    <section class="crowdfunding-hero">
+      <div class="container">
+        <div class="row align-items-center g-4">
+          <div class="col-lg-7">
+            <span class="cf-eyebrow">Financement citoyen</span>
+            <h1>Financez les projets qui changent votre quartier</h1>
+            <p class="cf-hero-copy">
+              Découvrez les initiatives proposées par les citoyens, suivez leur progression
+              et contribuez aux idées utiles pour la ville.
+            </p>
+            <div class="cf-hero-actions">
+              <a class="btn-getstarted" href="citoyen_nouveau_projet.html">
+                <i class="bi bi-plus-circle me-1"></i> Proposer un projet
+              </a>
+              <a class="cf-secondary-link" href="#projetsContainer">
+                Explorer les projets <i class="bi bi-arrow-down-short"></i>
+              </a>
+            </div>
+          </div>
+          <div class="col-lg-5">
+            <div class="cf-impact-panel">
+              <div>
+                <span class="cf-impact-icon"><i class="bi bi-shield-check"></i></span>
+                <strong>Projets vérifiés</strong>
+                <p>Les demandes sont relues avant publication pour garder un espace fiable.</p>
+              </div>
+              <div>
+                <span class="cf-impact-icon"><i class="bi bi-graph-up-arrow"></i></span>
+                <strong>Suivi transparent</strong>
+                <p>Objectif, collecte, statut et commentaires restent visibles en temps réel.</p>
+              </div>
+              <div>
+                <span class="cf-impact-icon"><i class="bi bi-people"></i></span>
+                <strong>Impact local</strong>
+                <p>Chaque contribution aide une initiative portée par la communauté.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section crowdfunding-browse">
+      <div class="container">
+        <div class="cf-browse-heading" data-aos="fade-up">
+          <span>Catalogue des initiatives</span>
+          <h2>Explorer les projets</h2>
+        </div>
+
+        <!-- Filters -->
+        <div class="row justify-content-center mb-2 filter-bar g-2">
+          <div class="col-12 col-md-4">
+            <div class="input-group">
+              <span class="input-group-text search-prefix">
+                <i class="bi bi-search"></i>
+              </span>
+              <input type="text" id="searchInput" class="form-control"
+                     placeholder="Rechercher un projet...">
+            </div>
+          </div>
+          <div class="col-12 col-md-3">
+            <select id="filterStatut" class="form-select">
+              <option value="">Tous les statuts</option>
+              <option value="en_cours">En cours</option>
+              <option value="termine">Termine</option>
+            </select>
+          </div>
+          <div class="col-12 col-md-2">
+            <select id="filterType" class="form-select">
+              <option value="">Tous les types</option>
+              <option value="infrastructure">Infrastructure</option>
+              <option value="sante">Sante</option>
+              <option value="education">Education</option>
+              <option value="environnement">Environnement</option>
+              <option value="culture">Culture</option>
+              <option value="sport">Sport</option>
+              <option value="autre">Autre</option>
+            </select>
+          </div>
+          <div class="col-12 col-md-2">
+            <input type="text" id="filterVille" class="form-control"
+                   placeholder="Filtrer par ville...">
+          </div>
+        </div>
+
+        <!-- Sort + View toggle -->
+        <div class="row justify-content-center mb-4 g-2">
+          <div class="col-12 col-md-auto d-flex align-items-center gap-2 flex-wrap">
+            <span class="text-muted small fw-bold">
+              <i class="bi bi-sort-down me-1"></i>Trier par :
+            </span>
+            <select id="sortSelect" class="form-select form-select-sm">
+              <option value="distance">Les plus proches de vous</option>
+              <option value="budget_asc">Prix croissant</option>
+              <option value="budget_desc">Prix decroissant</option>
+            </select>
+            <div class="view-toggle d-flex gap-1 ms-2" role="group" aria-label="Mode d'affichage">
+              <button id="btnViewGrid" class="view-toggle-btn active" title="Vue grille">
+                <i class="bi bi-grid-3x3-gap-fill"></i>
+              </button>
+              <button id="btnViewList" class="view-toggle-btn" title="Vue liste">
+                <i class="bi bi-list-ul"></i>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Spinner -->
+        <div id="loadingSpinner" class="text-center py-5">
+          <div class="spinner-border" role="status">
+            <span class="visually-hidden">Chargement...</span>
+          </div>
+          <p class="mt-2 text-muted">Chargement des projets...</p>
+        </div>
+
+        <!-- Alert box -->
+        <div id="alertBox"></div>
+
+        <!-- Cards grid -->
+        <div class="row g-4" id="projetsContainer"></div>
+
+        <!-- Empty state -->
+        <div id="emptyMsg" class="d-none text-center py-5">
+          <i class="bi bi-search"></i>
+          <p class="mt-3 text-muted fs-5">Aucun projet ne correspond a votre recherche.</p>
+        </div>
+
+      </div>
+    </section>
+  </main>
+
+  <!-- ====== Modal Détail Projet ====== -->
+  <div class="modal fade" id="projetModal" tabindex="-1" aria-labelledby="projetModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-lg modal-dialog-scrollable">
+      <div class="modal-content border-0 shadow-lg">
+
+        <div class="modal-header border-0 pb-2 modal-header-primary">
+          <div class="flex-grow-1">
+            <span id="modalTypeBadge" class="badge mb-2"></span>
+            <h5 class="modal-title text-white fw-bold mb-0" id="projetModalLabel"></h5>
+            <div class="d-flex flex-wrap align-items-center gap-3">
+              <small class="text-white-50" id="modalLocation"></small>
+              <small class="text-white-50" id="modalProjectDate"></small>
+            </div>
+            <div id="modalProjectOwner" class="mt-2"></div>
+          </div>
+          <button type="button" class="btn-close btn-close-white ms-3" data-bs-dismiss="modal" aria-label="Fermer"></button>
+        </div>
+
+        <div class="modal-body p-4">
+          <div id="modalMediaSection" class="modal-media-wrap mb-4">
+            <div class="modal-main-media">
+              <img id="modalProjectImage" src="" alt="" class="rounded">
+              <div id="modalSelectedUpdateText" class="d-none small text-muted mt-2"></div>
+            </div>
+            <div id="modalImageAlbum" class="modal-album-strip"></div>
+          </div>
+
+          <!-- Financement -->
+          <div class="p-3 rounded mb-4 modal-financement">
+            <div class="d-flex justify-content-between small fw-bold mb-1">
+              <span>Collecté : <span id="modalRaised"></span></span>
+              <span>Objectif : <span id="modalGoal"></span></span>
+            </div>
+            <div class="progress modal-funding-progress">
+              <div class="progress-bar" id="modalProgressBar" role="progressbar"></div>
+            </div>
+            <div class="d-flex justify-content-between small mt-1">
+              <span id="modalStatut" class="badge"></span>
+              <span class="text-muted" id="modalPct"></span>
+            </div>
+          </div>
+
+          <!-- Description -->
+          <h6 class="fw-bold mb-2 modal-section-heading"><i class="bi bi-file-text-fill me-1"></i>Description</h6>
+          <p id="modalDescription" class="text-muted mb-4"></p>
+
+          <!-- Bouton don -->
+          <div class="text-end mb-4">
+            <a id="modalDonnerBtn" href="#" class="btn-getstarted">
+              <i class="bi bi-piggy-bank me-1"></i> Faire un don
+            </a>
+          </div>
+
+          <hr class="my-3">
+
+          <section id="modalUpdatesSection" class="mb-4">
+            <h6 class="fw-bold mb-3">
+              <i class="bi bi-images me-1"></i>Actualités
+              <span class="badge ms-1" id="modalUpdateCount">0</span>
+            </h6>
+            <div id="modalUpdatesList" class="d-grid gap-2 mb-3"></div>
+            <div id="updateFormWrapper" class="d-none p-3 rounded" style="background:#f8fafc;border:1px solid #e7ecf5;">
+              <textarea class="form-control mb-2" id="modalUpdateText" rows="2" placeholder="Ajouter une note d'actualité"></textarea>
+              <input class="form-control mb-2" type="file" id="modalUpdateImage" accept="image/png,image/jpeg,image/webp,image/gif">
+              <button class="btn btn-primary w-100" id="modalUpdatePublishBtn">
+                <i class="bi bi-image me-1"></i> Publier l'actualité
+              </button>
+            </div>
+          </section>
+
+          <hr class="my-3">
+
+          <!-- Commentaires -->
+          <h6 class="fw-bold mb-3" id="commentsHeading">
+            <i class="bi bi-chat-dots-fill me-1"></i>Commentaires
+            <span class="badge ms-1" id="modalCommentCount">0</span>
+          </h6>
+
+          <div id="modalCommentsList" class="mb-3"></div>
+
+          <!-- Formulaire commentaire -->
+          <div id="commentFormWrapper">
+            <div class="input-group">
+              <span class="input-group-text comment-prefix">
+                <i class="bi bi-person-circle"></i>
+              </span>
+              <textarea class="form-control" id="modalCommentText" rows="2"
+                        placeholder="Écrire un commentaire…"></textarea>
+            </div>
+            <button class="btn btn-primary mt-2 w-100" id="modalPublishBtn">
+              <i class="bi bi-send me-1"></i> Publier le commentaire
+            </button>
+          </div>
+          <div id="commentLoginNotice" class="d-none alert alert-info mt-2 mb-0">
+            <i class="bi bi-info-circle me-1"></i>
+            <a href="../../../Modules/User/View/login.html" style="color:inherit;">Connectez-vous</a>
+            pour laisser un commentaire.
+          </div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- ====== Popup Card ====== -->
+    <div id="cfPopupBackdrop" class="cf-popup-backdrop d-none" role="dialog" aria-modal="true" aria-labelledby="cfPopupTitle">
+      <div class="cf-popup-card">
+        <div class="cf-popup-icon" id="cfPopupIcon">
+          <i class="bi bi-exclamation-triangle-fill"></i>
+        </div>
+        <h5 id="cfPopupTitle">Supprimer le commentaire ?</h5>
+        <p id="cfPopupMessage">Cette action est definitive.</p>
+        <div class="cf-popup-actions">
+          <button type="button" class="btn btn-light border" id="cfPopupCancel">Annuler</button>
+          <button type="button" class="btn btn-danger" id="cfPopupConfirm">Supprimer</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ====== Auth Toast ====== -->
+  <div class="toast-container position-fixed bottom-0 end-0 p-3" style="z-index:9999;">
+    <div id="authToast" class="toast align-items-center text-bg-warning border-0" role="alert" aria-live="assertive" aria-atomic="true">
+      <div class="d-flex">
+        <div class="toast-body fw-semibold">
+          <i class="bi bi-lock-fill me-2"></i>
+          <a href="../../../Modules/User/View/login.html" class="text-dark">Connectez-vous</a>
+          pour pouvoir voter.
+        </div>
+        <button type="button" class="btn-close me-2 m-auto" data-bs-dismiss="toast" aria-label="Fermer"></button>
+      </div>
+    </div>
+  </div>
+
+  <script src="../../../assets/vendor/bootstrap/js/bootstrap.bundle.min.js"></script>
+  <script src="../../../assets/vendor/aos/aos.js"></script>
+  <script src="../../../assets/vendor/glightbox/js/glightbox.min.js"></script>
+  <script src="../../../assets/vendor/swiper/swiper-bundle.min.js"></script>
+  <script src="../../../assets/js/main.js?v=2"></script>
+  <script src="../../../assets/js/load_header.js?v=20260510-notification-more-delete-popup"></script>
+  <script src="js/citoyen_liste_projets.js?v=20260511-project-sections"></script>
+
+
+  <div id="footer-container"></div>
+  <script src="/civicplus/assets/js/load_footer.js?v=20260502-1"></script>
+</body>
+</html>
